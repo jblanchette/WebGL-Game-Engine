@@ -11,13 +11,16 @@ G.controller.MainMenuController = (function(Game){
         scene.add(MainMenu);
     }
 
-    var loop = function(context) {
-        // something..
+    var render = function(context) {
+        // If you need to make custom adjustments do it here
+        // this will be passed in anytime the scene is rendered
     }
 
 
     return {
-        scene: scene
+        scene: scene,
+        render: render,
+        destroy: true
     };
 
 })(G);
