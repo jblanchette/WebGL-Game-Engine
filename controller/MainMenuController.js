@@ -1,5 +1,5 @@
 
-(function(Game){
+G.controller.MainMenuController = (function(Game){
 
     var menu;
     var scene = new MainMenuScene();
