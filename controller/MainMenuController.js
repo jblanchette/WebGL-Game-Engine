@@ -2,9 +2,10 @@
 G.controller.MainMenuController = (function(Game){
 
     var menu;
-    var scene = new MainMenuScene();
+    var scene;
 
     var init = function() {
+        scene = new MainMenuScene();
         menu = new MainMenu();
 
         scene.add(MainMenu);
