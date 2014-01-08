@@ -11,16 +11,12 @@ G.controller.MainMenuController = (function(Game){
         scene.add(MainMenu);
     }
 
-    var render = function(context) {
-        // If you need to make custom adjustments do it here
-        // this will be passed in anytime the scene is rendered
+    var getModule = function() {
+        return {
+            scene: scene,
+            loop: [menu.loop],
+            destroy: true
+        };
     }
-
-
-    return {
-        scene: scene,
-        render: render,
-        destroy: true
-    };
 
 })(G);
