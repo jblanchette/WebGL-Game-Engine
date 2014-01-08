@@ -37,6 +37,7 @@ G.initialize = function() {
 };
 
 G.loadController = function(controllerName) {
+    console.log("load C:" + controllerName);
     var controller = new G.controller[controllerName+'Controller'];
     controller.init();
 
@@ -54,7 +55,6 @@ G.changeState = function(newState){
       case 0:
           G.loadController('MainMenu');
       break;
-      
       case 1:
           G.loadController('Overworld');
       break;
