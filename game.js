@@ -2,6 +2,10 @@ var G = {};
 
 G.fps = 50;
 
+G.command = {};
+G.controller = {};
+G.model = {};
+
 G.canvas = null;
 
 G.hero = null;
@@ -13,7 +17,6 @@ G.keyU = false;
 
 G.state = -1;
 
-G.menu = new Menu();
 G.overworld = null;
 G.homeplot = null;
 G.inside = null;
@@ -30,10 +33,15 @@ G.hackAttempt = function(desc,fatal){
 }
 
 G.initialize = function() {
-
-  G.changeState(0);
-
+    G.loadController('MainMenu');
 };
+
+G.loadController = function(controllerName) {
+    var controller = new G.controller[controllerName+'Controller'];
+    controller.init();
+
+    return G.cModule = controller.getModule();
+}
 
 G.changeState = function(newState){
   var ns = parseInt(newState);
@@ -107,7 +115,7 @@ G.handleKeyUp = function(e){
       //right
       G.keyR = false;
     break;
-    case 40: 
+    case 40:
       G.keyD = false;
     break;
   }
@@ -127,7 +135,7 @@ G.handleKeyDown = function(e){
       //right
       G.keyR = true;
     break;
-    case 40: 
+    case 40:
       G.keyD = true;
     break;
   }
@@ -139,7 +147,7 @@ G.canMove = function(dir){
 }
 
 G.draw = function() {
- 
+
   if(G.state == -1)
     return;
 
@@ -148,11 +156,12 @@ G.draw = function() {
 };
 
 G.update = function() {
-
-  if(G.state == -1)
-    return;
-
-  G.cModule.update();
+  if (G.cModule.loop) {
+      for (var i=0, len=G.cModule.loop.length; i<len; i++) {
+          var func = G.cModule.loop[i];
+          func(G.context); // Just for now to get the menu working agian
+      }
+  }
 
 };
 

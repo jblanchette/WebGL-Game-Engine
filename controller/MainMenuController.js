@@ -1,22 +1,14 @@
 
-G.controller.MainMenuController = (function(Game){
+G.controller.MainMenuController = function(){
 
-    var menu;
-    var scene;
-
-    var init = function() {
-        scene = new MainMenuScene();
-        menu = new MainMenu();
-
-        scene.add(MainMenu);
+    this.init = function() {
+        this.menu = new Menu();
     }
 
-    var getModule = function() {
+    this.getModule = function() {
         return {
-            scene: scene,
-            loop: [menu.loop],
+            loop: [this.menu.update.bind(this.menu)],
             destroy: true
         };
     }
-
-})(G);
+};

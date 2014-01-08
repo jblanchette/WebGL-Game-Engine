@@ -20,7 +20,7 @@ Menu.prototype.draw = function(context){
     context.clearRect(0, 0, 640, 480);
 	context.fillStyle = "black";
 	context.font = "bold 24px Verdana";
-	
+
 	for(i = 0; i < this.options.length; i++){
 	 context.fillText(this.options[i],200, 100 + (i * 45));
 	}
@@ -30,11 +30,11 @@ Menu.prototype.draw = function(context){
 	}
 };
 
-Menu.prototype.update = function(){
+Menu.prototype.update = function(context){
 	// handle background animations
 
 	if(G.mouseX >= 100 && G.mouseX < 450){
-		
+
 		mIndex = parseInt((G.mouseY - 90) / 45);
 		mIndex = Math.max(mIndex,0);
 		mIndex = Math.min(mIndex,this.selectionCount);
@@ -42,6 +42,7 @@ Menu.prototype.update = function(){
 		this.curSelection = mIndex;
 	}
 
+        this.draw(context);
 };
 
 Menu.prototype.handleClick = function(){
@@ -54,6 +55,6 @@ Menu.prototype.handleClick = function(){
 		G.changeState(1);
 
 	}
-	 
+
 
 };
