@@ -1,7 +1,7 @@
 function Menu(){
 
-	this.options = ["Find Match",
-					"Training",
+   this.options = ["Find Match",
+		   "Training",
 					"Settings",
 					"Help",
 					"Exit"];
