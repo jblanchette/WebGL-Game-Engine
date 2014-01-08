@@ -23,8 +23,8 @@ G.controller.MainMenuController = function() {
     this.getModule = function() {
         return {
             update: [this.menu],
-            scene: [this.scene],
-            camera: [this.camera]
+            scene: this.scene,
+            camera: this.camera
         };
     }
 };
