@@ -14,6 +14,10 @@ G.component.MenuComponent = Class.create(G.component.BaseComponent, {
 
             material = new THREE.MeshBasicMaterial({color: 0xFFFFFF});
             textMesh = new THREE.Mesh(textGeom, material);
+            
+            textMesh.position.x = -200;
+            textMesh.position.y = 500 + (100 * i) * -1;
+            textMesh.position.z = 0;
 
             scene.add(textMesh);
         }

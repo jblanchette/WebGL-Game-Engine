@@ -22,7 +22,7 @@ G.controller.MainMenuController = function() {
         this.scene.add( pointLight );
 
         // Setup camera
-        this.camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 1500 );
+        this.camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 1500 );
 	this.camera.position.set( 0, 400, 700 );
 
         // Save event dispatcher
