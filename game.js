@@ -1,178 +1,136 @@
 var G = {};
 
+
+G.debug = true;
 G.fps = 50;
+G.state = -1;
 
 G.command = {};
+G.component = {};
 G.controller = {};
 G.model = {};
 
-G.canvas = null;
-
-G.hero = null;
-
-G.keyL = false;
-G.keyR = false;
-G.keyD = false;
-G.keyU = false;
-
-G.state = -1;
-
-G.overworld = null;
-G.homeplot = null;
-G.inside = null;
-
-G.mouseX = 0;
-G.mouseY = 0;
-
-G.hackAttempt = function(desc,fatal){
-  if(fatal){
-    alert('redirect them to hacker page');
-  }else{
-    alert("error: " + desc + " \\n from function: " + arguments.callee.caller);
-  }
-}
-
+/**
+ * Initialize the Game
+ */
 G.initialize = function() {
 
-    // Create event dispatcher alias
-    G.eventDispatcher = THREE.EventDispatcher;
+    // Create renderer
+    G.renderer = new THREE.WebGLRenderer();
+    G.renderer.setSize(window.innerWidth - 50, window.innerHeight - 50);
+    document.getElementById('game').appendChild(G.renderer.domElement);
 
-    G.changeState(0);
+    // Create event dispatcher alias
+    G.eventDispatcher = new THREE.EventDispatcher();
+
+    // Start game main menu
+    G.loadController('MainMenu');
 };
 
+/**
+ * Load a Controller
+ */
 G.loadController = function(controllerName) {
-    console.log("load C:" + controllerName);
-    var controller = new G.controller[controllerName+'Controller'];
+
+    if (G.debug) {
+        console.log("Loading Controller: " + controllerName);
+    }
+
+    var controller = new G.controller[controllerName + 'Controller'];
 
     // Init controller with event dispatcher
     controller.init(G.eventDispatcher);
 
-    return G.cModule = controller.getModule();
+    // Set current Module
+    G.cModule = controller.getModule();
+
+    // Setup the components
+    if (G.cModule.components) {
+        G.cModule.components.each(function(component){
+            component.buildScene(G.cModule.scene);
+        });
+    }
 }
 
-G.changeState = function(newState){
-  var ns = parseInt(newState);
-
-  if(ns < 0 || ns > 3){
-    G.hackAttempt("setState",false);
-  }
-
-  switch(ns){
-      case 0:
-          G.loadController('MainMenu');
-      break;
-      case 1:
-          G.loadController('Overworld');
-      break;
-      case 2:
-      break;
-      case 3:
-      break;
-  }
-
-  console.log("Changing state: " + ns);
-
-  this.state = ns;
-};
-
-G.setupIO = function(){
-  // Get the elements
-  G.canvas = document.getElementById("jgame");
-  G.context = document.getElementById("jgame").getContext("2d");
-
-  // assign the event listeners
-  G.canvas.addEventListener('keydown',   G.handleKeyDown,false);
-  G.canvas.addEventListener('keyup',     G.handleKeyUp,  false);
-  G.canvas.addEventListener('mousemove', G.handleMouseMove, false);
-  G.canvas.addEventListener('click',     G.handleMouseClick,false);
-};
-
-G.handleMouseClick = function(e){
-  if(G.state == -1)
-    return;
-
-  G.cModule.handleClick();
-
-};
-
-G.handleMouseMove = function(e){
-  r = G.canvas.getBoundingClientRect();
-  G.mouseX = (e.clientX - r.left);
-  G.mouseY = (e.clientY - r.top);
-};
-
-G.handleKeyUp = function(e){
-  switch(e.keyCode){
-    case 37:
-      //left
-      G.keyL = false;
-    break;
-    case 38:
-      //up
-      G.keyU = false;
-    break;
-    case 39:
-      //right
-      G.keyR = false;
-    break;
-    case 40:
-      G.keyD = false;
-    break;
-  }
-};
-
-G.handleKeyDown = function(e){
-  switch(e.keyCode){
-    case 37:
-      //left
-      G.keyL = true;
-    break;
-    case 38:
-      //up
-      G.keyU = true;
-    break;
-    case 39:
-      //right
-      G.keyR = true;
-    break;
-    case 40:
-      G.keyD = true;
-    break;
-  }
-};
-
-G.canMove = function(dir){
-
-
-}
-
-G.draw = function() {
-
-  if(G.state == -1)
-    return;
-
-  // Change to
-  // G.renderer.render(G.cModule.scene, G.cModule.camera);
-
-  G.cModule.draw(this.context);
-
-};
-
+/**
+ * Main Update Loop
+ */
 G.update = function() {
 
-    if(G.state == -1)
-     return;
-
-    var updateable = g.cModule.update;
+    var updateable = G.cModule.update;
 
     if (!updateable) {
         return;
     }
 
-    for (var i=0; i<updateable.length; i++) {
-        updateable[i].update();
-    }
+    // Call anything that needs to be updated
+    updateable.each(function(obj){
+        obj.update();
+    });
+};
+
+/**
+ * Draw
+ */
+G.draw = function() {
+    G.renderer.render(G.cModule.scene, G.cModule.camera);
+};
+
+G.handleMouseClick = function(e) {
+    if (G.state == -1)
+        return;
+
+    G.cModule.handleClick();
 
 };
 
+G.handleMouseMove = function(e) {
+    r = G.canvas.getBoundingClientRect();
+    G.mouseX = (e.clientX - r.left);
+    G.mouseY = (e.clientY - r.top);
+};
 
+G.handleKeyUp = function(e) {
+    switch (e.keyCode) {
+        case 37:
+            //left
+            G.keyL = false;
+            break;
+        case 38:
+            //up
+            G.keyU = false;
+            break;
+        case 39:
+            //right
+            G.keyR = false;
+            break;
+        case 40:
+            G.keyD = false;
+            break;
+    }
+};
+
+G.handleKeyDown = function(e) {
+    switch (e.keyCode) {
+        case 37:
+            //left
+            G.keyL = true;
+            break;
+        case 38:
+            //up
+            G.keyU = true;
+            break;
+        case 39:
+            //right
+            G.keyR = true;
+            break;
+        case 40:
+            G.keyD = true;
+            break;
+    }
+};
+
+G.canMove = function(dir) {
+
+
+}
