@@ -33,7 +33,7 @@ G.hackAttempt = function(desc,fatal){
 }
 
 G.initialize = function() {
-    G.loadController('MainMenu');
+    G.changeState(0);
 };
 
 G.loadController = function(controllerName) {
@@ -49,30 +49,24 @@ G.changeState = function(newState){
   if(ns < 0 || ns > 3){
     G.hackAttempt("setState",false);
   }
+  
+  switch(ns){
+      case 0:
+          G.loadController('MainMenu');
+      break;
+      
+      case 1:
+          G.loadController('Overworld');
+      break;
+      case 2:
+      break;
+      case 3:
+      break;
+  }
 
   console.log("Changing state: " + ns);
 
-  switch(ns){
-    case 0:
-      G.cModule = G.menu;
-    break;
-    case 1:
-      G.cModule = G.initalizeOverworld();
-    break;
-    case 2:
-
-    break;
-    case 3:
-
-    break;
-  }
-
   this.state = ns;
-};
-
-G.initalizeOverworld = function(){
-  var o = new Overworld();
-  return o;
 };
 
 G.setupIO = function(){
@@ -156,12 +150,11 @@ G.draw = function() {
 };
 
 G.update = function() {
-  if (G.cModule.loop) {
-      for (var i=0, len=G.cModule.loop.length; i<len; i++) {
-          var func = G.cModule.loop[i];
-          func(G.context); // Just for now to get the menu working agian
-      }
-  }
+    
+    if(G.state == -1)
+     return;
+
+    G.cModule.update();
 
 };
 

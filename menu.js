@@ -30,7 +30,7 @@ Menu.prototype.draw = function(context){
 	}
 };
 
-Menu.prototype.update = function(context){
+Menu.prototype.update = function(){
 	// handle background animations
 
 	if(G.mouseX >= 100 && G.mouseX < 450){
@@ -41,8 +41,6 @@ Menu.prototype.update = function(context){
 
 		this.curSelection = mIndex;
 	}
-
-        this.draw(context);
 };
 
 Menu.prototype.handleClick = function(){

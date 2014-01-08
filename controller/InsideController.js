@@ -1,8 +1,7 @@
-
-G.controller.MainMenuController = function(){
+G.controller.InsideController = function(){
 
     this.init = function() {
-        this.module = new Menu();
+        this.module = new Inside();
     }
 
     this.getModule = function() {

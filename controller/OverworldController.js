@@ -1,8 +1,7 @@
-
-G.controller.MainMenuController = function(){
+G.controller.OverworldController = function(){
 
     this.init = function() {
-        this.module = new Menu();
+        this.module = new Overworld();
     }
 
     this.getModule = function() {

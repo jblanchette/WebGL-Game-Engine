@@ -1,11 +1,11 @@
-
-G.controller.MainMenuController = function(){
+G.controller.HomePlotController = function(){
 
     this.init = function() {
-        this.module = new Menu();
+        this.module = new HomePlot();
     }
 
     this.getModule = function() {
         return this.module;
     }
 };
+
