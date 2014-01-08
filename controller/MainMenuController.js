@@ -1,24 +1,30 @@
 
-G.controller.MainMenuController = function(){
+G.controller.MainMenuController = function() {
 
-    this.init = function() {
-        this.module = new Menu();
+    this.init = function(eventDispatcher) {
+        this.menu = new Menu();
         this.scene = new THREE.Scene();
-        
+        this.camera = new THREE.Camera();
+        this.eventDispatcher = eventDispatcher;
+
+        /*
+         * Maybe register an event?
+         *
+         * this.eventDispatcher.addEventListener('click', this.menu.handleClick())
+         */
+
         this.setupScene();
     }
-    this.setupScene = function(){
-       var material, textGeom, textMesh;
-       for(var i = 0; i<this.menu.options.length; i++){
-         material = new THREE.BasicMaterial({color: 0xFFFFFF});
-         textGeom = new THREE.TextGeometry(this.menu.options[i],
-                                           {font:'verdana'});
-         textMesh = new THREE.Mesh(textGeom, material);
-         
-         this.scene.add( textMesh );
-       }
+
+    this.setupScene = function() {
+        this.menu.buildScene(this.scene);
     }
+
     this.getModule = function() {
-        return this.module;
+        return {
+            update: [this.menu],
+            scene: [this.scene],
+            camera: [this.camera]
+        };
     }
 };

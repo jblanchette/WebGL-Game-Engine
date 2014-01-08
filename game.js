@@ -33,13 +33,19 @@ G.hackAttempt = function(desc,fatal){
 }
 
 G.initialize = function() {
+
+    // Create event dispatcher alias
+    G.eventDispatcher = THREE.EventDispatcher;
+
     G.changeState(0);
 };
 
 G.loadController = function(controllerName) {
     console.log("load C:" + controllerName);
     var controller = new G.controller[controllerName+'Controller'];
-    controller.init();
+
+    // Init controller with event dispatcher
+    controller.init(G.eventDispatcher);
 
     return G.cModule = controller.getModule();
 }
@@ -50,7 +56,7 @@ G.changeState = function(newState){
   if(ns < 0 || ns > 3){
     G.hackAttempt("setState",false);
   }
-  
+
   switch(ns){
       case 0:
           G.loadController('MainMenu');
@@ -145,16 +151,27 @@ G.draw = function() {
   if(G.state == -1)
     return;
 
+  // Change to
+  // G.renderer.render(G.cModule.scene, G.cModule.camera);
+
   G.cModule.draw(this.context);
 
 };
 
 G.update = function() {
-    
+
     if(G.state == -1)
      return;
 
-    G.cModule.update();
+    var updateable = g.cModule.update;
+
+    if (!updateable) {
+        return;
+    }
+
+    for (var i=0; i<updateable.length; i++) {
+        updateable[i].update();
+    }
 
 };
 
