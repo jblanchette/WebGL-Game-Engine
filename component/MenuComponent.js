@@ -2,11 +2,11 @@ G.component.MenuComponent = Class.create(G.component.Component, {
 
     initialize: function(options) {
         this.options = options || [];
-        this.menuItems = [];
+        this.hitboxes = [];
     },
 
     buildScene: function(scene) {
-        var material, textGeom, textMesh;
+        var material, textGeom, textMesh, hitboxMaterial, hitboxMesh;
 
         for (var i = 0; i < this.options.length; i++) {
             textGeom = new THREE.TextGeometry(this.options[i], {
@@ -18,13 +18,21 @@ G.component.MenuComponent = Class.create(G.component.Component, {
             textMesh = new THREE.Mesh(textGeom, material);
 
             textMesh.position.x = -200;
-            textMesh.position.y = 50 + (100 * i) * -1;
+            textMesh.position.y = 450 + (100 * i) * -1;
             textMesh.position.z = 0;
 
+            hitboxMaterial = new THREE.MeshNormalMaterial( { transparent: true, opacity: 0 } );
+            hitboxMesh = new THREE.Mesh(new THREE.CubeGeometry(600,200,200),hitboxMaterial);
+            hitboxMesh.position.x = textMesh.position.x+200;
+            hitboxMesh.position.y = textMesh.position.y+50;
+            hitboxMesh.position.z = textMesh.position.z;
+            
+            hitboxMesh.parentMesh = textMesh;
+            this.hitboxes.push(hitboxMesh);
+            
+            scene.add(hitboxMesh);
             scene.add(textMesh);
 
-            // Record for ray tracing
-            this.menuItems.push(textMesh);
         }
 
         // Add event listener
@@ -46,12 +54,12 @@ G.component.MenuComponent = Class.create(G.component.Component, {
     },
 
     handleClick: function(event) {
-        var intersects = G.util.getCoordIntersect(event.clientX, event.clientY, this.menuItems);
+        var intersects = G.util.getCoordIntersect(event.clientX, event.clientY, this.hitboxes);
 
         if (intersects.length > 0) {
             G.log('Clicked menu item:', intersects[0]);
 
-            intersects[0].object.material.color.setHex(0xff0000);
+            intersects[0].object.parentMesh.material.color.setHex(0xff0000);
         }
     }
 });
