@@ -20,7 +20,7 @@ G.initialize = function() {
     G.projector = new THREE.Projector();
 
     // Create renderer
-    G.renderer = new THREE.WebGLRenderer();
+    G.renderer = new THREE.WebGLRenderer({ antialias: true });
     G.renderer.setSize(1600, 900);
     document.getElementById('game').appendChild(G.renderer.domElement);
 
