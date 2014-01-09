@@ -1,7 +1,8 @@
-G.component.MenuComponent = Class.create(G.component.BaseComponent, {
+G.component.MenuComponent = Class.create(G.component.Component, {
 
     initialize: function(options) {
         this.options = options || [];
+        this.menuItems = [];
     },
 
     buildScene: function(scene) {
@@ -21,7 +22,16 @@ G.component.MenuComponent = Class.create(G.component.BaseComponent, {
             textMesh.position.z = 0;
 
             scene.add(textMesh);
+
+            // Record for ray tracing
+            this.menuItems.push(textMesh);
         }
+
+        // Add event listener
+        var _this = this;
+        G.eventDispatcher.addEventListener('click', function(e){
+            _this.handleClick(e);
+        });
     },
 
     update: function() {
@@ -36,35 +46,12 @@ G.component.MenuComponent = Class.create(G.component.BaseComponent, {
     },
 
     handleClick: function(event) {
-        if (this.curSelection != -1) {
-            if (this.curSelection != 0) {
-                alert('does not work yet taking you to overworld');
-            }
+        var intersects = G.util.getCoordIntersect(event.clientX, event.clientY, this.menuItems);
 
-            G.changeState(1);
+        if (intersects.length > 0) {
+            G.log('Clicked menu item:', intersects[0]);
 
+            intersects[0].object.material.color.setHex(0xff0000);
         }
     }
-
 });
-
-/*
-function Menu() {
-
-    this.options = [
-        "Find Match",
-        "Training",
-        "Settings",
-        "Help",
-        "Exit"
-    ];
-
-    this.selectionCount = this.options.length - 1;
-    this.curSelection = -1;
-    this.hitboxes = [];
-
-    for (i = 0; i < this.options.length; i++) {
-        this.hitboxes[i] = 100 + (i * 45);
-    }
-};*/
-

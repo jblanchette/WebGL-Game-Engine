@@ -9,11 +9,15 @@ G.command = {};
 G.component = {};
 G.controller = {};
 G.model = {};
+G.util = {};
 
 /**
  * Initialize the Game
  */
 G.initialize = function() {
+
+    // Create Projector
+    G.projector = new THREE.Projector();
 
     // Create renderer
     G.renderer = new THREE.WebGLRenderer();
@@ -40,9 +44,7 @@ G.initialize = function() {
  */
 G.loadController = function(controllerName) {
 
-    if (G.debug) {
-        console.log("Loading Controller: " + controllerName);
-    }
+    G.log("Loading Controller: " + controllerName);
 
     var controller = new G.controller[controllerName + 'Controller'];
 
@@ -50,29 +52,20 @@ G.loadController = function(controllerName) {
     controller.init(G.eventDispatcher);
 
     // Set current Module
-    G.cModule = controller.getModule();
+    G.cModule = controller;
 
     // Setup the components
-    if (G.cModule.components) {
-        G.cModule.components.each(function(component){
-            component.buildScene(G.cModule.scene);
-        });
-    }
+    G.cModule.getComponents().each(function(component){
+        component.buildScene(G.cModule.scene);
+    });
 }
 
 /**
  * Main Update Loop
  */
 G.update = function() {
-
-    var updateable = G.cModule.update;
-
-    if (!updateable) {
-        return;
-    }
-
     // Call anything that needs to be updated
-    updateable.each(function(obj){
+    G.cModule.getUpdateable().each(function(obj){
         obj.update();
     });
 };
@@ -81,7 +74,7 @@ G.update = function() {
  * Draw
  */
 G.draw = function() {
-    G.renderer.render(G.cModule.scene, G.cModule.camera);
+    G.renderer.render(G.cModule.getScene(), G.cModule.getCamera());
 };
 
 G.handleMouseClick = function(e) {
@@ -138,7 +131,8 @@ G.handleKeyDown = function(e) {
     }
 };
 
-G.canMove = function(dir) {
-
-
+G.log = function() {
+    if (G.debug) {
+        console.log(arguments);
+    }
 }

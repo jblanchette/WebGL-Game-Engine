@@ -1,4 +1,4 @@
-G.component.BaseComponent = Class.create({
+G.component.Component = Class.create({
 
     buildScene: function(scene) {
 
