@@ -26,10 +26,10 @@ G.component.MenuComponent = Class.create(G.component.Component, {
             hitboxMesh.position.x = textMesh.position.x+200;
             hitboxMesh.position.y = textMesh.position.y+50;
             hitboxMesh.position.z = textMesh.position.z;
-            
+
             hitboxMesh.parentMesh = textMesh;
             this.hitboxes.push(hitboxMesh);
-            
+
             scene.add(hitboxMesh);
             scene.add(textMesh);
 
@@ -54,7 +54,8 @@ G.component.MenuComponent = Class.create(G.component.Component, {
     },
 
     handleClick: function(event) {
-        var intersects = G.util.getCoordIntersect(event.clientX, event.clientY, this.hitboxes);
+        var coords = G.util.getEventCoords(event);
+        var intersects = G.util.getCoordIntersect(coords.x, coords.y, this.hitboxes);
 
         if (intersects.length > 0) {
             G.log('Clicked menu item:', intersects[0]);

@@ -10,3 +10,22 @@ G.util.getCoordIntersect = function(x, y, objects) {
 
     return intersects;
 }
+
+G.util.getEventCoords = function(event) {
+    var x,y;
+
+    if (event.clientX && event.clientY) {
+        x = event.clientX;
+        y = event.clientY;
+    }
+
+    if (document && document.body) {
+        x += document.body.scrollLeft;
+        y += document.body.scrollTop;
+    }
+
+    return {
+        x: x,
+        y: y
+    };
+}
