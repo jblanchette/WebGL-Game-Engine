@@ -17,11 +17,19 @@ G.initialize = function() {
 
     // Create renderer
     G.renderer = new THREE.WebGLRenderer();
-    G.renderer.setSize(window.innerWidth - 50, window.innerHeight - 50);
+    G.renderer.setSize(1600, 900);
     document.getElementById('game').appendChild(G.renderer.domElement);
 
     // Create event dispatcher alias
     G.eventDispatcher = new THREE.EventDispatcher();
+
+    var dispatchEvent = G.eventDispatcher.dispatchEvent.bind(G.eventDispatcher);
+
+    G.renderer.domElement.addEventListener('keydown',   dispatchEvent, false);
+    G.renderer.domElement.addEventListener('keyup',     dispatchEvent, false);
+    G.renderer.domElement.addEventListener('mousemove', dispatchEvent, false);
+    G.renderer.domElement.addEventListener('click',     dispatchEvent, false);
+
 
     // Start game main menu
     G.loadController('MainMenu');

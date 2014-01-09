@@ -27,18 +27,21 @@ G.controller.MainMenuController = function() {
 
         // Save event dispatcher
         this.eventDispatcher = eventDispatcher;
+        this.eventDispatcher.addEventListener('click', function(){ alert('clicked!'); });
+    }
 
-        /*
-         * Maybe register an event?
-         *
-         * this.eventDispatcher.addEventListener('click', this.menu.handleClick())
-         */
+    this.angle = 0;
+    this.update = function() {
+        this.camera.position.x = (Math.sin(this.angle)*150);
+        this.camera.position.y = (Math.cos(this.angle)*150);
+        this.camera.lookAt(new THREE.Vector3(0,0,0));
+        this.angle+=.1;
     }
 
     this.getModule = function() {
         return {
             components: [this.menu],
-            update: [this.menu],
+            update: [this.menu, this],
             scene: this.scene,
             camera: this.camera
         };
