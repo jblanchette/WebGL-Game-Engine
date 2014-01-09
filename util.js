@@ -12,7 +12,8 @@ G.util.getCoordIntersect = function(x, y, objects) {
 }
 
 G.util.getEventCoords = function(event) {
-    var x,y;
+  /*var x,y;
+
 
     if (event.clientX && event.clientY) {
         x = event.clientX;
@@ -27,5 +28,11 @@ G.util.getEventCoords = function(event) {
     return {
         x: x,
         y: y
-    };
+    };*/
+    
+    var rect = G.renderer.domElement.getBoundingClientRect();
+        return {
+          x: event.clientX - rect.left,
+          y: event.clientY - rect.top
+        };
 }

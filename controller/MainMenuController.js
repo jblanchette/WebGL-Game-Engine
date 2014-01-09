@@ -19,7 +19,7 @@ G.controller.MainMenuController = Class.create(G.controller.Controller, {
 
         // Setup camera
         this.camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 1500 );
-	this.camera.position.set( 0, 400, 700 );
+	this.camera.position.set( 0, 0, 700 );
         this.addUpdate(this);
     },
 
