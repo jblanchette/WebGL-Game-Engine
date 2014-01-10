@@ -15,12 +15,16 @@ G.controller.MainMenuController = Class.create(G.controller.Controller, {
             'Noobs Only'
         ]);
 
-        var dome = new THREE.SphereGeometry(1000, 20, 20);
-        var domeMaterial = new THREE.SpriteMaterial({
-            map: G.textures.space,
+        G.textures.space.wrapS = G.textures.space.wrapT = THREE.RepeatWrapping;
+
+        var dome = new THREE.SphereGeometry(1000, 100, 100);
+        var domeMaterial = new THREE.MeshPhongMaterial({
+            color: 0xffffff,
             side: THREE.BackSide,
+            map: G.textures.space
         });
-        var domeMesh = new THREE.Mesh(dome, G.textures.space);
+
+        var domeMesh = new THREE.Mesh(dome, domeMaterial);
         this.scene.add(domeMesh);
 
         // Add Menu component with update
@@ -28,10 +32,6 @@ G.controller.MainMenuController = Class.create(G.controller.Controller, {
 
         // Setup Scene
         //this.scene.fog = new THREE.Fog( 0x000000, -100, 2000 );
-
-        var dirLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
-        dirLight.position.set(0,0,1).normalize();
-        this.scene.add(dirLight);
 
         var pointLight = new THREE.PointLight( 0xffffff, 20.5 );
         pointLight.position.set( 0, 0, 800 );

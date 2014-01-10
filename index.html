@@ -46,8 +46,6 @@
 
         <script type="text/javascript">
 
-            G.initialize();
-
             G.run = (function() {
                 var loops = 0, skipTicks = 1000 / G.fps,
                         maxFrameSkip = 10,
@@ -97,6 +95,7 @@
             G.textures.space = THREE.ImageUtils.loadTexture('./textures/space.jpg');
 
             window.onload = function() {
+                G.initialize();
                 window.onEachFrame(G.run);
             }
         </script>
