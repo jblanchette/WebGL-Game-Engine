@@ -10,7 +10,7 @@ G.component = {};
 G.controller = {};
 G.model = {};
 G.util = {};
-g.textures = {};
+G.textures = {};
 
 /**
  * Initialize the Game
