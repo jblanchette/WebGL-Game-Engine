@@ -14,11 +14,27 @@ G.controller.MainMenuController = Class.create(G.controller.Controller, {
             'Quit'
         ]);
 
-        // Add Menu Component with updating ability
+        var dome = new THREE.SphereGeometry(1000, 20, 20);
+        var domeMaterial = new THREE.MeshBasicMaterial({color: 0xff0000, side: THREE.DoubleSide});
+        var domeMesh = new THREE.Mesh(dome, domeMaterial);
+        this.scene.add(domeMesh);
+
+        // Add Menu component with update
         this.addComponent(this.menu, true);
 
+        // Setup Scene
+        this.scene.fog = new THREE.Fog( 0x000000, -100, 2000 );
+
+        var dirLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
+        dirLight.position.set(0,0,1).normalize();
+        this.scene.add(dirLight);
+
+        var pointLight = new THREE.PointLight( 0xffffff, 5.5 );
+        pointLight.position.set( 0, 0, 500 );
+        this.scene.add( pointLight );
+
         // Setup camera
-        this.camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 1500 );
+        this.camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 2000 );
 	this.camera.position.set( 0, 0, 700 );
         this.addUpdate(this);
     },
