@@ -24,9 +24,9 @@ G.controller.MainMenuController = Class.create(G.controller.Controller, {
     },
 
     update: function() {
-        /*this.camera.position.x = (Math.sin(this.angle)*150);
+        this.camera.position.x = (Math.sin(this.angle)*150);
         this.camera.position.y = (Math.cos(this.angle)*150);
         this.camera.lookAt(new THREE.Vector3(0,0,0));
-        this.angle+=.1;*/
+        this.angle+=.01;
     }
 });

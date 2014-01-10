@@ -22,7 +22,7 @@ G.component.MenuComponent = Class.create(G.component.Component, {
             textMesh.position.y = 100 + (100 * i) * -1;
             textMesh.position.z = 0;
 
-            hitboxMaterial = new THREE.MeshNormalMaterial( { transparent: true, opacity: 0.3 } );
+            hitboxMaterial = new THREE.MeshNormalMaterial( { transparent: true, opacity: 0 } );
             hitboxMesh = new THREE.Mesh(new THREE.CubeGeometry(420,100,200),hitboxMaterial);
             hitboxMesh.position.x = textMesh.position.x+210;
             hitboxMesh.position.y = textMesh.position.y+50;
@@ -35,26 +35,26 @@ G.component.MenuComponent = Class.create(G.component.Component, {
             scene.add(textMesh);
 
         }
-        
+
         var pMaterial, pMesh, pGeom;
 
         for(var c = 0; c < 25; c++){
          pMaterial = new THREE.MeshBasicMaterial({color: 0x1100FF});
          pGeom = new THREE.SphereGeometry();
          pGeom.dynamic = true;
-         
+
          pMesh = new THREE.Mesh(pGeom, pMaterial);
          pMesh.position.x = Math.random() * 500 * ((Math.random() < 0.5) ? -1 : 1);
          pMesh.position.y = Math.random() * 300 * ((Math.random() < 0.5) ? -1 : 1);
          pMesh.position.z = -55;
-         
+
          pMesh.xVel = 3+(Math.random() * 8) * ((Math.random() < 0.5) ? -1 : 1);
          pMesh.yVel = 3+(Math.random() * 6) * ((Math.random() < 0.5) ? -1 : 1);
-         
+
          this.particles.push(pMesh);
          scene.add(pMesh);
         }
-        
+
         // Add event listener
         var _this = this;
         G.eventDispatcher.addEventListener('click', function(e){
@@ -71,26 +71,26 @@ G.component.MenuComponent = Class.create(G.component.Component, {
 
             this.curSelection = mIndex;
         }
-        
+
         var p;
         var c;
-        
+
         for(var i = 0 ; i < this.particles.length; i++){
-            
+
             p = this.particles[i];
-             
+
             if((p.position.x) >= 1500 || p.position.x <= -1500){
                 p.xVel *= -1;
             }
-            
+
             if((p.position.y) >= 700 || p.position.y <= -700){
-                p.yVel *= -1;             
+                p.yVel *= -1;
             }
-            
-           
+
+
             p.position.x += p.xVel;
             p.position.y += p.yVel;
-            
+
 
         }
     },
