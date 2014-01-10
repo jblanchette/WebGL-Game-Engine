@@ -29,12 +29,12 @@ G.controller.MainMenuController = Class.create(G.controller.Controller, {
         dirLight.position.set(0,0,1).normalize();
         this.scene.add(dirLight);
 
-        var pointLight = new THREE.PointLight( 0xffffff, 5.5 );
-        pointLight.position.set( 0, 0, 500 );
+        var pointLight = new THREE.PointLight( 0xffffff, 20.5 );
+        pointLight.position.set( 0, 0, 800 );
         this.scene.add( pointLight );
 
         // Setup camera
-        this.camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 2000 );
+        this.camera = new THREE.PerspectiveCamera( 90, 1600 / 900, 1, 2000 );
 	this.camera.position.set( 0, 0, 700 );
         this.addUpdate(this);
     },
