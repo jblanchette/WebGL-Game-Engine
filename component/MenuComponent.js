@@ -16,7 +16,7 @@ G.component.MenuComponent = Class.create(G.component.Component, {
                 height: 5
             });
 
-            material = new THREE.MeshNormalMaterial({color: 0x000000});
+            material = new THREE.MeshPhongMaterial({color: 0x000000});
             textMesh = new THREE.Mesh(textGeom, material);
 
             textMesh.position.x = -200;
@@ -40,14 +40,14 @@ G.component.MenuComponent = Class.create(G.component.Component, {
         var pMaterial, pMesh, pGeom;
 
         for (var c = 0; c < 25; c++) {
-            pMaterial = new THREE.MeshNormalMaterial({color: 0x110000});
+            pMaterial = new THREE.MeshPhongMaterial({transparent: true, opacity: .8, color: 0x110000});
             pGeom = new THREE.SphereGeometry(20+Math.random()*30, 50, 50);
             pGeom.dynamic = true;
 
             pMesh = new THREE.Mesh(pGeom, pMaterial);
             pMesh.position.x = Math.random() * 500 * ((Math.random() < 0.5) ? -1 : 1);
             pMesh.position.y = Math.random() * 300 * ((Math.random() < 0.5) ? -1 : 1);
-            pMesh.position.z = -55;
+            pMesh.position.z = - Math.random() * 600 - 50;
 
             pMesh.xVel = 3 + (Math.random() * 8) * ((Math.random() < 0.5) ? -1 : 1);
             pMesh.yVel = 3 + (Math.random() * 6) * ((Math.random() < 0.5) ? -1 : 1);
@@ -95,7 +95,7 @@ G.component.MenuComponent = Class.create(G.component.Component, {
 
         }
     },
-    
+
     handleClick: function(event) {
         var coords = G.util.getEventCoords(event);
         var intersects = G.util.getCoordIntersect(coords.x, coords.y, this.hitboxes);
