@@ -11,11 +11,16 @@ G.controller.MainMenuController = Class.create(G.controller.Controller, {
             'Play',
             'Continue',
             'Settings',
-            'Quit'
+            'Quit',
+            'Noobs Only'
         ]);
 
         var dome = new THREE.SphereGeometry(1000, 20, 20);
-        var domeMaterial = new THREE.MeshBasicMaterial({color: 0xff0000, side: THREE.DoubleSide});
+        var domeMaterial = new THREE.MeshPhongMaterial({
+            color: 0x000000,
+            map: THREE.ImageUtils.loadTexture('./textures/space.jpg'),
+            side: THREE.DoubleSide,
+        });
         var domeMesh = new THREE.Mesh(dome, domeMaterial);
         this.scene.add(domeMesh);
 
