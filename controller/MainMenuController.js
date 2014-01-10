@@ -16,11 +16,11 @@ G.controller.MainMenuController = Class.create(G.controller.Controller, {
         ]);
 
         var dome = new THREE.SphereGeometry(1000, 20, 20);
-        var domeMaterial = new THREE.ShaderMaterial({
+        var domeMaterial = new THREE.SpriteMaterial({
             map: G.textures.space,
             side: THREE.BackSide,
         });
-        var domeMesh = new THREE.Mesh(dome, domeMaterial);
+        var domeMesh = new THREE.Mesh(dome, G.textures.space);
         this.scene.add(domeMesh);
 
         // Add Menu component with update
