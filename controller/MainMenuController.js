@@ -16,8 +16,7 @@ G.controller.MainMenuController = Class.create(G.controller.Controller, {
         ]);
 
         var dome = new THREE.SphereGeometry(1000, 20, 20);
-        var domeMaterial = new THREE.MeshPhongMaterial({
-            color: 0x000000,
+        var domeMaterial = new THREE.MeshLambertMaterial({
             map: G.textures.space,
             side: THREE.DoubleSide,
         });
