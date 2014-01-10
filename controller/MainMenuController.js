@@ -17,7 +17,7 @@ G.controller.MainMenuController = Class.create(G.controller.Controller, {
 
         G.textures.space.wrapS = G.textures.space.wrapT = THREE.RepeatWrapping;
 
-        var dome = new THREE.SphereGeometry(1000, 100, 100);
+        var dome = new THREE.SphereGeometry(1500, 100, 100);
         var domeMaterial = new THREE.MeshPhongMaterial({
             color: 0x000000,
             side: THREE.BackSide,
@@ -30,15 +30,11 @@ G.controller.MainMenuController = Class.create(G.controller.Controller, {
         // Add Menu component with update
         this.addComponent(this.menu, true);
 
-        // Setup Scene
-        //this.scene.fog = new THREE.Fog( 0x000000, -100, 2000 );
-
-        var pointLight = new THREE.PointLight( 0xffffff, 20.5 );
-        pointLight.position.set( 0, 0, 800 );
-        this.scene.add( pointLight );
+        // Setup lights
+        this.scene.add(new THREE.AmbientLight(0xeef0ff));
 
         // Setup camera
-        this.camera = new THREE.PerspectiveCamera( 90, 1600 / 900, 1, 2000 );
+        this.camera = new THREE.PerspectiveCamera( 90, 1600 / 900, 1, 3000 );
 	this.camera.position.set( 0, 0, 700 );
         this.addUpdate(this);
     },
