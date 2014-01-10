@@ -16,9 +16,9 @@ G.controller.MainMenuController = Class.create(G.controller.Controller, {
         ]);
 
         var dome = new THREE.SphereGeometry(1000, 20, 20);
-        var domeMaterial = new THREE.MeshLambertMaterial({
+        var domeMaterial = new THREE.ShaderMaterial({
             map: G.textures.space,
-            side: THREE.DoubleSide,
+            side: THREE.BackSide,
         });
         var domeMesh = new THREE.Mesh(dome, domeMaterial);
         this.scene.add(domeMesh);
