@@ -18,7 +18,7 @@ G.controller.MainMenuController = Class.create(G.controller.Controller, {
         var dome = new THREE.SphereGeometry(1000, 20, 20);
         var domeMaterial = new THREE.MeshPhongMaterial({
             color: 0x000000,
-            map: THREE.ImageUtils.loadTexture('./textures/space.jpg'),
+            map: G.textures.space,
             side: THREE.DoubleSide,
         });
         var domeMesh = new THREE.Mesh(dome, domeMaterial);
@@ -28,7 +28,7 @@ G.controller.MainMenuController = Class.create(G.controller.Controller, {
         this.addComponent(this.menu, true);
 
         // Setup Scene
-        this.scene.fog = new THREE.Fog( 0x000000, -100, 2000 );
+        //this.scene.fog = new THREE.Fog( 0x000000, -100, 2000 );
 
         var dirLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
         dirLight.position.set(0,0,1).normalize();

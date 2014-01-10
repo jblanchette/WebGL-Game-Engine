@@ -94,7 +94,11 @@
                 window.onEachFrame = onEachFrame;
             })();
 
-            window.onEachFrame(G.run);
+            G.textures.space = THREE.ImageUtils.loadTexture('./textures/space.jpg');
+
+            window.onload = function() {
+                window.onEachFrame(G.run);
+            }
         </script>
     </body>
 </html>
