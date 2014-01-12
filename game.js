@@ -11,6 +11,7 @@ G.controller = {};
 G.model = {};
 G.util = {};
 G.textures = {};
+G.loading = false;
 
 /**
  * Initialize the Game
@@ -45,19 +46,37 @@ G.initialize = function() {
  */
 G.loadController = function(controllerName) {
 
+    // Log Current Controller
     G.log("Loading Controller: " + controllerName);
 
+
+    // Setup promises
+    var promises = [];
+
+    // Init Controller
     var controller = new G.controller[controllerName + 'Controller'];
 
-    // Init controller with event dispatcher
-    controller.init(G.eventDispatcher);
+    // Init controller with promises
+    G.loading = true;
+    controller.init(promises);
 
     // Set current Module
     G.cModule = controller;
 
     // Setup the components
     G.cModule.getComponents().each(function(component){
-        component.buildScene(G.cModule.scene);
+        component.buildScene(G.cModule.getScene(), promises);
+    });
+
+    RSVP.all(promises).then(function(objects) {
+
+        G.log('Controller finished loading');
+        G.loading = false;
+
+    }).catch(function(error) {
+
+        console.log('Could not initiate controller: ', error);
+
     });
 }
 
@@ -65,6 +84,12 @@ G.loadController = function(controllerName) {
  * Main Update Loop
  */
 G.update = function() {
+
+    // @TODO: Call some loading screen instead?
+    if (G.loading) {
+        return;
+    }
+
     // Call anything that needs to be updated
     G.cModule.getUpdateable().each(function(obj){
         obj.update();

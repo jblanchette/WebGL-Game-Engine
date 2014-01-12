@@ -5,7 +5,10 @@
  */
 G.controller.MainMenuController = Class.create(G.controller.Controller, {
 
-    init: function() {
+    init: function(promises) {
+
+        var scene = this.getScene();
+
         this.angle = 0;
         this.menu = new G.component.MenuComponent([
             'Play',
@@ -15,17 +18,30 @@ G.controller.MainMenuController = Class.create(G.controller.Controller, {
             'Noobs Only'
         ]);
 
-        G.textures.space.wrapS = G.textures.space.wrapT = THREE.RepeatWrapping;
+        // Load Texture
+        promises.push(new RSVP.Promise(function(resolve, reject) {
 
-        var dome = new THREE.SphereGeometry(1500, 100, 100);
-        var domeMaterial = new THREE.MeshPhongMaterial({
-            color: 0x000000,
-            side: THREE.BackSide,
-            map: G.textures.space
-        });
+            THREE.ImageUtils.loadTexture('./textures/space.jpg', undefined, function(texture){
+                resolve(texture);
+            }, function() {
+                reject('Could not load space.jpg');
+            });
 
-        var domeMesh = new THREE.Mesh(dome, domeMaterial);
-        this.scene.add(domeMesh);
+        }).then(function(texture) {
+
+            texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+
+            var dome = new THREE.SphereGeometry(1500, 100, 100);
+            var domeMaterial = new THREE.MeshPhongMaterial({
+                color: 0x000000,
+                side: THREE.BackSide,
+                map: texture
+            });
+
+            var domeMesh = new THREE.Mesh(dome, domeMaterial);
+            scene.add(domeMesh);
+
+        }));
 
         // Add Menu component with update
         this.addComponent(this.menu, true);

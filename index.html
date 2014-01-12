@@ -11,6 +11,7 @@
         <!-- Vendors -->
         <script src="vendor/prototype.js"></script>
         <script src="vendor/three.min.js"></script>
+        <script src="vendor/rsvp.js"></script>
 
         <!-- Components -->
         <script src="component/Component.js" type="text/javascript"></script>
@@ -91,8 +92,6 @@
 
                 window.onEachFrame = onEachFrame;
             })();
-
-            G.textures.space = THREE.ImageUtils.loadTexture('./textures/space.jpg');
 
             window.onload = function() {
                 G.initialize();
