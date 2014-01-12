@@ -49,26 +49,22 @@ G.loadController = function(controllerName) {
     // Log Current Controller
     G.log("Loading Controller: " + controllerName);
 
-
-    // Setup promises
-    var promises = [];
-
     // Init Controller
     var controller = new G.controller[controllerName + 'Controller'];
 
     // Init controller with promises
     G.loading = true;
-    controller.init(promises);
+    controller.init();
 
     // Set current Module
     G.cModule = controller;
 
     // Setup the components
     G.cModule.getComponents().each(function(component){
-        component.buildScene(G.cModule.getScene(), promises);
+        component.buildScene(G.cModule.getScene(), controller.getPromises());
     });
 
-    RSVP.all(promises).then(function(objects) {
+    RSVP.all(controller.getPromises()).then(function(objects) {
 
         G.log('Controller finished loading');
         G.loading = false;

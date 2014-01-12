@@ -3,6 +3,7 @@ G.controller.Controller = Class.create({
     initialize: function() {
         this.updateable = [];
         this.components = [];
+        this.promises = [];
         this.scene = new THREE.Scene();
         this.camera = new THREE.Camera();
     },
@@ -25,6 +26,34 @@ G.controller.Controller = Class.create({
         if (update === true) {
             this.addUpdate(component);
         }
+    },
+
+    loadTexture: function(url, callback) {
+        this.addPromise(function(resolve, reject) {
+            THREE.ImageUtils.loadTexture(url, undefined, function(texture) {
+
+                callback(texture);
+                resolve(texture);
+            }, function(error) {
+                reject(error);
+            })
+        });
+    },
+
+    addPromise: function(callback) {
+        this.promises.push(new RSVP.Promise(callback));
+
+        return this;
+    },
+
+    setPromises: function(promises) {
+        this.promises = promises;
+
+        return this;
+    },
+
+    getPromises: function() {
+        return this.promises;
     },
 
     getScene: function() {
