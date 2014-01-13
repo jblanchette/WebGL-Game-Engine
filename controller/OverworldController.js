@@ -1,11 +1,26 @@
-G.controller.OverworldController = function(){
+/**
+ *
+ * Main Menu Controller
+ *
+ */
+G.controller.OverworldController = Class.create(G.controller.Controller, {
 
-    this.init = function() {
-        this.module = new Overworld();
-        this.scene = new THREE.Scene();
-    }
+    init: function(promises) {
 
-    this.getModule = function() {
-        return this.module;
+        this.EComp = new G.component.EnemyComponent();   
+        this.addComponent(this.EComp,true);
+        
+        var scene = this.getScene();
+        // Setup lights
+        this.scene.add(new THREE.AmbientLight(0xeef0ff));
+
+        // Setup camera
+        this.camera = new THREE.PerspectiveCamera( 90, 1600 / 900, 1, 3000 );
+        this.camera.position.set( 0, 0, 700 );
+        this.addUpdate(this);
+    },
+
+    update: function() {
+        
     }
-};
+});

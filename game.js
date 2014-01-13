@@ -49,11 +49,16 @@ G.loadController = function(controllerName) {
     // Log Current Controller
     G.log("Loading Controller: " + controllerName);
 
+    var old = G.cModule;
+    
     // Init Controller
     var controller = new G.controller[controllerName + 'Controller'];
 
     // Init controller with promises
     G.loading = true;
+    
+    G.eventDispatcher._listeners = [];
+
     controller.init();
 
     // Set current Module

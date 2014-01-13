@@ -29,6 +29,7 @@ G.component.MenuComponent = Class.create(G.component.Component, {
             hitboxMesh.position.y = textMesh.position.y + 50;
             hitboxMesh.position.z = textMesh.position.z;
 
+            hitboxMesh.pID = i;
             hitboxMesh.parentMesh = textMesh;
             this.hitboxes.push(hitboxMesh);
 
@@ -96,14 +97,23 @@ G.component.MenuComponent = Class.create(G.component.Component, {
         }
     },
 
+    handleMenu: function(pID){
+      switch(pID){
+          case 0:
+              G.loadController("Overworld");
+          break;
+      }  
+    },
     handleClick: function(event) {
         var coords = G.util.getEventCoords(event);
         var intersects = G.util.getCoordIntersect(coords.x, coords.y, this.hitboxes);
+        var pID;
 
         if (intersects.length > 0) {
             G.log('Clicked menu item:', intersects[0]);
-
-            intersects[0].object.parentMesh.material.color.setHex(0xff0000);
+            pID = intersects[0].object.pID;
+            this.handleMenu(pID);
+            intersects[0].object.parentMesh.material.color.setHex(0x000000);
         }
     }
 });
