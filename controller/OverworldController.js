@@ -7,8 +7,11 @@ G.controller.OverworldController = Class.create(G.controller.Controller, {
 
     init: function(promises) {
 
-        this.EComp = new G.component.EnemyComponent();   
+        this.EComp = new G.component.EnemyComponent();
+        this.PComp = new G.component.PlayerComponent();
+        
         this.addComponent(this.EComp,true);
+        this.addComponent(this.PComp,true);
         
         var scene = this.getScene();
         // Setup lights

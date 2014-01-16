@@ -1,9 +1,8 @@
-G.component.EnemyComponent = Class.create(G.component.Component, {
+G.component.EntityComponent = Class.create(G.component.Component, {
 
     initialize: function(options) {
         this.options = options || [];
-        this.enemies = [];
-        this.particles = [];
+        this.members = [];
     },
 
     buildScene: function(scene) {

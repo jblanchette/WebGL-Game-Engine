@@ -5,7 +5,7 @@ G.model.Entity = Class.create({
             y: 0
         };
 
-        this.commandQueue = new CommandQueue();
+        this.commandQueue = new G.command.CommandQueue();
     },
 
     update: function() {

@@ -6,24 +6,26 @@
  */
 
 
-G.command.CommandQueue = function(){
-    this.queue = [];
-};
+G.component.CommandQueue = Class.create({
+    initialize: function() {
+        this.queue = [];
+    },
+    addCommand: function(command){
+        this.queue.push(command);
+    },
 
-G.command.CommandQueue.prototype.addCommand = function(command){
-    this.queue.push(command);
-}
+    nextCommand: function(){
+        this.queue.shift();
 
-G.command.CommandQueue.prototype.nextCommand = function(){
-    this.queue.shift();
+        return this.getCurrentCommand();
+    },
 
-    return this.getCurrentCommand();
-}
+    getCurrentCommand: function(){
+        if (this.queue.length === 0) {
+            return null; // new IdleCommand? or add an idlecommand?
+        }
 
-G.command.CommandQueue.prototype.getCurrentCommand = function(){
-    if (this.queue.length === 0) {
-        return null; // new IdleCommand? or add an idlecommand?
+        return this.queue[0];
     }
-
-    return this.queue[0];
-}
+});
+    
