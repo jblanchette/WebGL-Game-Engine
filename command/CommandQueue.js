@@ -6,7 +6,7 @@
  */
 
 
-G.component.CommandQueue = Class.create({
+G.command.CommandQueue = Class.create({
     initialize: function() {
         this.queue = [];
     },
