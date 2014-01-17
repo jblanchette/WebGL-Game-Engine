@@ -16,34 +16,40 @@ G.model.Entity = Class.create({
 
         this.cmd = new G.command.CommandQueue();
     },
-    
+
     addCommand: function(cmd,options){
-      this.cmd.addCommand(new G.command[cmd+'Command'](this,options));  
+        var command = new G.command[cmd+'Command'](this,options);
+        command.setAlias(cmd);
+
+        this.cmd.addCommand(command);
     },
-    
+
     setPosition: function(x,y,z){
         this.Mesh.position.x = x;
         this.Mesh.position.y = y;
         this.Mesh.position.z = z;
     },
+
     setX: function(n){
         this.Mesh.position.x = n;
     },
+
     setY: function(n){
         this.Mesh.position.y = n;
     },
+
     setZ: function(n){
         this.Mesh.position.z = n;
     },
-    
+
     getX: function(){
         return this.Mesh.position.x;
     },
-    
+
     getY: function(){
         return this.Mesh.position.y;
     },
-    
+
     getZ: function(){
         return this.Mesh.position.z;
     },

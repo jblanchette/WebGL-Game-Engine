@@ -11,9 +11,10 @@ G.command.CommandQueue = Class.create({
         this.queue = [];
     },
     addCommand: function(command){
-        if(this.queue.length == 1 && this.queue[0] instanceof G.command.IdleCommand){
+        if(this.queue.length === 1 && this.queue[0].getAlias() === 'Idle') {
             this.reset();
         }
+
         this.queue.push(command);
     },
 
@@ -22,12 +23,13 @@ G.command.CommandQueue = Class.create({
 
         return this.getCurrentCommand();
     },
+    
     reset: function(){
         //possibly has more code to it so made it a function. if not then we can just
         //put this line inside 'addResetCommand'
         this.queue = [];
     },
-    
+
     addResetCommand: function(command){
         this.reset();
         this.addCommand(command);
@@ -42,4 +44,3 @@ G.command.CommandQueue = Class.create({
         return this.queue[0];
     }
 });
-    
