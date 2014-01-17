@@ -1,6 +1,4 @@
-G.command.WalkCommand = Class.create();
-
-G.command.WalkCommand.prototype = Object.extend(new G.command.Command(), {
+G.command.WalkCommand = Class.create(G.command.Command, {
     update: function(player){
         var curX = player.getX();
 
