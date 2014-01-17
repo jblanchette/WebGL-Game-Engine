@@ -1,7 +1,14 @@
 G.command.Command = Class.create({
-    initialize: function(options) {
+    initialize: function(entity,options) {
+        this.entity = entity;
         this.options = options || [];
     },
-    update: function(entity) {
+    getEntity: function(){
+        return this.entity;
+    },
+    finish: function(){
+        
+    },
+    update: function() {
     }
 });

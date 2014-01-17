@@ -7,11 +7,13 @@
 
 
 G.command.CommandQueue = Class.create({
-    initialize: function(pObj) {
+    initialize: function() {
         this.queue = [];
-        this.parentObj = pObj;
     },
     addCommand: function(command){
+        if(this.queue.length == 1 && this.queue[0] instanceof G.command.IdleCommand){
+            this.reset();
+        }
         this.queue.push(command);
     },
 

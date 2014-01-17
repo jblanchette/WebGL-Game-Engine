@@ -17,8 +17,8 @@ G.model.Entity = Class.create({
         this.cmd = new G.command.CommandQueue();
     },
     
-    addCommand: function(cmd){
-      this.cmd.addCommand(cmd);  
+    addCommand: function(cmd,options){
+      this.cmd.addCommand(new G.command[cmd+'Command'](this,options));  
     },
     
     setPosition: function(x,y,z){
@@ -49,10 +49,12 @@ G.model.Entity = Class.create({
     },
 
     update: function() {
-        var currentCommand = this.cmd.getCurrentCommand();
+        var currentCommand = this.cmd.getCurrentCommand(this);
 
         if (currentCommand) {
             currentCommand.update(this);
+        }else{
+            this.addCommand('Idle');
         }
     }
 });

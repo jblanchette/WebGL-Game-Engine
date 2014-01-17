@@ -28,6 +28,6 @@ G.component.PlayerComponent = Class.create(G.component.Component, {
     handleClick: function(event) {
         var coords = G.util.getEventCoords(event);
         G.log("Player click: ", coords.x, coords.y);
-        this.hero.cmd.addResetCommand(new G.command.WalkCommand({x:coords.x,y:coords.y}));
+        this.hero.addCommand('Walk',{x:coords.x,y:coords.y});
     }
 });
