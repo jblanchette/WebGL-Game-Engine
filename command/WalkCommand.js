@@ -1,16 +1,11 @@
+G.command.WalkCommand = Class.create();
 
-G.command.WalkCommand = function(){
+G.command.WalkCommand.prototype = Object.extend(new G.command.Command(), {
+    update: function(player){
+        var curX = player.getX();
 
-    var destx, desty;
-
-    function initialize(options) {
-        destx = options.destx;
-        desty = options.desty;
-    }
-
-    function update(player) {
-        if (player.x < this.destx) {
-            player.x++;
+        if (curX < this.options.destx) {
+            player.setX(10);
         }
     }
-};
+});

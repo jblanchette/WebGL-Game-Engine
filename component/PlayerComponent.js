@@ -3,20 +3,13 @@ G.component.PlayerComponent = Class.create(G.component.Component, {
     initialize: function(options) {
         this.options = options || [];
         this.hero = new G.model['Player'];
+        this.heroMesh = null;
         this.units = [];
     },
 
     buildScene: function(scene) {
-        /*var pMaterial, pMesh, pGeom;
-
-            pMaterial = new THREE.MeshBasicMaterial();
-            pGeom = new THREE.CubeGeometry(200,200,200);
-            pGeom.dynamic = true;
-
-            pMesh = new THREE.Mesh(pGeom, pMaterial);
-            pMesh.position.x = 0;
-            pMesh.position.y = 0;
-            pMesh.position.z = 0;*/
+            scene.add(this.hero.Mesh);
+        
 
 
         // Add event listener
@@ -28,10 +21,13 @@ G.component.PlayerComponent = Class.create(G.component.Component, {
 
     update: function() {
 
-
+        this.hero.update();
+       
     },
 
     handleClick: function(event) {
-
+        var coords = G.util.getEventCoords(event);
+        G.log("Player click: ", coords.x, coords.y);
+        this.hero.cmd.addResetCommand(new G.command.WalkCommand({x:coords.x,y:coords.y}));
     }
 });

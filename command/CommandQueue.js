@@ -7,8 +7,9 @@
 
 
 G.command.CommandQueue = Class.create({
-    initialize: function() {
+    initialize: function(pObj) {
         this.queue = [];
+        this.parentObj = pObj;
     },
     addCommand: function(command){
         this.queue.push(command);
@@ -19,9 +20,20 @@ G.command.CommandQueue = Class.create({
 
         return this.getCurrentCommand();
     },
+    reset: function(){
+        //possibly has more code to it so made it a function. if not then we can just
+        //put this line inside 'addResetCommand'
+        this.queue = [];
+    },
+    
+    addResetCommand: function(command){
+        this.reset();
+        this.addCommand(command);
+    },
 
     getCurrentCommand: function(){
         if (this.queue.length === 0) {
+            G.log("empty cmd que");
             return null; // new IdleCommand? or add an idlecommand?
         }
 
