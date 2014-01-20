@@ -3,9 +3,9 @@ G.model.Player = Class.create(G.model.Entity, {
         $super();
         this.health = 100;
         this.mana = 100;
-        this.x = 0;
-        this.y = 0;
-        this.z = 0;
+        this.xv = 5;
+        this.yv = 5;
+        this.zv = 0;
         this.addCommand('Idle');
     }
 });

@@ -11,7 +11,7 @@ G.model.Entity = Class.create({
 
         this.Mesh = new THREE.Mesh(this.Geom, this.Material);
         this.Mesh.position.x = 0;
-        this.Mesh.position.y = 0;
+        this.Mesh.position.y = 100;
         this.Mesh.position.z = 0;
 
         this.cmd = new G.command.CommandQueue();
