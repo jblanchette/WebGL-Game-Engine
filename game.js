@@ -13,6 +13,8 @@ G.util = {};
 G.textures = {};
 G.loading = false;
 
+G.keyboard = null;
+
 /**
  * Initialize the Game
  */
@@ -30,6 +32,8 @@ G.initialize = function() {
     G.eventDispatcher = new THREE.EventDispatcher();
 
     var dispatchEvent = G.eventDispatcher.dispatchEvent.bind(G.eventDispatcher);
+
+    G.keyboard = new THREEx.KeyboardState();
 
     G.renderer.domElement.addEventListener('keydown',   dispatchEvent, false);
     G.renderer.domElement.addEventListener('keyup',     dispatchEvent, false);
@@ -50,13 +54,13 @@ G.loadController = function(controllerName) {
     G.log("Loading Controller: " + controllerName);
 
     var old = G.cModule;
-    
+
     // Init Controller
     var controller = new G.controller[controllerName + 'Controller'];
 
     // Init controller with promises
     G.loading = true;
-    
+
     G.eventDispatcher._listeners = [];
 
     controller.init();
