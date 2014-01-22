@@ -6,7 +6,6 @@ G.command.WalkCommand = Class.create(G.command.Command, {
             var playerRot = player.getRotation().y;
             this.finalPosition = this.options;
 
-            var BP = playerPos.clone().sub(this.finalPosition).normalize();
             this.fTheta = Math.PI - Math.atan2(this.finalPosition.z - playerPos.z,
             this.finalPosition.x - playerPos.x);
 
@@ -14,7 +13,6 @@ G.command.WalkCommand = Class.create(G.command.Command, {
                 G.log("Converting negative angle to positive", this.fTheta, (this.fTheta + G.twoPI));
                 this.fTheta += G.twoPI;
             }
-
             this.sDegree = THREE.Math.radToDeg(player.getRotation().y);
             this.fDegree = THREE.Math.radToDeg(this.fTheta);
 
@@ -28,17 +26,13 @@ G.command.WalkCommand = Class.create(G.command.Command, {
             this.xStep = player.movespeed * (this.finalPosition.x - playerPos.x);
             this.zStep = player.movespeed * (this.finalPosition.z - playerPos.z);
 
-            if ((playerPos.x - this.finalPosition.x) * player.getRotation().y >
-            (playerPos.y - this.finalPosition.y) * player.getRotation().x) {
-                G.log("Clockwise turn");
-                this.clockwise = true;
-            } else {
-                G.log("Anti-Clockwise turn");
+            if( (this.fDegree - this.sDegree) < (360 - this.fDegree) + this.sDegree){
+                G.log("clockwise");
                 this.clockwise = false;
+            }else{
+                G.log("anticlock");
+                this.clockwise = true;
             }
-
-
-
             player.turn(this.fTheta, this.clockwise);
 
 
