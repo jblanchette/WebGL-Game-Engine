@@ -11,11 +11,11 @@ G.component.WorldComponent = Class.create(G.component.Component, {
         var g = [];
         var row;
 
-        for(var z = 0; z < 40; z++){
+        for(var z = 0; z <= 50; z++){
             row = [];
             this.lines.push(this.makeLine(0,z*this.gridSize,(50*this.gridSize),z*this.gridSize));
 
-            for(var x = 0; x < 40; x++){
+            for(var x = 0; x <= 50; x++){
                row.push[{canPass: true,
                          rootX: (x*this.gridSize),
                          rootz: (z*this.gridSize)}];

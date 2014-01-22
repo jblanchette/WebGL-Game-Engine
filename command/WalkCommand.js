@@ -1,19 +1,18 @@
 G.command.WalkCommand = Class.create(G.command.Command, {
-    update: function(player){
+    update: function(player) {
 
         var curX = player.getX();
-        var curY = player.getY();
+        var curz = player.getZ();
 
-        if (curX < this.options.x) {
-            G.log("set to:", curX++);
-            player.setX(curX + 10);
-        }else{
-            this.finish();
-        }
+        var curMS = player.getMoveSpeed(); // current movespeed
+
+        var angle = player.getRotation().z;
+        player.setX(this.options.x);
+        player.setZ(this.options.z);
+        this.finish();
+
     },
-
-    finish: function(){
-        G.log("finished command");
+    finish: function() {
         this.getEntity().cmd.reset();
     }
 });

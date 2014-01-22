@@ -23,7 +23,7 @@ G.command.CommandQueue = Class.create({
 
         return this.getCurrentCommand();
     },
-    
+
     reset: function(){
         //possibly has more code to it so made it a function. if not then we can just
         //put this line inside 'addResetCommand'
@@ -37,7 +37,6 @@ G.command.CommandQueue = Class.create({
 
     getCurrentCommand: function(){
         if (this.queue.length === 0) {
-            G.log("empty cmd que");
             return null; // new IdleCommand? or add an idlecommand?
         }
 

@@ -3,9 +3,10 @@ G.model.Player = Class.create(G.model.Entity, {
         $super();
         this.health = 100;
         this.mana = 100;
-        this.xv = 5;
-        this.yv = 5;
-        this.zv = 0;
+        this.movespeed = 6;
         this.addCommand('Idle');
+    },
+    getMoveSpeed: function(){
+        return this.movespeed;
     }
 });
