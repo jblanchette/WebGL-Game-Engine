@@ -2,13 +2,22 @@ G.model.Entity = Class.create({
     initialize: function() {
 
         this.movespeed = 0.05;
-        this.turnrate = 0.07;
+        this.turnrate = 0.05;
 
         this.destX = null;
         this.destZ = null;
 
-        this.Material = new THREE.MeshBasicMaterial();
+        this.Material = new THREE.MeshBasicMaterial({vertexColors: THREE.FaceColors, overdraw: 0.5});
         this.Geom = new THREE.CubeGeometry(200, 200, 200);
+
+        var hex = 0xff0000;
+        this.Geom.faces[ 2 ].color.setHex(hex);
+        this.Geom.faces[ 3 ].color.setHex(hex);
+
+        var hex2 = 0x00ff00;
+        this.Geom.faces[ 0 ].color.setHex(hex2);
+        this.Geom.faces[ 1 ].color.setHex(hex2);
+
         this.Geom.dynamic = true;
 
         this.Mesh = new THREE.Mesh(this.Geom, this.Material);
@@ -77,16 +86,44 @@ G.model.Entity = Class.create({
     getMoveSpeed: function() {
         return this.movespeed;
     },
-    turn: function(finalRadians) {
+    turn: function(finalRadians,isClockwise) {
         var curAngle = this.getRotation().y;
-        var d = (finalRadians - curAngle);
-        G.log("Turn d: " + d + " final: " + finalRadians + " roty: " + curAngle);
+        var d = Math.abs(curAngle - finalRadians);
+
         if (this.turnrate > d) {
+            G.log("done turning");
             this.Mesh.rotation.y = finalRadians;
-            G.log("finish turn:", this.Mesh.rotation.y);
         } else {
-            this.getRotation().y += this.turnrate;
-            G.log("turn d:", d, " cur rot: ", this.Mesh.rotation.y);
+
+            if (isClockwise) {
+
+                this.Mesh.rotation.y -= this.turnrate;
+                //G.log("Turned clock to: ", this.Mesh.rotation.y, " Final rad: ", finalRadians);
+
+                if(this.Mesh.rotation.y < 0){
+                    G.log("unwound by pi, old:", this.Mesh.rotation.y);
+                    this.Mesh.rotation.y = (G.twoPI - Math.abs(this.Mesh.rotation.y));
+                    G.log("new:", this.Mesh.rotation.y, " d val: " , d, " final rad: ", finalRadians);
+                }
+
+            } else {
+
+                this.Mesh.rotation.y += this.turnrate;
+
+                if(this.Mesh.rotation.y > G.twoPI){
+                    G.log("unwound by pi, old:", this.Mesh.rotation.y);
+                    this.Mesh.rotation.y -= G.twoPI;
+                    G.log("new:", this.Mesh.rotation.y, " d val: " , d, " final rad: ", finalRadians);
+
+                }
+            }
+
+
+        }
+
+        if(this.Mesh.rotation.y > 2*Math.PI || this.Mesh.rotation.y < -2*Math.PI){
+            G.log("something went wrong with turn");
+            this.Mesh.rotation.y = finalRadians;
         }
     },
     update: function() {

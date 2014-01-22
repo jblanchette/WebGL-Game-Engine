@@ -29,7 +29,7 @@ G.util.getEventCoords = function(event) {
         x: x,
         y: y
     };*/
-    
+
     var rect = G.renderer.domElement.getBoundingClientRect();
         return {
           x: event.clientX - rect.left,

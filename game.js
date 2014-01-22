@@ -15,6 +15,8 @@ G.loading = false;
 
 G.keyboard = null;
 
+G.twoPI = Math.PI*2;
+
 /**
  * Initialize the Game
  */

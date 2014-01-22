@@ -2,35 +2,51 @@ G.command.WalkCommand = Class.create(G.command.Command, {
     update: function(player) {
 
         if (!this.stage) {
-            G.log("no stage set yet");
-            G.log(player.getPosition());
             var playerPos = player.getPosition();
+            var playerRot = player.getRotation().y;
             this.finalPosition = this.options;
-            /*
-            this.fDot = this.options.dot(playerPos);
-            this.lengthO = playerPos.length();
-            this.lengthF = this.options.length();
-            this.fTheta = Math.acos(this.fDot / (this.lengthO * this.lengthF));
-            */
-            var BP = playerPos.clone().sub(this.finalPosition);
-            this.fTheta = Math.atan2(BP.z,BP.x);
+
+            var BP = playerPos.clone().sub(this.finalPosition).normalize();
+            this.fTheta = Math.PI - Math.atan2(this.finalPosition.z - playerPos.z,
+            this.finalPosition.x - playerPos.x);
+
+            if (this.fTheta < 0) {
+                G.log("Converting negative angle to positive", this.fTheta, (this.fTheta + G.twoPI));
+                this.fTheta += G.twoPI;
+            }
+
+            this.sDegree = THREE.Math.radToDeg(player.getRotation().y);
+            this.fDegree = THREE.Math.radToDeg(this.fTheta);
+
+            G.log("Turning from: ",
+            this.sDegree,
+            " to ",
+            this.fDegree);
+
+            G.log("Current rad: ", player.getRotation().y, "Dest rad", this.fTheta);
 
             this.xStep = player.movespeed * (this.finalPosition.x - playerPos.x);
             this.zStep = player.movespeed * (this.finalPosition.z - playerPos.z);
 
-            player.turn(this.fTheta);
+            if ((playerPos.x - this.finalPosition.x) * player.getRotation().y >
+            (playerPos.y - this.finalPosition.y) * player.getRotation().x) {
+                G.log("Clockwise turn");
+                this.clockwise = true;
+            } else {
+                G.log("Anti-Clockwise turn");
+                this.clockwise = false;
+            }
+
+
+
+            player.turn(this.fTheta, this.clockwise);
+
 
             this.stage = 1;
         } else {
-            G.log("stage", this.stage);
-            if (this.stage == 3) {
-                this.finish();
-                return;
-            }
-
             if (this.stage == 1) {
                 if (player.getRotation().y != this.fTheta) {
-                    player.turn(this.fTheta);
+                    player.turn(this.fTheta, this.clockwise);
                 } else {
 
                     this.stepMove(player);
@@ -46,12 +62,15 @@ G.command.WalkCommand = Class.create(G.command.Command, {
         var dX = Math.abs(playerPos.x - this.finalPosition.x);
         var dZ = Math.abs(playerPos.z - this.finalPosition.z);
 
-        G.log("vals ", dX, dZ);
         if (dX < 1 &&
-            dZ < 1) {
+        dZ < 1) {
 
             player.setX(this.finalPosition.x);
             player.setZ(this.finalPosition.z);
+
+            G.log("Finished at rad: ", player.getRotation().y);
+            G.log("Finished at deg: ", THREE.Math.radToDeg(player.getRotation().y));
+            G.log("****************************************************");
 
             this.finish();
             return;
