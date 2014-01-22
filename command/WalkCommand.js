@@ -6,11 +6,12 @@ G.command.WalkCommand = Class.create(G.command.Command, {
             G.log(player.getPosition());
             var playerPos = player.getPosition();
             this.finalPosition = this.options;
+            /*
             this.fDot = this.options.dot(playerPos);
             this.lengthO = playerPos.length();
             this.lengthF = this.options.length();
             this.fTheta = Math.acos(this.fDot / (this.lengthO * this.lengthF));
-
+            */
             var BP = playerPos.clone().sub(this.finalPosition);
             this.fTheta = Math.atan2(BP.z,BP.x);
 
