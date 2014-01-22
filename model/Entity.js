@@ -91,7 +91,6 @@ G.model.Entity = Class.create({
         var d = Math.abs(curAngle - finalRadians);
 
         if (this.turnrate > d) {
-            G.log("done turning");
             this.Mesh.rotation.y = finalRadians;
         } else {
 
@@ -101,9 +100,9 @@ G.model.Entity = Class.create({
                 //G.log("Turned clock to: ", this.Mesh.rotation.y, " Final rad: ", finalRadians);
 
                 if(this.Mesh.rotation.y < 0){
-                    G.log("unwound by pi, old:", this.Mesh.rotation.y);
+
                     this.Mesh.rotation.y = (G.twoPI - Math.abs(this.Mesh.rotation.y));
-                    G.log("new:", this.Mesh.rotation.y, " d val: " , d, " final rad: ", finalRadians);
+
                 }
 
             } else {
@@ -111,9 +110,9 @@ G.model.Entity = Class.create({
                 this.Mesh.rotation.y += this.turnrate;
 
                 if(this.Mesh.rotation.y > G.twoPI){
-                    G.log("unwound by pi, old:", this.Mesh.rotation.y);
+
                     this.Mesh.rotation.y -= G.twoPI;
-                    G.log("new:", this.Mesh.rotation.y, " d val: " , d, " final rad: ", finalRadians);
+
 
                 }
             }

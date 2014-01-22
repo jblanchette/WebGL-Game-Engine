@@ -11,6 +11,18 @@ G.util.getCoordIntersect = function(x, y, objects) {
     return intersects;
 }
 
+G.util.fixRotation = function(degrees){
+    if(degrees < 0){
+     return (360 - Math.abs(degrees));
+    }
+
+    if(degrees > 360){
+      return (degrees - 360);
+    }
+
+    return degrees;
+}
+
 G.util.getEventCoords = function(event) {
   /*var x,y;
 
