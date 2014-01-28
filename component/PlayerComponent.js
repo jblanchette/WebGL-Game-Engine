@@ -9,12 +9,12 @@ G.component.PlayerComponent = Class.create(G.component.Component, {
     },
     buildScene: function(scene) {
 
-        this.groundMaterial = new THREE.MeshNormalMaterial();
+        this.groundMaterial = new THREE.MeshNormalMaterial({transparent: true, opacity: 1});
         this.groundMesh = new THREE.Mesh(new THREE.CubeGeometry(3500, 1, 3000), this.groundMaterial);
         this.groundMesh.position.x = 0;
         this.groundMesh.position.y = 0;
         this.groundMesh.position.z = 0;
-        //this.groundMesh.rotation.x = THREE.Math.degToRad(60);
+        //this.groundMesh.rotation.x = 0.5;
         scene.add(this.groundMesh);
         scene.add(this.hero.Mesh);
 
@@ -31,10 +31,10 @@ G.component.PlayerComponent = Class.create(G.component.Component, {
         this.hero.update();
 
         if (G.keyboard.pressed("left")) {
-            this.hero.getRotation().y += 0.05;
+            this.pcamera.getRotation().y += 0.05;
             G.log(this.hero.getRotation().y,THREE.Math.radToDeg(this.hero.getRotation().y) % 360);
         } else if (G.keyboard.pressed("right")) {
-            this.hero.getRotation().y -= 0.05;
+            this.pcamera.getRotation().y -= 0.05;
             G.log(this.hero.getRotation().y,THREE.Math.radToDeg(this.hero.getRotation().y) % 360);
         } else if (G.keyboard.pressed("up")) {
             this.pcamera.position.z -= this.scrollSpeed;

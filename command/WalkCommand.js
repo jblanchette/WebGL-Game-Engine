@@ -62,8 +62,12 @@ G.command.WalkCommand = Class.create(G.command.Command, {
 
             // this is how far each update the player will go in the x,z direction
             // calculated once here and stored for future use.
-            this.xStep = player.movespeed * (this.finalPosition.x - playerPos.x);
-            this.zStep = player.movespeed * (this.finalPosition.z - playerPos.z);
+
+            var vFinal = this.finalPosition.clone().sub(playerPos).normalize();
+
+
+            this.xStep = player.movespeed * vFinal.x;
+            this.zStep = player.movespeed * vFinal.z;
 
             // A = anticlockwise length
             // C = clockwise length

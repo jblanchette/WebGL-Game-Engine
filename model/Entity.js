@@ -1,14 +1,14 @@
 G.model.Entity = Class.create({
     initialize: function() {
 
-        this.movespeed = 0.05;
-        this.turnrate = 0.05;
+        this.movespeed = 2.85;
+        this.turnrate = 0.5;
 
         this.destX = null;
         this.destZ = null;
 
         this.Material = new THREE.MeshBasicMaterial({vertexColors: THREE.FaceColors, overdraw: 0.5});
-        this.Geom = new THREE.CubeGeometry(200, 200, 200);
+        this.Geom = new THREE.CubeGeometry(20, 20, 20);
 
         var hex = 0xff0000;
         this.Geom.faces[ 2 ].color.setHex(hex);
