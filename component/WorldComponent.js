@@ -1,7 +1,8 @@
 G.component.WorldComponent = Class.create(G.component.Component, {
 
-    initialize: function(options) {
-        this.options = options || [];
+    initialize: function($super,options) {
+        $super(options);
+
         this.gridSize = 50;
         this.lines = [];
     },
@@ -42,27 +43,17 @@ G.component.WorldComponent = Class.create(G.component.Component, {
 
     },
 
-    buildScene: function(scene) {
+    buildScene: function() {
 
+        var scene = this.getScene();
         this.grid = this.setupGrid();
-
 
         for(var i = 0; i < this.lines.length; i++){
           scene.add(this.lines[i]);
         }
-        // Add event listener
-        var _this = this;
-        G.eventDispatcher.addEventListener('click', function(e) {
-            _this.handleClick(e);
-        });
     },
 
     update: function() {
 
-    },
-
-    handleClick: function(event) {
-        var coords = G.util.getEventCoords(event);
-        G.log("Player click: ", coords.x, coords.y);
     }
 });

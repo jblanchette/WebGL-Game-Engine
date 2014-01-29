@@ -21,6 +21,10 @@ G.controller.Controller = Class.create({
     },
 
     addComponent: function(component, update) {
+
+        component.setScene(this.scene);
+        component.setCamera(this.camera);
+
         this.components.push(component);
 
         if (update === true) {

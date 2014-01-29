@@ -1,13 +1,15 @@
 G.component.MenuComponent = Class.create(G.component.Component, {
 
-    initialize: function(options) {
-        this.options = options || [];
+    initialize: function($super,options) {
+        $super(options);
         this.hitboxes = [];
         this.particles = [];
     },
 
-    buildScene: function(scene) {
+    buildScene: function() {
         var material, textGeom, textMesh, hitboxMaterial, hitboxMesh;
+
+        var scene = this.getScene();
 
         for (var i = 0; i < this.options.length; i++) {
             textGeom = new THREE.TextGeometry(this.options[i], {
@@ -59,9 +61,13 @@ G.component.MenuComponent = Class.create(G.component.Component, {
 
         // Add event listener
         var _this = this;
+
+        // NOTE: This component uses mouseup only because it is the menu.  Gives the user a little more control if they misclick.
+        //       In game the "mousedown" is used.
         G.eventDispatcher.addEventListener('mouseup', function(e) {
             _this.handleClick(e);
         });
+
     },
 
     update: function() {
@@ -105,7 +111,7 @@ G.component.MenuComponent = Class.create(G.component.Component, {
       }
     },
     handleClick: function(event) {
-
+        G.log("handle click menu", event);
         if(event.which && event.which != 1){
             return;
         }

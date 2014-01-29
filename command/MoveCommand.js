@@ -41,7 +41,7 @@ G.command.MoveCommand = Class.create(G.command.Command, {
 
         this.clockwise = (C <= A);
 
-        entity.turn(this.fTheta, this.clockwise);
+        G.log("Init move cmd, Dest:", this.finalPosition.x, this.finalPosition.z);
 
     },
 

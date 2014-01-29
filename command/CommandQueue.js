@@ -11,11 +11,21 @@ G.command.CommandQueue = Class.create({
         this.queue = [];
     },
     addCommand: function(command){
-        if(this.queue.length === 1 && this.queue[0].getProperty("interuptable")) {
+        G.log("Adding command", command.getAlias());
+        if(this.queue.length > 0 && this.queue[0].getProperty("interuptable")) {
             this.reset();
+            G.log("reset commands");
         }
 
         this.queue.push(command);
+    },
+
+    pushCommand: function(command){
+        // Same thing as add command except used for when you hold shift and want to push another command onto the stack
+        // Used because of the way interuptable works, this avoids the check.
+        G.log("pushing command", command);
+        this.queue.push(command);
+
     },
 
     nextCommand: function(){

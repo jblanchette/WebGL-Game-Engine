@@ -33,6 +33,12 @@ G.model.Entity = Class.create({
 
         this.cmd.addCommand(command);
     },
+    pushCommand: function(cmd, options) {
+        var command = new G.command[cmd + 'Command'](this, options);
+        command.setAlias(cmd);
+
+        this.cmd.pushCommand(command);
+    },
     getMesh: function() {
         return this.Mesh;
     },

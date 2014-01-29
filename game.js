@@ -13,9 +13,12 @@ G.util = {};
 G.textures = {};
 G.loading = false;
 
-G.keyboard = null;
-
 G.twoPI = Math.PI*2;
+
+// Global Modifiers updated by "keydown" event flags
+G.mShift = false;
+G.mAlt = false;
+G.mCtrl = false;
 
 /**
  * Initialize the Game
@@ -34,15 +37,16 @@ G.initialize = function() {
     G.eventDispatcher = new THREE.EventDispatcher();
 
     var dispatchEvent = G.eventDispatcher.dispatchEvent.bind(G.eventDispatcher);
-
-    G.keyboard = new THREEx.KeyboardState();
-
-    G.renderer.domElement.addEventListener('keydown',   dispatchEvent, false);
-    G.renderer.domElement.addEventListener('keyup',     dispatchEvent, false);
     G.renderer.domElement.addEventListener('mousemove', dispatchEvent, false);
     G.renderer.domElement.addEventListener('mouseup',   dispatchEvent, false);
+    G.renderer.domElement.addEventListener('mousedown', dispatchEvent, false);
     // Stops the context menu from firing on right click
     G.renderer.domElement.addEventListener("contextmenu", function(e){ e.preventDefault(); }, false);
+
+    // The key listeners need to be attached to the document
+    document.addEventListener('keypress',  dispatchEvent, false);
+    document.addEventListener('keydown',   dispatchEvent, false);
+    document.addEventListener('keyup',     dispatchEvent, false);
 
     // Start game main menu
     G.loadController('MainMenu');
@@ -111,13 +115,6 @@ G.draw = function() {
     G.renderer.render(G.cModule.getScene(), G.cModule.getCamera());
 };
 
-G.handleMouseClick = function(e) {
-    if (G.state == -1)
-        return;
-
-    G.cModule.handleClick();
-    e.preventDefault();
-};
 
 G.handleMouseMove = function(e) {
     r = G.canvas.getBoundingClientRect();
@@ -126,23 +123,10 @@ G.handleMouseMove = function(e) {
 };
 
 G.handleKeyUp = function(e) {
-    switch (e.keyCode) {
-        case 37:
-            //left
-            G.keyL = false;
-            break;
-        case 38:
-            //up
-            G.keyU = false;
-            break;
-        case 39:
-            //right
-            G.keyR = false;
-            break;
-        case 40:
-            G.keyD = false;
-            break;
-    }
+    if (G.state == -1)
+        return;
+
+    G.cModule.handleClick();
 };
 
 G.handleKeyDown = function(e) {
