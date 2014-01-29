@@ -25,9 +25,14 @@ G.command.CommandQueue = Class.create({
     },
 
     reset: function(){
-        //possibly has more code to it so made it a function. if not then we can just
-        //put this line inside 'addResetCommand'
+        // possibly has more code to it so made it a function. if not then we can just
+        // put this line inside 'addResetCommand'
         this.queue = [];
+    },
+
+    finish: function(){
+        // called when the current command has fully completed
+        this.nextCommand();
     },
 
     addResetCommand: function(command){

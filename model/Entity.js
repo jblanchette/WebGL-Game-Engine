@@ -28,8 +28,6 @@ G.model.Entity = Class.create({
         this.cmd = new G.command.CommandQueue();
     },
     addCommand: function(cmd, options) {
-        G.log("options:");
-        G.log(options);
         var command = new G.command[cmd + 'Command'](this, options);
         command.setAlias(cmd);
 

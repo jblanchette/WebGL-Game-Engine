@@ -20,7 +20,7 @@ G.component.PlayerComponent = Class.create(G.component.Component, {
 
         // Add event listener
         var _this = this;
-        G.eventDispatcher.addEventListener('click', function(e) {
+        G.eventDispatcher.addEventListener('mouseup', function(e) {
             _this.handleClick(e);
         });
     },
@@ -42,7 +42,8 @@ G.component.PlayerComponent = Class.create(G.component.Component, {
         }
     },
     handleClick: function(event) {
-
+       // (1 = left, 2 = middle,3 = right)
+       if(event.which && event.which == 3){
         var coords = G.util.getEventCoords(event);
 
         var intersects = G.util.getCoordIntersect(coords.x, coords.y, [this.groundMesh]);
@@ -50,9 +51,9 @@ G.component.PlayerComponent = Class.create(G.component.Component, {
 
         if (intersects.length > 0) {
             p = intersects[0].point;
-            this.hero.addCommand('Walk', p);
+            this.hero.addCommand('Move', p);
         }
-
+       }
 
     }
 });

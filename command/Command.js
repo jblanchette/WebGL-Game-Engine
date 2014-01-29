@@ -1,8 +1,6 @@
 G.command.Command = Class.create({
     initialize: function(entity,options) {
-        G.log("Rand command init");
-        G.log("entity",entity);
-        G.log("opt",options);
+
         this.alias = 'none';
         this.entity = entity;
         this.options = options || [];

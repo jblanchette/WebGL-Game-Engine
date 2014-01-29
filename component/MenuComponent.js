@@ -59,7 +59,7 @@ G.component.MenuComponent = Class.create(G.component.Component, {
 
         // Add event listener
         var _this = this;
-        G.eventDispatcher.addEventListener('click', function(e) {
+        G.eventDispatcher.addEventListener('mouseup', function(e) {
             _this.handleClick(e);
         });
     },
@@ -102,9 +102,14 @@ G.component.MenuComponent = Class.create(G.component.Component, {
           case 0:
               G.loadController("Overworld");
           break;
-      }  
+      }
     },
     handleClick: function(event) {
+
+        if(event.which && event.which != 1){
+            return;
+        }
+
         var coords = G.util.getEventCoords(event);
         var intersects = G.util.getCoordIntersect(coords.x, coords.y, this.hitboxes);
         var pID;
