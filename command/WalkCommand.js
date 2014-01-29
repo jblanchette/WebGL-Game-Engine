@@ -1,5 +1,12 @@
 G.command.WalkCommand = Class.create(G.command.Command, {
+    initialize: function(entity,options) {
+        G.log("ran walk command init");
+        G.log(options);
+        this.entity = entity;
+        this.options = options;
 
+        this.setProperties({interuptable: true});
+    },
     /*
      * Update function for walk command:
      *
@@ -45,6 +52,9 @@ G.command.WalkCommand = Class.create(G.command.Command, {
             var playerPos = player.getPosition();
             this.finalPosition = this.options;
 
+            G.log("Starting walk to " + this.finalPosition.x + "," + this.finalPosition.z);
+            G.log("Started walk from " + playerPos.x + "," + playerPos.z);
+
             this.fTheta = Math.PI - Math.atan2(this.finalPosition.z - playerPos.z,
             this.finalPosition.x - playerPos.x);
 
@@ -56,7 +66,7 @@ G.command.WalkCommand = Class.create(G.command.Command, {
             this.sDegree = THREE.Math.radToDeg(player.getRotation().y);
             this.fDegree = THREE.Math.radToDeg(this.fTheta);
 
-            G.log("Turning from: ",this.sDegree," to ",this.fDegree);
+            //G.log("Turning from: ",this.sDegree," to ",this.fDegree);
 
             //G.log("Current rad: ", player.getRotation().y, "Dest rad", this.fTheta);
 
@@ -74,8 +84,6 @@ G.command.WalkCommand = Class.create(G.command.Command, {
             // fixRotation is a helper function to force values between 0-360
             var A = G.util.fixRotation(this.fDegree - this.sDegree);
             var C = G.util.fixRotation(this.sDegree - this.fDegree);
-
-            G.log("C: ", C, " A: ", A);
 
             if(C <= A){
                G.log("Clockwise");
@@ -121,8 +129,9 @@ G.command.WalkCommand = Class.create(G.command.Command, {
             player.setX(this.finalPosition.x);
             player.setZ(this.finalPosition.z);
 
+            G.log("Finished at pos: " + player.getPosition().x + "," + player.getPosition().z);
             //G.log("Finished at rad: ", player.getRotation().y);
-            G.log("Finished at deg: ", THREE.Math.radToDeg(player.getRotation().y));
+            //G.log("Finished at deg: ", THREE.Math.radToDeg(player.getRotation().y));
             G.log("****************************************************");
 
             this.finish();

@@ -18,8 +18,6 @@ G.component.PlayerComponent = Class.create(G.component.Component, {
         scene.add(this.groundMesh);
         scene.add(this.hero.Mesh);
 
-
-
         // Add event listener
         var _this = this;
         G.eventDispatcher.addEventListener('click', function(e) {
@@ -31,11 +29,10 @@ G.component.PlayerComponent = Class.create(G.component.Component, {
         this.hero.update();
 
         if (G.keyboard.pressed("left")) {
-            this.pcamera.getRotation().y += 0.05;
-            G.log(this.hero.getRotation().y,THREE.Math.radToDeg(this.hero.getRotation().y) % 360);
+            this.pcamera.position.x -= this.scrollSpeed;
         } else if (G.keyboard.pressed("right")) {
-            this.pcamera.getRotation().y -= 0.05;
-            G.log(this.hero.getRotation().y,THREE.Math.radToDeg(this.hero.getRotation().y) % 360);
+            this.pcamera.position.x += this.scrollSpeed;
+            G.log(this.hero.getRotation().y, THREE.Math.radToDeg(this.hero.getRotation().y) % 360);
         } else if (G.keyboard.pressed("up")) {
             this.pcamera.position.z -= this.scrollSpeed;
             this.pcamera.updateProjectionMatrix();

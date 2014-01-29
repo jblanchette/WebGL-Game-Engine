@@ -11,7 +11,7 @@ G.command.CommandQueue = Class.create({
         this.queue = [];
     },
     addCommand: function(command){
-        if(this.queue.length === 1 && this.queue[0].getAlias() === 'Idle') {
+        if(this.queue.length === 1 && this.queue[0].getProperty("interuptable")) {
             this.reset();
         }
 

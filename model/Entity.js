@@ -1,7 +1,7 @@
 G.model.Entity = Class.create({
     initialize: function() {
 
-        this.movespeed = 2.85;
+        this.movespeed = 1.85;
         this.turnrate = 0.5;
 
         this.destX = null;
@@ -22,12 +22,14 @@ G.model.Entity = Class.create({
 
         this.Mesh = new THREE.Mesh(this.Geom, this.Material);
         this.Mesh.position.x = 0;
-        this.Mesh.position.y = 100;
+        this.Mesh.position.y = 10;
         this.Mesh.position.z = 0;
 
         this.cmd = new G.command.CommandQueue();
     },
     addCommand: function(cmd, options) {
+        G.log("options:");
+        G.log(options);
         var command = new G.command[cmd + 'Command'](this, options);
         command.setAlias(cmd);
 

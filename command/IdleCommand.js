@@ -1,6 +1,13 @@
 G.command.IdleCommand = Class.create(G.command.Command, {
-    update: function(player){
+    initialize: function(entity,options) {
+
+        this.entity = entity;
+        this.options = options;
+        this.setProperties({interuptable: true});
         
+    },
+    update: function(player){
+
         return;
     }
 });
