@@ -5,6 +5,8 @@ G.command.Command = Class.create({
         this.entity = entity;
         this.options = options || [];
 
+        this.started = false;
+
         this.properties = {};
 
     },
@@ -30,7 +32,9 @@ G.command.Command = Class.create({
     getEntity: function(){
         return this.entity;
     },
-
+    start: function (){
+      this.started = true;
+    },
     finish: function(){
 
     },

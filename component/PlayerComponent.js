@@ -67,12 +67,8 @@ G.component.PlayerComponent = Class.create(G.component.Component, {
         if (intersects.length > 0) {
 
             p = intersects[0].point;
-            if(G.mShift){
-                G.log("held shift adding to queue");
-                this.hero.pushCommand('Move', p);
-            }else{
-                this.hero.addCommand('Move', p);
-            }
+            this.hero.addCommand('Move',p,G.mShift);
+
         }
        }
 

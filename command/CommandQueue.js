@@ -7,25 +7,37 @@
 
 
 G.command.CommandQueue = Class.create({
-    initialize: function() {
-        this.queue = [];
-    },
-    addCommand: function(command){
-        G.log("Adding command", command.getAlias());
-        if(this.queue.length > 0 && this.queue[0].getProperty("interuptable")) {
-            this.reset();
-            G.log("reset commands");
+    initialize: function(entity,defCommandAlias) {
+        // defCmd is the default command run when there are no commands in the list
+        G.log("arg len:",arguments.length);
+        if(arguments.length == 1){
+            this.defCmd = "Idle";
+        }else{
+            this.defCmd = defCommandAlias;
         }
+        this.entity = entity;
+        this.queue = [];
 
-        this.queue.push(command);
     },
+    addCommand: function(command,shiftUsed){
+        G.log("Adding command", command.getAlias(),"qLen",this.queue.length);
 
-    pushCommand: function(command){
-        // Same thing as add command except used for when you hold shift and want to push another command onto the stack
-        // Used because of the way interuptable works, this avoids the check.
-        G.log("pushing command", command);
+            if(this.queue.length >= 1){
+
+                // The queue length should be equal to one in this case
+                if(this.queue[0].getAlias() == this.defCmd){
+                    this.reset();
+                }else{
+                    if(!shiftUsed && this.queue[0].getProperty("interuptable")){
+                        G.log("reset from 2");
+                        this.reset();
+                    }
+                }
+            }
+
+
+
         this.queue.push(command);
-
     },
 
     nextCommand: function(){
@@ -35,14 +47,16 @@ G.command.CommandQueue = Class.create({
     },
 
     reset: function(){
-        // possibly has more code to it so made it a function. if not then we can just
-        // put this line inside 'addResetCommand'
+
         this.queue = [];
+
     },
 
-    finish: function(){
-        // called when the current command has fully completed
-        this.nextCommand();
+    resetToDefault: function(){
+       var nCmd = new G.command[this.defCmd + "Command"](this.entity);
+       nCmd.setAlias(this.defCmd);
+       this.reset();
+       this.queue.push(nCmd);
     },
 
     addResetCommand: function(command){
@@ -52,7 +66,12 @@ G.command.CommandQueue = Class.create({
 
     getCurrentCommand: function(){
         if (this.queue.length === 0) {
-            return null; // new IdleCommand? or add an idlecommand?
+             this.resetToDefault();
+        }
+
+        var newCmd = this.queue[0];
+        if(!newCmd.started){
+            newCmd.start();
         }
 
         return this.queue[0];

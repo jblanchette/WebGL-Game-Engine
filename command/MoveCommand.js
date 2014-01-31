@@ -8,11 +8,18 @@ G.command.MoveCommand = Class.create(G.command.Command, {
                      targetSelector: "pointer"};
 
         this.setProperties(props);
+        this.finalPosition = this.options;
+
+        G.log("Init move cmd:", this.finalPosition.x,this.finalPosition.z);
+    },
+
+    start: function($super){
+
+        $super();
 
         var entityPos = this.entity.getPosition();
         var entityRot = this.entity.getRotation().y;
         var entityMS  = this.entity.getMoveSpeed();
-        this.finalPosition = this.options;
         this.fTheta = Math.PI - Math.atan2(this.finalPosition.z - entityPos.z,
         this.finalPosition.x - entityPos.x);
 
@@ -41,8 +48,7 @@ G.command.MoveCommand = Class.create(G.command.Command, {
 
         this.clockwise = (C <= A);
 
-        G.log("Init move cmd, Dest:", this.finalPosition.x, this.finalPosition.z);
-
+        G.log("Start move cmd, Dest:", this.finalPosition.x, this.finalPosition.z);
     },
 
     update: function(entity) {
@@ -84,6 +90,6 @@ G.command.MoveCommand = Class.create(G.command.Command, {
     },
 
     finish: function() {
-        this.getEntity().cmd.finish();
+        this.getEntity().cmd.nextCommand();
     }
 });

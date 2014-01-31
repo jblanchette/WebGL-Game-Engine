@@ -25,19 +25,13 @@ G.model.Entity = Class.create({
         this.Mesh.position.y = 10;
         this.Mesh.position.z = 0;
 
-        this.cmd = new G.command.CommandQueue();
+        this.cmd = new G.command.CommandQueue(this);
     },
-    addCommand: function(cmd, options) {
+    addCommand: function(cmd, options,usedShift) {
         var command = new G.command[cmd + 'Command'](this, options);
         command.setAlias(cmd);
 
-        this.cmd.addCommand(command);
-    },
-    pushCommand: function(cmd, options) {
-        var command = new G.command[cmd + 'Command'](this, options);
-        command.setAlias(cmd);
-
-        this.cmd.pushCommand(command);
+        this.cmd.addCommand(command,usedShift);
     },
     getMesh: function() {
         return this.Mesh;
