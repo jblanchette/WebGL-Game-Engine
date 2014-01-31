@@ -29,7 +29,6 @@ G.command.CommandQueue = Class.create({
                     this.reset();
                 }else{
                     if(!shiftUsed && this.queue[0].getProperty("interuptable")){
-                        G.log("reset from 2");
                         this.reset();
                     }
                 }
