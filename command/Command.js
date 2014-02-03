@@ -36,7 +36,7 @@ G.command.Command = Class.create({
       this.started = true;
     },
     finish: function(){
-
+        this.getEntity().cmd.nextCommand();
     },
 
     update: function() {

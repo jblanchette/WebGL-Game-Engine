@@ -59,15 +59,6 @@ G.component.MenuComponent = Class.create(G.component.Component, {
             scene.add(pMesh);
         }
 
-        // Add event listener
-        var _this = this;
-
-        // NOTE: This component uses mouseup only because it is the menu.  Gives the user a little more control if they misclick.
-        //       In game the "mousedown" is used.
-        G.eventDispatcher.addEventListener('mouseup', function(e) {
-            _this.handleClick(e);
-        });
-
     },
 
     update: function() {

@@ -1,8 +1,20 @@
 // Utilities
 
+// Replaces {#} in a given string.
+// So "Hello {0}".format("Johnson") => "Hello Johnson"
+// From stackoverflow
+String.prototype.format = function() {
+    var result = this;
+    for (var i = 0; i < arguments.length; i++) {
+        var regexp = new RegExp('\\{' + i + '\\}', 'gi');
+        result = result.replace(regexp, arguments[i]);
+    }
+    return result;
+};
+
 G.util.getCoordIntersect = function(x, y, objects) {
     var camera = G.cModule.getCamera();
-    var vector = new THREE.Vector3((x/1600)*2-1, -(y/900)*2+1, 0.5);
+    var vector = new THREE.Vector3((x / 1600) * 2 - 1, -(y / 900) * 2 + 1, 0.5);
     G.projector.unprojectVector(vector, camera);
 
     var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
@@ -10,41 +22,17 @@ G.util.getCoordIntersect = function(x, y, objects) {
 
     return intersects;
 }
-
-G.util.fixRotation = function(degrees){
-    if(degrees < 0){
-     return (360 - Math.abs(degrees));
-    }
-
-    if(degrees > 360){
-      return (degrees - 360);
-    }
-
-    return degrees;
+// This exists because JavaScript's modulo doesn't
+// behave the way we want it to for negative numbers.
+// Taken from http://javascript.about.com/od/problemsolving/a/modulobug.htm
+G.util.fixRotation = function(degrees) {
+    return ((degrees % 360) + 360) % 360;
 }
 
 G.util.getEventCoords = function(event) {
-  /*var x,y;
-
-
-    if (event.clientX && event.clientY) {
-        x = event.clientX;
-        y = event.clientY;
-    }
-
-    if (document && document.body) {
-        x += document.body.scrollLeft;
-        y += document.body.scrollTop;
-    }
-
-    return {
-        x: x,
-        y: y
-    };*/
-
     var rect = G.renderer.domElement.getBoundingClientRect();
-        return {
-          x: event.clientX - rect.left,
-          y: event.clientY - rect.top
-        };
+    return {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top
+    };
 }

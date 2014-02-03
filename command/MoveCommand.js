@@ -10,7 +10,6 @@ G.command.MoveCommand = Class.create(G.command.Command, {
         this.setProperties(props);
         this.finalPosition = this.options;
 
-        G.log("Init move cmd:", this.finalPosition.x,this.finalPosition.z);
     },
 
     start: function($super){
@@ -48,7 +47,6 @@ G.command.MoveCommand = Class.create(G.command.Command, {
 
         this.clockwise = (C <= A);
 
-        G.log("Start move cmd, Dest:", this.finalPosition.x, this.finalPosition.z);
     },
 
     update: function(entity) {
@@ -75,8 +73,6 @@ G.command.MoveCommand = Class.create(G.command.Command, {
             // would have put it further than the position, so its safe to move it
             // at least this far this frame
 
-
-
             entity.setX(this.finalPosition.x);
             entity.setZ(this.finalPosition.z);
 
@@ -87,9 +83,5 @@ G.command.MoveCommand = Class.create(G.command.Command, {
             entity.addX(this.xStep);
             entity.addZ(this.zStep);
         }
-    },
-
-    finish: function() {
-        this.getEntity().cmd.nextCommand();
     }
 });

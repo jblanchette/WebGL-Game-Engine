@@ -1,13 +1,26 @@
 G.controller.Controller = Class.create({
 
-    initialize: function() {
+    initialize: function(isDestroyable) {
+
+        this.destroyable =
+            (arguments.length === 0) ? false : isDestroyable;
+
         this.updateable = [];
+        this.destroyable = false;
         this.components = [];
         this.promises = [];
         this.scene = new THREE.Scene();
         this.camera = new THREE.Camera();
+        this.eventDispatcher = new THREE.EventDispatcher();
+
     },
 
+    setDestroyable: function(isDestroyable){
+        this.destroyable = isDestroyable;
+    },
+    isDestroyable: function(){
+        return this.destroyable;
+    },
     getUpdateable: function() {
         return this.updateable;
     },
@@ -81,6 +94,22 @@ G.controller.Controller = Class.create({
     },
 
     getEventDispatcher: function() {
-        return G.eventDispatcher;
-    }
+        return this.eventDispatcher;
+    },
+
+    handleMouseUp: function(e){
+        G.log("controller got mouse up");
+    },
+    handleMouseDown: function(e){
+
+    },
+    handleMouseMove: function(e){
+
+    },
+    handleKeyDown: function(e){
+
+    },
+    handleMouseUp: function(e){
+
+    },
 });

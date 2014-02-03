@@ -1,0 +1,27 @@
+#debugContainer {
+    position: absolute;
+    left: 1605px;
+    top: 10px;
+    display: none;
+}
+#game { display: inline; width: 1600px; border: 1px solid #0000FF;}
+#debugHeader {
+
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 15px;
+    border: 1px solid #333;
+    background-color: #ccc;
+    width: 100px;
+    height: 25px;
+    text-align:center;
+}
+#debugBox {
+    margin: 15px;
+    margin-top: 5px;
+    width: 650px;
+    height: 300px;
+    border: 1px solid #333;
+    padding: 6px;
+    font-size: 18px;
+}

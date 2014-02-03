@@ -25,6 +25,8 @@ G.mCtrl = false;
  */
 G.initialize = function() {
 
+    G.DebugBox.initialize();
+
     // Create Projector
     G.projector = new THREE.Projector();
 
@@ -35,62 +37,34 @@ G.initialize = function() {
 
     // Create event dispatcher alias
     G.eventDispatcher = new THREE.EventDispatcher();
+    G.IODispatcher    = new THREE.EventDispatcher();
 
     var dispatchEvent = G.eventDispatcher.dispatchEvent.bind(G.eventDispatcher);
-    G.renderer.domElement.addEventListener('mousemove', dispatchEvent, false);
-    G.renderer.domElement.addEventListener('mouseup',   dispatchEvent, false);
-    G.renderer.domElement.addEventListener('mousedown', dispatchEvent, false);
-    // Stops the context menu from firing on right click
+        // Stops the context menu from firing on right click
     G.renderer.domElement.addEventListener("contextmenu", function(e){ e.preventDefault(); }, false);
 
+
+    // The mouse listeners
+    //G.renderer.domElement.addEventListener('mousemove', G.handleMouseMove, false);
+    G.renderer.domElement.addEventListener('mouseup',   G.handleMouseUp, false);
+    G.renderer.domElement.addEventListener('mousedown', G.handleMouseDown, false);
     // The key listeners need to be attached to the document
-    document.addEventListener('keypress',  dispatchEvent, false);
-    document.addEventListener('keydown',   dispatchEvent, false);
-    document.addEventListener('keyup',     dispatchEvent, false);
+    document.addEventListener('keypress',  G.handleKeyPress, false);
+    document.addEventListener('keydown',   G.handleKeyDown, false);
+    document.addEventListener('keyup',     G.handleKeyUp, false);
 
     // Start game main menu
     G.loadController('MainMenu');
 };
 
+
+
 /**
- * Load a Controller
+ *  Returns current module
  */
-G.loadController = function(controllerName) {
-
-    // Log Current Controller
-    G.log("Loading Controller: " + controllerName);
-
-    var old = G.cModule;
-
-    // Init Controller
-    var controller = new G.controller[controllerName + 'Controller'];
-
-    // Init controller with promises
-    G.loading = true;
-
-    G.eventDispatcher._listeners = [];
-
-    controller.init();
-
-    // Set current Module
-    G.cModule = controller;
-
-    // Setup the components
-    G.cModule.getComponents().each(function(component){
-        component.buildScene(G.cModule.getScene(), controller.getPromises());
-    });
-
-    RSVP.all(controller.getPromises()).then(function(objects) {
-
-        G.log('Controller finished loading');
-        G.loading = false;
-
-    }).catch(function(error) {
-
-        console.log('Could not initiate controller: ', error);
-
-    });
-}
+G.getCurrentModule = function(){
+    return this.cModule;
+};
 
 /**
  * Main Update Loop
@@ -117,36 +91,31 @@ G.draw = function() {
 
 
 G.handleMouseMove = function(e) {
-    r = G.canvas.getBoundingClientRect();
-    G.mouseX = (e.clientX - r.left);
-    G.mouseY = (e.clientY - r.top);
+    G.getCurrentModule().getEventDispatcher().dispatchEvent(e);
 };
 
-G.handleKeyUp = function(e) {
-    if (G.state == -1)
-        return;
 
-    G.cModule.handleClick();
+// TODO: do we need these to be named functions with the same code?
+//       keeping it this way for now but we can decide later to just
+G.handleKeyUp = function(e) {
+    G.log("G.handleKeyUp");
+    G.getCurrentModule().getEventDispatcher().dispatchEvent(e);
 };
 
 G.handleKeyDown = function(e) {
-    switch (e.keyCode) {
-        case 37:
-            //left
-            G.keyL = true;
-            break;
-        case 38:
-            //up
-            G.keyU = true;
-            break;
-        case 39:
-            //right
-            G.keyR = true;
-            break;
-        case 40:
-            G.keyD = true;
-            break;
-    }
+    G.getCurrentModule().getEventDispatcher().dispatchEvent(e);
+};
+
+G.handleKeyPress = function(e){
+    G.getCurrentModule().getEventDispatcher().dispatchEvent(e);
+};
+
+G.handleMouseDown = function(e){
+    G.getCurrentModule().getEventDispatcher().dispatchEvent(e);
+};
+
+G.handleMouseUp = function(e){
+    G.getCurrentModule().getEventDispatcher().dispatchEvent(e);
 };
 
 G.log = function() {

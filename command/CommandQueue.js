@@ -9,7 +9,6 @@
 G.command.CommandQueue = Class.create({
     initialize: function(entity,defCommandAlias) {
         // defCmd is the default command run when there are no commands in the list
-        G.log("arg len:",arguments.length);
         if(arguments.length == 1){
             this.defCmd = "Idle";
         }else{
@@ -19,8 +18,7 @@ G.command.CommandQueue = Class.create({
         this.queue = [];
 
     },
-    addCommand: function(command,shiftUsed){
-        G.log("Adding command", command.getAlias(),"qLen",this.queue.length);
+    addCommand: function(command){
 
             if(this.queue.length >= 1){
 
@@ -28,14 +26,12 @@ G.command.CommandQueue = Class.create({
                 if(this.queue[0].getAlias() == this.defCmd){
                     this.reset();
                 }else{
-                    if(!shiftUsed && this.queue[0].getProperty("interuptable")){
+                    if(!G.mShift && this.queue[0].getProperty("interuptable")){
                         this.reset();
                     }
                 }
             }
-
-
-
+            
         this.queue.push(command);
     },
 
