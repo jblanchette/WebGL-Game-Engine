@@ -1,6 +1,5 @@
 var G = {};
-
-
+var Router;
 G.debug = true;
 G.fps = 50;
 G.state = -1;
@@ -24,9 +23,6 @@ G.mCtrl = false;
  * Initialize the Game
  */
 G.initialize = function() {
-
-    G.DebugBox.initialize();
-
     // Create Projector
     G.projector = new THREE.Projector();
 
@@ -37,8 +33,6 @@ G.initialize = function() {
 
     // Create event dispatcher alias
     G.eventDispatcher = new THREE.EventDispatcher();
-    G.IODispatcher    = new THREE.EventDispatcher();
-
     var dispatchEvent = G.eventDispatcher.dispatchEvent.bind(G.eventDispatcher);
         // Stops the context menu from firing on right click
     G.renderer.domElement.addEventListener("contextmenu", function(e){ e.preventDefault(); }, false);
@@ -53,8 +47,10 @@ G.initialize = function() {
     document.addEventListener('keydown',   G.handleKeyDown, false);
     document.addEventListener('keyup',     G.handleKeyUp, false);
 
+    Router = new G.controller['Router'];
+
     // Start game main menu
-    G.loadController('MainMenu');
+    Router.load('MainMenu',true);
 };
 
 
@@ -63,7 +59,7 @@ G.initialize = function() {
  *  Returns current module
  */
 G.getCurrentModule = function(){
-    return this.cModule;
+    return Router.getCurrent();
 };
 
 /**
@@ -72,12 +68,12 @@ G.getCurrentModule = function(){
 G.update = function() {
 
     // @TODO: Call some loading screen instead?
-    if (G.loading) {
+    if (Router.loading) {
         return;
     }
 
     // Call anything that needs to be updated
-    G.cModule.getUpdateable().each(function(obj){
+    this.getCurrentModule().getUpdateable().each(function(obj){
         obj.update();
     });
 };
@@ -86,7 +82,10 @@ G.update = function() {
  * Draw
  */
 G.draw = function() {
-    G.renderer.render(G.cModule.getScene(), G.cModule.getCamera());
+    var curModule = this.getCurrentModule();
+    if(curModule !== null){
+        G.renderer.render(curModule.getScene(), curModule.getCamera());
+    }
 };
 
 
