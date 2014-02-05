@@ -10,7 +10,7 @@ G.component.MenuComponent = Class.create(G.component.Component, {
         var material, textGeom, textMesh, hitboxMaterial, hitboxMesh;
 
         var scene = this.getScene();
-
+        G.log("ran menucomp buildscene");
         for (var i = 0; i < this.options.length; i++) {
             textGeom = new THREE.TextGeometry(this.options[i], {
                 font: 'helvetiker',
@@ -34,7 +34,7 @@ G.component.MenuComponent = Class.create(G.component.Component, {
             hitboxMesh.pID = i;
             hitboxMesh.parentMesh = textMesh;
             this.hitboxes.push(hitboxMesh);
-
+            G.log("hitboxes",this.hitboxes);
             scene.add(hitboxMesh);
             scene.add(textMesh);
 
@@ -101,15 +101,18 @@ G.component.MenuComponent = Class.create(G.component.Component, {
           break;
       }
     },
-    handleClick: function(event) {
+    handleMouseUp: function(event) {
         G.log("handle click menu", event);
         if(event.which && event.which != 1){
             return;
         }
 
+        G.log("hitboxes",this.hitboxes,this.particles);
+
         var coords = G.util.getEventCoords(event);
         var intersects = G.util.getCoordIntersect(coords.x, coords.y, this.hitboxes);
         var pID;
+
 
         if (intersects.length > 0) {
             G.log('Clicked menu item:', intersects[0]);

@@ -4,8 +4,8 @@
  *
  */
 G.controller.OverworldController = Class.create(G.controller.Controller, {
-    init: function(promises) {
-
+    init: function($super,promises) {
+        $super();
         var scene = this.getScene();
         // Setup lights
         this.scene.add(new THREE.AmbientLight(0xeef0ff));

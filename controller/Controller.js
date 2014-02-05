@@ -13,6 +13,10 @@ G.controller.Controller = Class.create({
         this.camera = new THREE.Camera();
         this.eventDispatcher = new THREE.EventDispatcher();
 
+        var _this = this;
+
+        this.eventDispatcher.addEventListener('mousedown',_this.handleMouseDown,false);
+
     },
 
     setDestroyable: function(isDestroyable){
@@ -31,6 +35,25 @@ G.controller.Controller = Class.create({
 
     getComponents: function() {
         return this.components;
+    },
+
+    setSubscribers: function(){
+        var comp = this.getComponents();
+        var ED = this.getEventDispatcher();
+        var sub;
+        var subList,i,x;
+        // Setup the components
+        G.log("setting subscribers",comp.length);
+        for(i = 0; i < comp.length; i++){
+            subList = comp[i].getSubscribers();
+            for(x = 0; x < subList.length; x++){
+                sub = subList[x];
+                if(sub !== undefined && sub.length == 2){
+                    G.log("Added eventType",sub[0],sub[1]);
+                    ED.addEventListener(sub[0],sub[1]);
+                }
+            }
+        }
     },
 
     addComponent: function(component, update) {
