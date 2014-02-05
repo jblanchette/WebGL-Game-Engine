@@ -113,6 +113,7 @@ G.model.Entity = Class.create({
     },
     update: function() {
         var currentCommand = this.cmd.getCurrentCommand(this);
+        
         if (currentCommand) {
             currentCommand.update(this);
         } else {

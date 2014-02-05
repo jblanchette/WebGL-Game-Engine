@@ -4,7 +4,7 @@
     top: 10px;
     display: none;
 }
-#game { display: inline; width: 1600px; border: 1px solid #0000FF;}
+#game { display: inline; width: 1600px;}
 #debugHeader {
 
     font-size: 14px;
@@ -24,4 +24,14 @@
     border: 1px solid #333;
     padding: 6px;
     font-size: 18px;
+}
+
+#info {
+
+    width: 450px;
+    height: 175px;
+    font-size: 18px;
+    border: 1px solid #333;
+    padding: 6px;
+
 }

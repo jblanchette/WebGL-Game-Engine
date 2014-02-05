@@ -103,19 +103,16 @@ G.component.MenuComponent = Class.create(G.component.Component, {
     },
 
     handleMouseUp: function(event) {
-        G.log("handle click menu", event);
+
         if(event.which && event.which != 1){
             return;
         }
-
-        G.log("hitboxes",this.hitboxes,this.particles);
 
         var coords = G.util.getEventCoords(event);
         var intersects = G.util.getCoordIntersect(coords.x, coords.y, this.hitboxes);
         var pID;
 
         if (intersects.length > 0) {
-            G.log('Clicked menu item:', intersects[0]);
             pID = intersects[0].object.pID;
             this.handleMenu(pID);
             intersects[0].object.parentMesh.material.color.setHex(0x000000);
