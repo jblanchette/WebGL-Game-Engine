@@ -33,27 +33,33 @@ G.initialize = function() {
 
     // Create event dispatcher alias
     G.eventDispatcher = new THREE.EventDispatcher();
-    var dispatchEvent = G.eventDispatcher.dispatchEvent.bind(G.eventDispatcher);
+
         // Stops the context menu from firing on right click
     G.renderer.domElement.addEventListener("contextmenu", function(e){ e.preventDefault(); }, false);
 
+    var dispatcherProxy = function(e) {
+
+        var currentModule = G.getCurrentModule();
+
+        if (currentModule !== null) {
+            G.getCurrentModule().getEventDispatcher().dispatchEvent(e);
+        }
+    };
 
     // The mouse listeners
-    //G.renderer.domElement.addEventListener('mousemove', G.handleMouseMove, false);
-    G.renderer.domElement.addEventListener('mouseup',   G.handleMouseUp, false);
-    G.renderer.domElement.addEventListener('mousedown', G.handleMouseDown, false);
+    G.renderer.domElement.addEventListener('mouseup',   dispatcherProxy, false);
+    G.renderer.domElement.addEventListener('mousedown', dispatcherProxy, false);
+
     // The key listeners need to be attached to the document
-    document.addEventListener('keypress',  G.handleKeyPress, false);
-    document.addEventListener('keydown',   G.handleKeyDown, false);
-    document.addEventListener('keyup',     G.handleKeyUp, false);
+    document.addEventListener('keypress',  dispatcherProxy, false);
+    document.addEventListener('keydown',   dispatcherProxy, false);
+    document.addEventListener('keyup',     dispatcherProxy, false);
 
     Router = new G.controller['Router'];
 
     // Start game main menu
     Router.load('MainMenu',true);
 };
-
-
 
 /**
  *  Returns current module
@@ -86,35 +92,6 @@ G.draw = function() {
     if(curModule !== null){
         G.renderer.render(curModule.getScene(), curModule.getCamera());
     }
-};
-
-
-G.handleMouseMove = function(e) {
-    G.getCurrentModule().getEventDispatcher().dispatchEvent(e);
-};
-
-
-// TODO: do we need these to be named functions with the same code?
-//       keeping it this way for now but we can decide later to just
-G.handleKeyUp = function(e) {
-    G.log("G.handleKeyUp");
-    G.getCurrentModule().getEventDispatcher().dispatchEvent(e);
-};
-
-G.handleKeyDown = function(e) {
-    G.getCurrentModule().getEventDispatcher().dispatchEvent(e);
-};
-
-G.handleKeyPress = function(e){
-    G.getCurrentModule().getEventDispatcher().dispatchEvent(e);
-};
-
-G.handleMouseDown = function(e){
-    G.getCurrentModule().getEventDispatcher().dispatchEvent(e);
-};
-
-G.handleMouseUp = function(e){
-    G.getCurrentModule().getEventDispatcher().dispatchEvent(e);
 };
 
 G.log = function() {

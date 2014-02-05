@@ -5,30 +5,17 @@ G.component.Component = Class.create({
         this.camera = null;
         this.subscribeList = [];
     },
+
     buildScene: function() {
 
     },
 
-    getSubscribers: function(){
-        return this.subscribeList;
-    },
-    ////////////////////////////////////////////////////////////
-    // helper function for components to track a list of
-    // event subscriptions
-    subscribe: function(eventType,eventHandler){
-        this.subscribeList.push([eventType,eventHandler]);
+    getEventDispatcher: function() {
+        return this.eventDispatcher;
     },
 
-    unsubscribe: function(eventType,eventHandler){
-        var e;
-        for(var i = 0; i < this.subscribeList.length; i++){
-            e = this.subscribeList[i];
-            if(e !== undefined && e.length == 2){
-                if(eventType == e[0] && eventHandler === e[1]){
-                    this.subscribeList.splice(i,1);
-                }
-            }
-        }
+    setEventDispatcher: function(dispatcher) {
+        this.eventDispatcher = dispatcher;
     },
 
     setScene: function(scene) {

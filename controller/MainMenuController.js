@@ -18,8 +18,9 @@ G.controller.MainMenuController = Class.create(G.controller.Controller, {
             'Noobs Only'
         ]);
 
-        this.menu.subscribe("mouseup",this.menu.handleMouseUp);
-
+        this.getEventDispatcher().addEventListener('mouseup', function(){
+            this.menu.handleMouseUp();
+        });
 
         // Load Texture
         this.loadTexture('./textures/space.jpg', function(texture) {
@@ -39,11 +40,6 @@ G.controller.MainMenuController = Class.create(G.controller.Controller, {
         // Add Menu component with update
         this.addComponent(this.menu, true);
 
-        // NOTE: Must be called for events to chain to their components.
-        //       After this stage when a component wants to subscribe to
-        //       an even it should use the router? Or maybe this should
-        //       also use the router?
-        this.setSubscribers();
         // Setup lights
         this.scene.add(new THREE.AmbientLight(0xeef0ff));
 

@@ -22,9 +22,11 @@ G.controller.Controller = Class.create({
     setDestroyable: function(isDestroyable){
         this.destroyable = isDestroyable;
     },
+
     isDestroyable: function(){
         return this.destroyable;
     },
+
     getUpdateable: function() {
         return this.updateable;
     },
@@ -37,29 +39,11 @@ G.controller.Controller = Class.create({
         return this.components;
     },
 
-    setSubscribers: function(){
-        var comp = this.getComponents();
-        var ED = this.getEventDispatcher();
-        var sub;
-        var subList,i,x;
-        // Setup the components
-        G.log("setting subscribers",comp.length);
-        for(i = 0; i < comp.length; i++){
-            subList = comp[i].getSubscribers();
-            for(x = 0; x < subList.length; x++){
-                sub = subList[x];
-                if(sub !== undefined && sub.length == 2){
-                    G.log("Added eventType",sub[0],sub[1]);
-                    ED.addEventListener(sub[0],sub[1]);
-                }
-            }
-        }
-    },
-
     addComponent: function(component, update) {
 
         component.setScene(this.scene);
         component.setCamera(this.camera);
+        component.setEventDispatcher(this.getEventDispatcher());
 
         this.components.push(component);
 

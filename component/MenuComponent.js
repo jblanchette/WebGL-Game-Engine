@@ -101,6 +101,7 @@ G.component.MenuComponent = Class.create(G.component.Component, {
           break;
       }
     },
+    
     handleMouseUp: function(event) {
         G.log("handle click menu", event);
         if(event.which && event.which != 1){
@@ -112,7 +113,6 @@ G.component.MenuComponent = Class.create(G.component.Component, {
         var coords = G.util.getEventCoords(event);
         var intersects = G.util.getCoordIntersect(coords.x, coords.y, this.hitboxes);
         var pID;
-
 
         if (intersects.length > 0) {
             G.log('Clicked menu item:', intersects[0]);
