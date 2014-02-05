@@ -93,31 +93,17 @@ G.model.Entity = Class.create({
         if (this.turnrate > d) {
             this.Mesh.rotation.y = finalRadians;
         } else {
-
             if (isClockwise) {
-
                 this.Mesh.rotation.y -= this.turnrate;
-                //G.log("Turned clock to: ", this.Mesh.rotation.y, " Final rad: ", finalRadians);
-
                 if(this.Mesh.rotation.y < 0){
-
                     this.Mesh.rotation.y = (G.twoPI - Math.abs(this.Mesh.rotation.y));
-
                 }
-
             } else {
-
                 this.Mesh.rotation.y += this.turnrate;
-
                 if(this.Mesh.rotation.y > G.twoPI){
-
                     this.Mesh.rotation.y -= G.twoPI;
-
-
                 }
             }
-
-
         }
 
         if(this.Mesh.rotation.y > 2*Math.PI || this.Mesh.rotation.y < -2*Math.PI){
@@ -127,7 +113,6 @@ G.model.Entity = Class.create({
     },
     update: function() {
         var currentCommand = this.cmd.getCurrentCommand(this);
-
         if (currentCommand) {
             currentCommand.update(this);
         } else {

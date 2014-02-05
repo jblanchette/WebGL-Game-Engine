@@ -4,8 +4,8 @@
  *
  */
 G.controller.OverworldController = Class.create(G.controller.Controller, {
-    init: function($super,promises) {
-        $super();
+    init: function(promises) {
+
         var scene = this.getScene();
         // Setup lights
         this.scene.add(new THREE.AmbientLight(0xeef0ff));
@@ -18,8 +18,6 @@ G.controller.OverworldController = Class.create(G.controller.Controller, {
         this.UnitComp = new G.component.UnitComponent();
 
         this.addComponent(this.UnitComp, true);
-
-
 
         this.addUpdate(this);
     },

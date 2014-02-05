@@ -77,7 +77,6 @@ G.update = function() {
     if (Router.loading) {
         return;
     }
-
     // Call anything that needs to be updated
     this.getCurrentModule().getUpdateable().each(function(obj){
         obj.update();

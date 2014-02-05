@@ -8,9 +8,11 @@ G.component.MenuComponent = Class.create(G.component.Component, {
 
     buildScene: function() {
         var material, textGeom, textMesh, hitboxMaterial, hitboxMesh;
-
         var scene = this.getScene();
-        G.log("ran menucomp buildscene");
+        var ed = this.getEventDispatcher();
+        var _this = this;
+        ed.addEventListener("mouseup",function(e){_this.handleMouseUp(e)});
+
         for (var i = 0; i < this.options.length; i++) {
             textGeom = new THREE.TextGeometry(this.options[i], {
                 font: 'helvetiker',
@@ -34,7 +36,6 @@ G.component.MenuComponent = Class.create(G.component.Component, {
             hitboxMesh.pID = i;
             hitboxMesh.parentMesh = textMesh;
             this.hitboxes.push(hitboxMesh);
-            G.log("hitboxes",this.hitboxes);
             scene.add(hitboxMesh);
             scene.add(textMesh);
 
@@ -72,7 +73,6 @@ G.component.MenuComponent = Class.create(G.component.Component, {
         }
 
         var p;
-        var c;
 
         for (var i = 0; i < this.particles.length; i++) {
 
@@ -97,11 +97,11 @@ G.component.MenuComponent = Class.create(G.component.Component, {
     handleMenu: function(pID){
       switch(pID){
           case 0:
-              G.loadController("Overworld");
+              Router.load("Overworld",true);
           break;
       }
     },
-    
+
     handleMouseUp: function(event) {
         G.log("handle click menu", event);
         if(event.which && event.which != 1){

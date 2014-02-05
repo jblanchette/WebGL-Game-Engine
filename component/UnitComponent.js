@@ -5,27 +5,19 @@ G.component.UnitComponent = Class.create(G.component.Component, {
         this.hero = new G.model['Unit'];
         this.heroMesh = null;
         this.units = [];
-
-        // Add event listener
-        var _this = this;
-
-        G.eventDispatcher.addEventListener('mousedown', function(e) {
-            _this.handleClick(e);
-        });
-        G.eventDispatcher.addEventListener('keypress',   function(e) {
-            _this.handleKeyPress(e);
-        });
-        G.eventDispatcher.addEventListener('keydown',   function(e) {
-            _this.handleModifiers(e);
-        });
-        G.eventDispatcher.addEventListener('keyup',   function(e) {
-            _this.handleModifiers(e);
-        });
-
     },
+
     buildScene: function() {
 
         var scene = this.getScene();
+        var _this = this;
+        var ed = this.getEventDispatcher();
+
+         // Add event listeners
+        ed.addEventListener("mousedown",function(e){_this.handleMouseDown(e)});
+        ed.addEventListener("keypress" ,function(e){_this.handleKeyPress(e)});
+        ed.addEventListener("keydown"  ,function(e){_this.handleModifiers(e)});
+        ed.addEventListener("keyup"    ,function(e){_this.handleModifiers(e)});
 
         this.groundMaterial = new THREE.MeshNormalMaterial({transparent: true, opacity: 1});
         this.groundMesh = new THREE.Mesh(new THREE.CubeGeometry(3500, 1, 3000), this.groundMaterial);
@@ -36,12 +28,12 @@ G.component.UnitComponent = Class.create(G.component.Component, {
         scene.add(this.groundMesh);
         scene.add(this.hero.Mesh);
 
-        G.cModule.addUpdate(this.hero);
-
     },
+
     update: function() {
-
+        this.hero.update();
     },
+
     handleModifiers: function(event){
       // Handle Modifiers is used specifially (at the moment) for modifier keys
       // The "event" that is send has a few flags.
@@ -52,15 +44,16 @@ G.component.UnitComponent = Class.create(G.component.Component, {
       G.mShift = event.shiftKey;
 
     },
+    
     handleKeyPress: function(event){
         //G.log("Key:",event.keyCode);
         // A = 65, M = 77
 
-
-
     },
-    handleClick: function(event) {
+
+    handleMouseDown: function(event) {
        // (1 = left, 2 = middle,3 = right)
+
        if(event.which && event.which == 3){
         var coords = G.util.getEventCoords(event);
 

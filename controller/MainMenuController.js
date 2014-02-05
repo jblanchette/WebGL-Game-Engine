@@ -18,10 +18,6 @@ G.controller.MainMenuController = Class.create(G.controller.Controller, {
             'Noobs Only'
         ]);
 
-        this.getEventDispatcher().addEventListener('mouseup', function(){
-            this.menu.handleMouseUp();
-        });
-
         // Load Texture
         this.loadTexture('./textures/space.jpg', function(texture) {
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
