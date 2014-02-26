@@ -27,6 +27,15 @@ G.model.Entity = Class.create({
 
         this.cmd = new G.command.CommandQueue(this);
     },
+    setSceneOptions: function(sceneOptions){
+        for(prop in sceneOptions){
+            switch(prop){
+                case "position":
+                    this.Mesh.position = sceneOptions.position;
+                break;
+            }
+        }
+    },
     addCommand: function(cmd, options) {
         var command = new G.command[cmd + 'Command'](this, options);
         command.setAlias(cmd);
@@ -113,7 +122,7 @@ G.model.Entity = Class.create({
     },
     update: function() {
         var currentCommand = this.cmd.getCurrentCommand(this);
-        
+
         if (currentCommand) {
             currentCommand.update(this);
         } else {

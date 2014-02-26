@@ -1,31 +1,39 @@
-G.component.UnitComponent = Class.create(G.component.Component, {
+G.component.HUDComponent = Class.create(G.component.Component, {
     initialize: function($super,options) {
         $super(options);
-        this.scrollSpeed = 10;
-        this.hero = new G.model['Unit'];
-        this.heroMesh = null;
-        this.units = [];
-
+        this.HUD = new G.model['HUD'];
 
     },
     buildScene: function() {
 
         var scene = this.getScene();
+        var ed = this.getEventDispatcher();
+        var _this = this;
 
-        this.groundMaterial = new THREE.MeshNormalMaterial({transparent: true, opacity: 1});
-        this.groundMesh = new THREE.Mesh(new THREE.CubeGeometry(3500, 1, 3000), this.groundMaterial);
-        this.groundMesh.position.x = 0;
-        this.groundMesh.position.y = 0;
-        this.groundMesh.position.z = 0;
+        ed.addEventListener("keydown",function(e){_this.handleKeyDown(e)});
 
-        scene.add(this.groundMesh);
-        scene.add(this.hero.Mesh);
+        /*
+        // Load Texture
+        this.loadTexture('./textures/space.jpg', function(texture) {
+            texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 
-        G.cModule.addUpdate(this.hero);
+            var dome = new THREE.SphereGeometry(1500, 100, 100);
+            var domeMaterial = new THREE.MeshPhongMaterial({
+                color: 0x000000,
+                side: THREE.BackSide,
+                map: texture
+            });
+
+            var domeMesh = new THREE.Mesh(dome, domeMaterial);
+            scene.add(domeMesh);
+        });*/
+
+
+        scene.add(this.HUD.getMesh());
 
     },
     update: function() {
-
+        this.HUD.update();
     },
     handleModifiers: function(event){
       // Handle Modifiers is used specifially (at the moment) for modifier keys
@@ -37,27 +45,25 @@ G.component.UnitComponent = Class.create(G.component.Component, {
       G.mShift = event.shiftKey;
 
     },
-    handleKeyPress: function(event){
-        //G.log("Key:",event.keyCode);
-        // A = 65, M = 77
-
-
-
+    handleKeyDown: function(event){
+        if(event.keyCode == 38){
+            //up
+            this.HUD.getMesh().position.x -= 1;
+        }else if(event.keyCode == 40){
+            //down
+            this.HUD.getMesh().position.x += 1;
+        }
+        G.log(this.HUD.getMesh().position.x);
     },
     handleClick: function(event) {
        // (1 = left, 2 = middle,3 = right)
-       if(event.which && event.which == 3){
+       // We want left clicks for the HUD
+       if(event.which && event.which == 1){
         var coords = G.util.getEventCoords(event);
-
-        var intersects = G.util.getCoordIntersect(coords.x, coords.y, [this.groundMesh]);
-        var p;
+        G.log("clicked HUD",coords);
+        //var intersects = G.util.getCoordIntersect(coords.x, coords.y, [this.groundMesh]);
 
         if (intersects.length > 0) {
-
-            p = intersects[0].point;
-            if(G.mA) G.log("A click");
-            if(G.mM) G.log("M click");
-            this.hero.addCommand('Move',p);
 
         }
        }

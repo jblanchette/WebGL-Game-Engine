@@ -3,11 +3,20 @@ G.component.Component = Class.create({
         this.options = options || [];
         this.scene  = null;
         this.camera = null;
+        this.parentController = null;
         this.subscribeList = [];
     },
 
-    buildScene: function() {
+    buildScene: function(scene,promises) {
 
+    },
+
+    getParent: function(){
+        return this.parentController;
+    },
+
+    setParent: function(parentC){
+        this.parentController = parentC;
     },
 
     getEventDispatcher: function() {

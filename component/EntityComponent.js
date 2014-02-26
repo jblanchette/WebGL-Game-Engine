@@ -1,10 +1,9 @@
-G.component.UnitComponent = Class.create(G.component.Component, {
+G.component.EntityComponent = Class.create(G.component.Component, {
     initialize: function($super,options) {
         $super(options);
         this.scrollSpeed = 10;
-        this.hero = new G.model['Unit'];
-        this.heroMesh = null;
         this.units = [];
+        this.currentUnit = null;
     },
 
     buildScene: function() {
@@ -25,13 +24,33 @@ G.component.UnitComponent = Class.create(G.component.Component, {
         this.groundMesh.position.y = 0;
         this.groundMesh.position.z = 0;
 
-        scene.add(this.groundMesh);
-        scene.add(this.hero.Mesh);
+        //scene.add(this.groundMesh);
+        this.addEntity("Unit",{position: {x: 0,y: 0,z: 0}});
+
+    },
+    selectEntity: function(entity){
+        this.currentUnit = entity;
+    },
+    addEntity: function(entityType, sceneOptions){
+
+        var e = new G.model['Entity' + entityType]();
+
+        e.setSceneOptions(sceneOptions);
+        this.getScene().add(e.getMesh());
+
+        if(this.units.length == 0){
+            this.selectEntity(e);
+        }
+
+        this.units.push(e);
 
     },
 
     update: function() {
-        this.hero.update();
+        for(var i = 0; i < this.units.length; i++){
+            if(this.units[i])
+                this.units[i].update();
+        }
     },
 
     handleModifiers: function(event){
@@ -44,7 +63,7 @@ G.component.UnitComponent = Class.create(G.component.Component, {
       G.mShift = event.shiftKey;
 
     },
-    
+
     handleKeyPress: function(event){
         //G.log("Key:",event.keyCode);
         // A = 65, M = 77
@@ -54,20 +73,22 @@ G.component.UnitComponent = Class.create(G.component.Component, {
     handleMouseDown: function(event) {
        // (1 = left, 2 = middle,3 = right)
 
-       if(event.which && event.which == 3){
-        var coords = G.util.getEventCoords(event);
+       if(this.currentUnit !== null){
+        if(event.which && event.which == 3){
+            var coords = G.util.getEventCoords(event);
 
-        var intersects = G.util.getCoordIntersect(coords.x, coords.y, [this.groundMesh]);
-        var p;
+            var intersects = G.util.getCoordIntersect(coords.x, coords.y, [this.groundMesh]);
+            var p;
 
-        if (intersects.length > 0) {
+            if (intersects.length > 0) {
 
-            p = intersects[0].point;
-            if(G.mA) G.log("A click");
-            if(G.mM) G.log("M click");
-            this.hero.addCommand('Move',p);
-
+                p = intersects[0].point;
+                if(G.mA) G.log("A click");
+                if(G.mM) G.log("M click");
+                this.currentUnit.addCommand('Move',p);
+            }
         }
+
        }
 
     }
