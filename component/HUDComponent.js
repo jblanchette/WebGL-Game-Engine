@@ -2,7 +2,7 @@ G.component.HUDComponent = Class.create(G.component.Component, {
     initialize: function($super,options) {
         $super(options);
         this.HUD = new G.model['HUD'];
-
+        
     },
     buildScene: function() {
 

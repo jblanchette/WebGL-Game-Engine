@@ -44,7 +44,6 @@ G.controller.Controller = Class.create({
         component.setScene(this.scene);
         component.setCamera(this.camera);
         component.setEventDispatcher(this.getEventDispatcher());
-        component.setParent(this);
 
         this.components.push(component);
 
