@@ -1,6 +1,7 @@
 var G = {};
 var Router;
 G.debug = true;
+G.warnings = [];
 G.fps = 50;
 G.state = -1;
 
@@ -92,6 +93,13 @@ G.draw = function() {
         G.renderer.render(curModule.getScene(), curModule.getCamera());
     }
 };
+
+G.warning = function(){
+    if(G.debug){
+        G.warnings.push([arguments]);
+        console.log("WARNING:",arguments);
+    }
+}
 
 G.log = function() {
     if (G.debug) {

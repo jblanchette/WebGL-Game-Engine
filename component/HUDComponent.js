@@ -2,7 +2,7 @@ G.component.HUDComponent = Class.create(G.component.Component, {
     initialize: function($super,options) {
         $super(options);
         this.HUD = new G.model['HUD'];
-        
+
     },
     buildScene: function() {
 
@@ -11,6 +11,7 @@ G.component.HUDComponent = Class.create(G.component.Component, {
         var _this = this;
 
         ed.addEventListener("keydown",function(e){_this.handleKeyDown(e)});
+        ed.addEventListener("unitselect", function(e){_this.handleUnitSelect(e)});
 
         /*
         // Load Texture

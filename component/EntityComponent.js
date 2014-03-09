@@ -2,7 +2,9 @@ G.component.EntityComponent = Class.create(G.component.Component, {
     initialize: function($super,options) {
         $super(options);
         this.scrollSpeed = 10;
-        this.units = [];
+        this.entities = [];
+        this.entityMeshes = [];
+
         this.currentUnit = null;
     },
 
@@ -25,7 +27,9 @@ G.component.EntityComponent = Class.create(G.component.Component, {
         this.groundMesh.position.z = 0;
 
         //scene.add(this.groundMesh);
-        this.addEntity("Unit",{position: {x: 0,y: 0,z: 0}});
+        this.addEntity("Unit",{position: [0,0,0]});
+
+        this.addEntity("Unit",{position: [50,0,0]});
 
     },
     selectEntity: function(entity){
@@ -34,22 +38,25 @@ G.component.EntityComponent = Class.create(G.component.Component, {
     addEntity: function(entityType, sceneOptions){
 
         var e = new G.model['Entity' + entityType]();
+        var eMesh = e.getMesh();
 
         e.setSceneOptions(sceneOptions);
         this.getScene().add(e.getMesh());
 
-        if(this.units.length == 0){
+        if(this.entities.length == 0){
             this.selectEntity(e);
         }
 
-        this.units.push(e);
+        eMesh.eID = this.entities.length;
+        this.entities.push(e);
+        this.entityMeshes.push(eMesh);
 
     },
 
     update: function() {
-        for(var i = 0; i < this.units.length; i++){
-            if(this.units[i])
-                this.units[i].update();
+        for(var i = 0; i < this.entities.length; i++){
+            if(this.entities[i])
+                this.entities[i].update();
         }
     },
 
@@ -71,25 +78,54 @@ G.component.EntityComponent = Class.create(G.component.Component, {
     },
 
     handleMouseDown: function(event) {
-       // (1 = left, 2 = middle,3 = right)
+        // (1 = left, 2 = middle,3 = right)
 
-       if(this.currentUnit !== null){
-        if(event.which && event.which == 3){
+        if (event.which) {
+
             var coords = G.util.getEventCoords(event);
 
-            var intersects = G.util.getCoordIntersect(coords.x, coords.y, [this.groundMesh]);
+            // Check intersections with entities and the ground mesh
+            var entityInt = G.util.getCoordIntersect(coords.x, coords.y, this.entityMeshes);
+            var groundInt = G.util.getCoordIntersect(coords.x, coords.y, [this.groundMesh]);
+
             var p;
 
-            if (intersects.length > 0) {
+            // Right Click
 
-                p = intersects[0].point;
-                if(G.mA) G.log("A click");
-                if(G.mM) G.log("M click");
-                this.currentUnit.addCommand('Move',p);
+
+            if (entityInt.length > 0) {
+
+                var obj = entityInt[0].object;
+
+                if(obj !== null){
+                    var eID = obj.eID;
+                    if(eID !== undefined && this.entities[eID] !== undefined){
+                        var e = this.entities[eID];
+                        G.log("Clicked", eID, e.getType(), e.getTypeBase());
+
+                        if(event.which == 1){
+                            this.selectEntity(e);
+                        }
+                    }
+
+                }
+
+            }
+
+            if (groundInt.length > 0) {
+
+                if (event.which === 3) {
+                    p = groundInt[0].point;
+
+                    if (G.mA)
+                        G.log("A click");
+                    if (G.mM)
+                        G.log("M click");
+                    this.currentUnit.addCommand('Move', p);
+                }
             }
         }
 
-       }
 
     }
 });

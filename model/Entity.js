@@ -1,6 +1,11 @@
 G.model.Entity = Class.create({
     initialize: function() {
 
+        // TypeID points to a Const entry for the TypeName
+        this.TypeID = 0;
+        this.TypeName = "Entity";
+        this.TypeBase = "Entity";
+
         this.movespeed = 1.85;
         this.turnrate = 0.5;
 
@@ -27,11 +32,40 @@ G.model.Entity = Class.create({
 
         this.cmd = new G.command.CommandQueue(this);
     },
+
+    getType: function() {
+        return this.TypeName;
+    },
+
+    getTypeID: function(){
+        return this.TypeID;
+    },
+
+    getTypeBase: function(){
+        return this.TypeBase;
+    },
+
+    setType: function(newType){
+
+        for(var i = 0; i < G.const.Entity.length; i++){
+            if(G.const.Entity[i] === newType){
+                this.TypeID = i;
+                this.TypeName = newType;
+                return;
+            }
+        }
+
+        G.warning("Type not found in const in [" + this.TypeBase + "]: " + newType);
+
+    },
+
     setSceneOptions: function(sceneOptions){
         for(prop in sceneOptions){
             switch(prop){
                 case "position":
-                    this.Mesh.position = sceneOptions.position;
+                    this.Mesh.position.x = sceneOptions.position[0];
+                    this.Mesh.position.y = sceneOptions.position[1];
+                    this.Mesh.position.z = sceneOptions.position[2];
                 break;
             }
         }

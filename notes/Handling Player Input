@@ -1,0 +1,10 @@
+Player Input
+================================================
+
+All input done by the player that isn't directed towards an overlay menu
+will be handled in the - EntityComponent - class.
+
+The reasoning is that we will have all the Entity information available within
+the component, which allows us to do the ray casting for intersection with
+the Entities.
+

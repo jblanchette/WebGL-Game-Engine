@@ -11,14 +11,6 @@ G.component.Component = Class.create({
 
     },
 
-    getParent: function(){
-        return this.parentController;
-    },
-
-    setParent: function(parentC){
-        this.parentController = parentC;
-    },
-
     getEventDispatcher: function() {
         return this.eventDispatcher;
     },
