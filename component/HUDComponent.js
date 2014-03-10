@@ -11,7 +11,8 @@ G.component.HUDComponent = Class.create(G.component.Component, {
         var _this = this;
 
         ed.addEventListener("keydown",function(e){_this.handleKeyDown(e)});
-        ed.addEventListener("unitselect", function(e){_this.handleUnitSelect(e)});
+        ed.addEventListener("unitSelect", function(e){ _this.handleUnitSelect(e.currentUnit);});
+        ed.addEventListener("unitMoveEnd", function(e){ _this.handleUnitMoveEnd(e.currentUnit);});
 
         /*
         // Load Texture
@@ -44,6 +45,16 @@ G.component.HUDComponent = Class.create(G.component.Component, {
       G.mAlt = event.altKey;
       G.mCtrl = event.ctrlKey;
       G.mShift = event.shiftKey;
+
+    },
+    handleUnitMoveEnd: function(currentUnit){
+        this.HUD.setText("mp","Pos: " + currentUnit.getPositionString());
+    },
+    handleUnitSelect: function(currentUnit){
+        G.log("HUD selected",currentUnit);
+
+        this.HUD.setText("hp","HP: " + currentUnit.currentHP + "/" + currentUnit.maxHP);
+        this.HUD.setText("mp","Pos: " + currentUnit.getPositionString());
 
     },
     handleKeyDown: function(event){

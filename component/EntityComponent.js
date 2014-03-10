@@ -39,6 +39,9 @@ G.component.EntityComponent = Class.create(G.component.Component, {
 
         this.currentUnit = entity;
         this.currentUnit.selectUnit(true);
+
+        this.getEventDispatcher().dispatchEvent({type: "unitSelect", currentUnit: this.currentUnit});
+
     },
     addEntity: function(entityType, sceneOptions){
 

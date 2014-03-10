@@ -6,9 +6,12 @@ G.model.EntityUnit = Class.create(G.model.Entity, {
 
         this.movespeed = 5;
         this.turnrate = 0.1;
-        this.health = 100;
-        this.mana = 100;
+        this.maxHP = 100;
+        this.maxMP = 100;
+        this.currentHP = 100;
+        this.currentMP = 100;
         this.addCommand('Idle');
+        
         this.cursorMode = 0;
         this.cursorAlias = ['Default','Attack Move','Manual Move','Spell Cast'];
 

@@ -49,6 +49,11 @@ G.command.MoveCommand = Class.create(G.command.Command, {
 
     },
 
+    finish: function($super){
+        $super();
+        Router.getCurrent().getEventDispatcher().dispatchEvent({type: "unitMoveEnd", currentUnit: this.entity});
+    },
+
     update: function(entity) {
         if (entity.getRotation().y != this.fTheta) {
             //not done turning yet

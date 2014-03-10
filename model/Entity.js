@@ -97,6 +97,9 @@ G.model.Entity = Class.create({
     getPosition: function() {
         return this.Mesh.position;
     },
+    getPositionString: function() {
+        return this.Mesh.position.x.toFixed(2) + "," + this.Mesh.position.z.toFixed(2);
+    },
     getX: function() {
         return this.Mesh.position.x;
     },
