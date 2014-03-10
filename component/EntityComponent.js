@@ -28,17 +28,22 @@ G.component.EntityComponent = Class.create(G.component.Component, {
 
         //scene.add(this.groundMesh);
         this.addEntity("Unit",{position: [0,0,0]});
-
         this.addEntity("Unit",{position: [50,0,0]});
 
     },
     selectEntity: function(entity){
+
+        if(this.currentUnit !== null){
+            this.currentUnit.selectUnit(false);
+        }
+
         this.currentUnit = entity;
+        this.currentUnit.selectUnit(true);
     },
     addEntity: function(entityType, sceneOptions){
 
         var e = new G.model['Entity' + entityType]();
-        var eMesh = e.getMesh();
+        var eMesh = e.getObjectMesh();
 
         e.setSceneOptions(sceneOptions);
         this.getScene().add(e.getMesh());
@@ -98,11 +103,11 @@ G.component.EntityComponent = Class.create(G.component.Component, {
                 var obj = entityInt[0].object;
 
                 if(obj !== null){
+                    // The eID is the 'Entity ID' or the position in the (this.entities) array
+                    // TODO: possibly can just update the reference given back from the intersection?
                     var eID = obj.eID;
                     if(eID !== undefined && this.entities[eID] !== undefined){
                         var e = this.entities[eID];
-                        G.log("Clicked", eID, e.getType(), e.getTypeBase());
-
                         if(event.which == 1){
                             this.selectEntity(e);
                         }
