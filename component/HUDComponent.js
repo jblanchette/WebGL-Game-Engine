@@ -10,9 +10,9 @@ G.component.HUDComponent = Class.create(G.component.Component, {
         var ed = this.getEventDispatcher();
         var _this = this;
 
-        ed.addEventListener("keydown",function(e){_this.handleKeyDown(e)});
-        ed.addEventListener("unitSelect", function(e){ _this.handleUnitSelect(e.currentUnit);});
-        ed.addEventListener("unitMoveEnd", function(e){ _this.handleUnitMoveEnd(e.currentUnit);});
+        ed.addEventListener("keydown",     function(e){_this.handleKeyDown(e)});
+        ed.addEventListener("unitSelect",  this.updateSelection.bind(this));
+        ed.addEventListener("unitMoveEnd", this.updateSelection.bind(this));
 
         /*
         // Load Texture
@@ -47,15 +47,12 @@ G.component.HUDComponent = Class.create(G.component.Component, {
       G.mShift = event.shiftKey;
 
     },
-    handleUnitMoveEnd: function(currentUnit){
-        this.HUD.setText("mp","Pos: " + currentUnit.getPositionString());
-    },
-    handleUnitSelect: function(currentUnit){
-        G.log("HUD selected",currentUnit);
 
-        this.HUD.setText("hp","HP: " + currentUnit.currentHP + "/" + currentUnit.maxHP);
-        this.HUD.setText("mp","Pos: " + currentUnit.getPositionString());
+    updateSelection: function(event){
+        var unit = event.currentUnit;
 
+        this.HUD.setText("hp","HP: "  + unit.currentHP + "/" + unit.maxHP);
+        this.HUD.setText("mp","Pos: " + unit.getPositionString());
     },
     handleKeyDown: function(event){
         if(event.keyCode == 38){

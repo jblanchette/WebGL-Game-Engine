@@ -5,6 +5,10 @@ G.component.EntityComponent = Class.create(G.component.Component, {
         this.entities = [];
         this.entityMeshes = [];
 
+        this.boxStarted = false;
+        this.boxCoords = [];
+        this.regionSelector = new G.model['RegionSelector'];
+
         this.currentUnit = null;
     },
 
@@ -15,10 +19,16 @@ G.component.EntityComponent = Class.create(G.component.Component, {
         var ed = this.getEventDispatcher();
 
          // Add event listeners
+        ed.addEventListener("mousemove",function(e){_this.handleMouseMove(e)});
         ed.addEventListener("mousedown",function(e){_this.handleMouseDown(e)});
+        ed.addEventListener("mouseup"  ,function(e){_this.handleMouseUp(e)});
         ed.addEventListener("keypress" ,function(e){_this.handleKeyPress(e)});
         ed.addEventListener("keydown"  ,function(e){_this.handleModifiers(e)});
         ed.addEventListener("keyup"    ,function(e){_this.handleModifiers(e)});
+
+
+
+        scene.add(this.regionSelector.getMesh());
 
         this.groundMaterial = new THREE.MeshNormalMaterial({transparent: true, opacity: 1});
         this.groundMesh = new THREE.Mesh(new THREE.CubeGeometry(3500, 1, 3000), this.groundMaterial);
@@ -41,6 +51,10 @@ G.component.EntityComponent = Class.create(G.component.Component, {
         this.currentUnit.selectUnit(true);
 
         this.getEventDispatcher().dispatchEvent({type: "unitSelect", currentUnit: this.currentUnit});
+
+    },
+    selectRegion: function(boxCoords){
+        G.log("region select:", boxCoords);
 
     },
     addEntity: function(entityType, sceneOptions){
@@ -82,24 +96,42 @@ G.component.EntityComponent = Class.create(G.component.Component, {
     handleKeyPress: function(event){
         //G.log("Key:",event.keyCode);
         // A = 65, M = 77
-
+        this.regionSelector.getMesh().position.z -= 1;
     },
 
-    handleMouseDown: function(event) {
-        // (1 = left, 2 = middle,3 = right)
 
-        if (event.which) {
+    handleMouseMove: function(event){
+
+        var coords = G.util.getEventCoords(event);
+        var groundInt = G.util.getCoordIntersect(coords.x, coords.y, [this.groundMesh]);
+        var p = groundInt[0].point;
+
+        if(this.boxStarted){
+            this.regionSelector.setRegion(p.x,p.z);
+        }
+    },
+
+    handleMouseUp: function(event){
+
+        if(event.which){
+
+
 
             var coords = G.util.getEventCoords(event);
 
-            // Check intersections with entities and the ground mesh
             var entityInt = G.util.getCoordIntersect(coords.x, coords.y, this.entityMeshes);
             var groundInt = G.util.getCoordIntersect(coords.x, coords.y, [this.groundMesh]);
 
             var p;
 
-            // Right Click
-
+            if(groundInt.length > 0 && this.boxStarted === true){
+                this.boxCoords.push(groundInt[0].point);
+                this.selectRegion(this.boxCoords);
+                this.regionSelector.getMesh().visible = false;
+                this.boxStarted = false;
+                this.boxCoords = [];
+                return;
+            }
 
             if (entityInt.length > 0) {
 
@@ -113,6 +145,7 @@ G.component.EntityComponent = Class.create(G.component.Component, {
                         var e = this.entities[eID];
                         if(event.which == 1){
                             this.selectEntity(e);
+                            return;
                         }
                     }
 
@@ -120,10 +153,37 @@ G.component.EntityComponent = Class.create(G.component.Component, {
 
             }
 
+        }
+    },
+    handleMouseDown: function(event) {
+        // (1 = left, 2 = middle,3 = right)
+
+        if (event.which) {
+
+            var coords = G.util.getEventCoords(event);
+
+            // Check intersections with entities and the ground mesh
+            var entityInt = G.util.getCoordIntersect(coords.x, coords.y, this.entityMeshes);
+            var groundInt = G.util.getCoordIntersect(coords.x, coords.y, [this.groundMesh]);
+
+            var p;
+
             if (groundInt.length > 0) {
+                p = groundInt[0].point;
+
+                if (event.which === 1 && entityInt.length === 0) {
+                    if(this.boxStarted === false){
+                        this.boxStarted = true;
+                        this.boxCoords = [p];
+                        this.regionSelector.setOrigin(p.x,p.z);
+                    }
+                }
 
                 if (event.which === 3) {
-                    p = groundInt[0].point;
+
+                    if(entityInt.length > 0){
+                        G.log("ent point:" + entityInt[0].point);
+                    }
 
                     if (G.mA)
                         G.log("A click");

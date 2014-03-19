@@ -50,7 +50,8 @@ G.initialize = function() {
     // The mouse listeners
     G.renderer.domElement.addEventListener('mouseup',   dispatcherProxy, false);
     G.renderer.domElement.addEventListener('mousedown', dispatcherProxy, false);
-
+    G.renderer.domElement.addEventListener('mousemove', dispatcherProxy, false);
+    
     // The key listeners need to be attached to the document
     document.addEventListener('keypress',  dispatcherProxy, false);
     document.addEventListener('keydown',   dispatcherProxy, false);
