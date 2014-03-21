@@ -19,7 +19,7 @@ G.command.MoveCommand = Class.create(G.command.Command, {
         var entityPos = this.entity.getPosition();
         var entityRot = this.entity.getRotation().z;
         var entityMS  = this.entity.getMoveSpeed();
-        this.fTheta = Math.PI - Math.atan2(this.finalPosition.y - entityPos.y,
+        this.fTheta = Math.atan2(this.finalPosition.y - entityPos.y,
         this.finalPosition.x - entityPos.x);
 
         // if the radians are below zero add two pi to force it between (0,2PI)
