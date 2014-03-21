@@ -16,10 +16,6 @@ G.model.RegionSelector = Class.create({
         this.RegionGeom = new THREE.ShapeGeometry( this.rectShape );
         this.RegionGeom.dynamic = true;
 
-
-
-
-
         this.Mesh = new THREE.Line( this.RegionGeom, this.RegionMaterial) ;
 
         this.Mesh.rotation.x = THREE.Math.degToRad(270);

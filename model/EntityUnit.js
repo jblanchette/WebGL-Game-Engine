@@ -4,6 +4,10 @@ G.model.EntityUnit = Class.create(G.model.Entity, {
 
         this.setType("Unit");
 
+        this.objHeight = 20;
+        this.objWidth = 20;
+        this.objLength = 20;
+
         this.movespeed = 5;
         this.turnrate = 0.1;
         this.maxHP = 100;
@@ -11,7 +15,7 @@ G.model.EntityUnit = Class.create(G.model.Entity, {
         this.currentHP = 100;
         this.currentMP = 100;
         this.addCommand('Idle');
-        
+
         this.cursorMode = 0;
         this.cursorAlias = ['Default','Attack Move','Manual Move','Spell Cast'];
 
@@ -20,7 +24,7 @@ G.model.EntityUnit = Class.create(G.model.Entity, {
         this.Mesh = new THREE.Object3D();
 
         this.Material = new THREE.MeshBasicMaterial({vertexColors: THREE.FaceColors, overdraw: 0.5});
-        this.Geom = new THREE.CubeGeometry(20, 20, 20);
+        this.Geom = new THREE.CubeGeometry(this.objWidth, this.objHeight, this.objLength);
 
         var hex = 0xff0000;
         this.Geom.faces[ 2 ].color.setHex(hex);
@@ -32,8 +36,8 @@ G.model.EntityUnit = Class.create(G.model.Entity, {
 
         this.objectMesh = new THREE.Mesh(this.Geom, this.Material);
         this.objectMesh.position.x = 0;
-        this.objectMesh.position.y = 10;
-        this.objectMesh.position.z = 0;
+        this.objectMesh.position.y = 0;
+        this.objectMesh.position.z = 10;
 
         this.SelectionMaterial = new THREE.LineBasicMaterial( { color: 0xffff00 } );
         this.SelectionGeom = new THREE.CircleGeometry( 16, 64 );
@@ -42,7 +46,7 @@ G.model.EntityUnit = Class.create(G.model.Entity, {
         this.SelectionGeom.vertices.shift();
 
         this.SelectionMesh = new THREE.Line(this.SelectionGeom, this.SelectionMaterial);
-        this.SelectionMesh.rotation.x = THREE.Math.degToRad(270);
+
         this.SelectionMesh.position.set(0,0,0);
 
         this.SelectionMesh.visible = false;

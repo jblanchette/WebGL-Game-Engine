@@ -26,19 +26,17 @@ G.component.EntityComponent = Class.create(G.component.Component, {
         ed.addEventListener("keydown"  ,function(e){_this.handleModifiers(e)});
         ed.addEventListener("keyup"    ,function(e){_this.handleModifiers(e)});
 
-
-
         scene.add(this.regionSelector.getMesh());
 
-        this.groundMaterial = new THREE.MeshNormalMaterial({transparent: true, opacity: 1});
-        this.groundMesh = new THREE.Mesh(new THREE.CubeGeometry(3500, 1, 3000), this.groundMaterial);
+        this.groundMaterial = new THREE.MeshNormalMaterial({color: 0xFF0000});
+        this.groundMesh = new THREE.Mesh(new THREE.CubeGeometry(3500, 3000, 1), this.groundMaterial);
         this.groundMesh.position.x = 0;
         this.groundMesh.position.y = 0;
         this.groundMesh.position.z = 0;
 
-        //scene.add(this.groundMesh);
+        scene.add(this.groundMesh);
         this.addEntity("Unit",{position: [0,0,0]});
-        this.addEntity("Unit",{position: [50,0,0]});
+        //this.addEntity("Unit",{position: [50,0,0]});
 
     },
     selectEntity: function(entity){
@@ -54,7 +52,49 @@ G.component.EntityComponent = Class.create(G.component.Component, {
 
     },
     selectRegion: function(boxCoords){
-        G.log("region select:", boxCoords);
+
+        var orig = boxCoords[0];
+        var end = boxCoords[1];
+        var bLeft, bRight, bTop, bBottom;
+        var ePos, eBounds, eLeft, eTop, eRight, eBottom;
+
+
+        if(orig.z < end.z){
+            bLeft = orig.z;
+            bRight = end.z;
+        }else{
+            bLeft = end.z;
+            bRight = orig.z;
+        }
+
+        if(orig.x < end.x){
+            bTop = orig.x;
+            bBottom = end.x;
+        }else{
+            bTop = end.x;
+            bBottom = orig.x;
+        }
+
+        //G.log("box",bLeft.toFixed(2),bTop.toFixed(2),bRight.toFixed(2),bBottom.toFixed(2));
+
+        for(var i = 0; i < this.entities.length; i++){
+
+            eBounds = this.entities[i].getBounds();
+            ePos = this.entities[i].getMesh().position;
+
+            eLeft = ePos.z;
+            eTop = ePos.x;
+            eRight = (ePos.z + eBounds.width);
+            eBottom = (ePos.x + eBounds.length);
+
+            // left / right check
+            G.log("bleft",bLeft,"bRight",bRight,"eLeft",eLeft);
+
+            if(bLeft <= eLeft && bLeft <= eRight){
+                    G.log("within left/right", i);
+            }
+
+        }
 
     },
     addEntity: function(entityType, sceneOptions){

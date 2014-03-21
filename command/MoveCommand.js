@@ -17,14 +17,18 @@ G.command.MoveCommand = Class.create(G.command.Command, {
         $super();
 
         var entityPos = this.entity.getPosition();
-        var entityRot = this.entity.getRotation().y;
+        var entityRot = this.entity.getRotation().z;
         var entityMS  = this.entity.getMoveSpeed();
-        this.fTheta = Math.PI - Math.atan2(this.finalPosition.z - entityPos.z,
+        this.fTheta = Math.PI - Math.atan2(this.finalPosition.y - entityPos.y,
         this.finalPosition.x - entityPos.x);
 
         // if the radians are below zero add two pi to force it between (0,2PI)
         if (this.fTheta < 0) {
             this.fTheta += G.twoPI;
+        }
+
+        if(this.fTheta > G.twoPI){
+            G.log("greater than twopi ftheta",this.fTheta);
         }
         // used for rotation calculation
         this.sDegree = THREE.Math.radToDeg(entityRot);
@@ -35,9 +39,9 @@ G.command.MoveCommand = Class.create(G.command.Command, {
 
         var vFinal = this.finalPosition.clone().sub(entityPos).normalize();
         this.xStep = entityMS * vFinal.x;
-        this.zStep = entityMS * vFinal.z;
+        this.yStep = entityMS * vFinal.y;
         this.xStepABS = Math.abs(this.xStep); // only do it once and store it
-        this.zStepABS = Math.abs(this.zStep); // used for finish displacement check
+        this.yStepABS = Math.abs(this.yStep); // used for finish displacement check
 
         // A = anticlockwise length
         // C = clockwise length
@@ -55,7 +59,7 @@ G.command.MoveCommand = Class.create(G.command.Command, {
     },
 
     update: function(entity) {
-        if (entity.getRotation().y != this.fTheta) {
+        if (entity.getRotation().z !== this.fTheta) {
             //not done turning yet
             entity.turn(this.fTheta, this.clockwise);
         } else {
@@ -68,25 +72,25 @@ G.command.MoveCommand = Class.create(G.command.Command, {
     stepMove: function(entity) {
         var entityPos = entity.getPosition();
         var dX = Math.abs(entityPos.x - this.finalPosition.x);
-        var dZ = Math.abs(entityPos.z - this.finalPosition.z);
+        var dY = Math.abs(entityPos.y - this.finalPosition.y);
 
         // xStepABS and zStepABS are just the absolute value of the step amounts
         // since this is a displacement check
-        if (dX <= this.xStepABS && dZ <= this.zStepABS) {
+        if (dX <= this.xStepABS && dY <= this.yStepABS) {
 
             // When its finished assign the exact value since this step
             // would have put it further than the position, so its safe to move it
             // at least this far this frame
 
             entity.setX(this.finalPosition.x);
-            entity.setZ(this.finalPosition.z);
+            entity.setY(this.finalPosition.y);
 
             this.finish();
             return;
 
         } else {
             entity.addX(this.xStep);
-            entity.addZ(this.zStep);
+            entity.addY(this.yStep);
         }
     }
 });

@@ -9,7 +9,11 @@ G.model.Entity = Class.create({
         this.isSelected = false;
 
         this.destX = null;
-        this.destZ = null;
+        this.destY = null;
+
+        this.objWidth = 0;
+        this.objHeight = 0;
+        this.objLength = 0;
 
         this.Material = null;
         this.Geom = null;
@@ -68,6 +72,12 @@ G.model.Entity = Class.create({
     getObjectMesh: function(){
         return this.objectMesh;
     },
+    getBounds: function(){
+        // returns the width, height, length of the bounding collision box
+        return {width: this.objWidth,
+                height: this.objHeight,
+                length: this.objLength};
+    },
     getRotation: function() {
         return this.Mesh.rotation;
     },
@@ -122,28 +132,28 @@ G.model.Entity = Class.create({
         return this.movespeed;
     },
     turn: function(finalRadians,isClockwise) {
-        var curAngle = this.getRotation().y;
+        var curAngle = this.getRotation().z;
         var d = Math.abs(curAngle - finalRadians);
 
         if (this.turnrate > d) {
-            this.Mesh.rotation.y = finalRadians;
+            this.Mesh.rotation.z = finalRadians;
         } else {
             if (isClockwise) {
-                this.Mesh.rotation.y -= this.turnrate;
-                if(this.Mesh.rotation.y < 0){
-                    this.Mesh.rotation.y = (G.twoPI - Math.abs(this.Mesh.rotation.y));
+                this.Mesh.rotation.z -= this.turnrate;
+                if(this.Mesh.rotation.z < 0){
+                    this.Mesh.rotation.z = (G.twoPI - Math.abs(this.Mesh.rotation.z));
                 }
             } else {
-                this.Mesh.rotation.y += this.turnrate;
-                if(this.Mesh.rotation.y > G.twoPI){
-                    this.Mesh.rotation.y -= G.twoPI;
+                this.Mesh.rotation.z += this.turnrate;
+                if(this.Mesh.rotation.z > G.twoPI){
+                    this.Mesh.rotation.z -= G.twoPI;
                 }
             }
         }
 
-        if(this.Mesh.rotation.y > 2*Math.PI || this.Mesh.rotation.y < -2*Math.PI){
+        if(this.Mesh.rotation.z > 2*Math.PI || this.Mesh.rotation.z < -2*Math.PI){
             G.log("something went wrong with turn");
-            this.Mesh.rotation.y = finalRadians;
+            this.Mesh.rotation.z = finalRadians;
         }
     },
     update: function() {

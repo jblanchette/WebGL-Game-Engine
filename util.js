@@ -26,6 +26,7 @@ G.util.getCoordIntersect = function(x, y, objects) {
 // behave the way we want it to for negative numbers.
 // Taken from http://javascript.about.com/od/problemsolving/a/modulobug.htm
 G.util.fixRotation = function(degrees) {
+    G.log("fixRot",degrees);
     return ((degrees % 360) + 360) % 360;
 }
 
