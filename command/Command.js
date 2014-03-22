@@ -8,11 +8,10 @@ G.command.Command = Class.create({
         this.started = false;
 
         this.properties = {};
-
     },
 
-    setProperties: function(propObject){
-        this.properties = propObject;
+    setProperties: function(properties){
+        this.properties = properties;
     },
 
     getProperty: function(key){
@@ -32,11 +31,15 @@ G.command.Command = Class.create({
     getEntity: function(){
         return this.entity;
     },
+
     start: function (){
       this.started = true;
     },
+
+    // @TODO: Fix this, circular, maybe use a callback to say it is done
+    // rather than delegate the next command itself?
     finish: function(){
-        this.getEntity().cmd.nextCommand();
+        this.getEntity().commandQueue.nextCommand();
     },
 
     update: function() {

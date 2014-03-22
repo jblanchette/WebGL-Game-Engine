@@ -7,31 +7,35 @@
 
 
 G.command.CommandQueue = Class.create({
-    initialize: function(entity,defCommandAlias) {
-        // defCmd is the default command run when there are no commands in the list
-        if(arguments.length == 1){
-            this.defCmd = "Idle";
-        }else{
-            this.defCmd = defCommandAlias;
+    initialize: function(entity, defaultCommand) {
+
+        if (arguments.length === 1) {
+            this.defaultCommand = "Idle";
+        } else {
+            this.defaultCommand = defaultCommand;
         }
+
         this.entity = entity;
         this.queue = [];
-
     },
-    addCommand: function(command){
 
-            if(this.queue.length >= 1){
+    addCommand: function(commandAlias, options){
 
-                // The queue length should be equal to one in this case
-                if(this.queue[0].getAlias() == this.defCmd){
-                    this.reset();
-                }else{
-                    if(!G.mShift && this.queue[0].getProperty("interuptable")){
-                        this.reset();
-                    }
-                }
+        var command = new G.command[commandAlias + 'Command'](this.entity, options || {});
+        command.setAlias(commandAlias);
+
+        if (this.queue.length >= 1) {
+
+            var currentCommand = this.getCurrentCommand();
+
+            // The queue length should be equal to one in this case
+            if (currentCommand.getAlias() === this.defaultCommand){
+                this.reset();
+            } else if (!G.mShift && currentCommand.getProperty('interuptable')) {
+                this.reset();
             }
-            
+        }
+
         this.queue.push(command);
     },
 
@@ -42,21 +46,12 @@ G.command.CommandQueue = Class.create({
     },
 
     reset: function(){
-
         this.queue = [];
-
     },
 
     resetToDefault: function(){
-       var nCmd = new G.command[this.defCmd + "Command"](this.entity);
-       nCmd.setAlias(this.defCmd);
        this.reset();
-       this.queue.push(nCmd);
-    },
-
-    addResetCommand: function(command){
-        this.reset();
-        this.addCommand(command);
+       this.addCommand(this.defaultCommand);
     },
 
     getCurrentCommand: function(){

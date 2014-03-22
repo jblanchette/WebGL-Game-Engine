@@ -15,7 +15,7 @@ G.model.Entity = Class.create({
         this.objectMesh = null; // Every entity has an object mesh inside an Object3D group]
                                 // This is the mesh used in collision
 
-        this.cmd = new G.command.CommandQueue(this);
+        this.commandQueue = new G.command.CommandQueue(this);
     },
 
     getType: function() {
@@ -24,7 +24,7 @@ G.model.Entity = Class.create({
 
     setType: function(type){
         this.type = type;
-        
+
         return this;
     },
 
@@ -37,77 +37,96 @@ G.model.Entity = Class.create({
             }
         }
     },
-    addCommand: function(cmd, options) {
-        var command = new G.command[cmd + 'Command'](this, options);
-        command.setAlias(cmd);
 
-        this.cmd.addCommand(command);
+    addCommand: function(commandAlias, options) {
+        this.commandQueue.addCommand(commandAlias, options);
     },
+
     getMesh: function() {
         return this.Mesh;
     },
+
     getObjectMesh: function(){
         return this.objectMesh;
     },
+
     getBounds: function(){
         // returns the width, height, length of the bounding collision box
         return {width: this.objWidth,
                 height: this.objHeight,
                 length: this.objLength};
     },
+
     getRotation: function() {
         return this.Mesh.rotation;
     },
+
     setRotationX: function(n) {
         this.Mesh.rotation.x = n;
     },
+
     setRotationY: function(n) {
         this.Mesh.rotation.y = n;
     },
+
     setRotationZ: function(n) {
         this.Mesh.rotation.z = n;
     },
+
     setPosition: function(x, y, z) {
         this.Mesh.position.x = x;
         this.Mesh.position.y = y;
         this.Mesh.position.z = z;
     },
+
     setX: function(n) {
         this.Mesh.position.x = n;
     },
+
     setY: function(n) {
         this.Mesh.position.y = n;
     },
+
     setZ: function(n) {
         this.Mesh.position.z = n;
     },
+
     getPosition: function() {
         return this.Mesh.position;
     },
+
     getPositionString: function() {
         return this.Mesh.position.x.toFixed(2) + "," + this.Mesh.position.y.toFixed(2);
     },
+
     getX: function() {
         return this.Mesh.position.x;
     },
+
     getY: function() {
         return this.Mesh.position.y;
     },
+
     getZ: function() {
         return this.Mesh.position.z;
     },
+
     addX: function(n) {
         this.Mesh.position.x += n;
     },
+
     addY: function(n) {
         this.Mesh.position.y += n;
     },
+
     addZ: function(n) {
         this.Mesh.position.z += n;
     },
+
     getMoveSpeed: function() {
         return this.movespeed;
     },
+
     turn: function(finalRadians,isClockwise) {
         var curAngle = this.getRotation().z;
         var d = Math.abs(curAngle - finalRadians);
@@ -128,13 +147,14 @@ G.model.Entity = Class.create({
             }
         }
 
-        if(this.Mesh.rotation.z > 2*Math.PI || this.Mesh.rotation.z < -2*Math.PI){
+        if( this.Mesh.rotation.z > 2*Math.PI || this.Mesh.rotation.z < -2*Math.PI) {
             G.log("something went wrong with turn");
             this.Mesh.rotation.z = finalRadians;
         }
     },
+
     update: function() {
-        var currentCommand = this.cmd.getCurrentCommand(this);
+        var currentCommand = this.commandQueue.getCurrentCommand(this);
 
         if (currentCommand) {
             currentCommand.update(this);
