@@ -1,5 +1,5 @@
 G.component.EntityComponent = Class.create(G.component.Component, {
-    initialize: function($super,options) {
+    initialize: function($super, options) {
         $super(options);
         this.scrollSpeed = 10;
         this.entities = [];
@@ -12,19 +12,19 @@ G.component.EntityComponent = Class.create(G.component.Component, {
         this.selected = [];
     },
 
+    events: {
+        'mousemove':    'handleMouseMove',
+        'mousedown':    'handlwMouseMove',
+        'mouseup':      'handleMouseMove',
+        'keypress':     'handleMouseMove',
+        'keydown':      'handleMouseMove',
+        'keyup':        'handleMouseMove'
+    },
+
     buildScene: function() {
 
         var scene = this.getScene();
-        var _this = this;
         var ed = this.getEventDispatcher();
-
-         // Add event listeners
-        ed.addEventListener("mousemove",function(e){_this.handleMouseMove(e)});
-        ed.addEventListener("mousedown",function(e){_this.handleMouseDown(e)});
-        ed.addEventListener("mouseup"  ,function(e){_this.handleMouseUp(e)});
-        ed.addEventListener("keypress" ,function(e){_this.handleKeyPress(e)});
-        ed.addEventListener("keydown"  ,function(e){_this.handleModifiers(e)});
-        ed.addEventListener("keyup"    ,function(e){_this.handleModifiers(e)});
 
         scene.add(this.regionSelector.getMesh());
 
@@ -35,66 +35,65 @@ G.component.EntityComponent = Class.create(G.component.Component, {
         this.groundMesh.position.z = 0;
 
         //scene.add(this.groundMesh);
-        this.addEntity("Unit",{position: [0,0,0]});
-        this.addEntity("Unit",{position: [50,0,0]});
-
+        this.addEntity("Unit", {position: [0, 0, 0]});
+        this.addEntity("Unit", {position: [50, 0, 0]});
     },
 
-    removeSelectedEntity: function(entity){
-        for(var i = 0; i < this.selected.length; i++){
-            if(this.selected[i].eID === entity.eID){
-                this.selected.splice(i,1);
+    removeSelectedEntity: function(entity) {
+        for (var i = 0; i < this.selected.length; i++) {
+            if (this.selected[i].eID === entity.eID) {
+                this.selected.splice(i, 1);
                 return;
             }
         }
     },
 
-    unselectAll: function(){
-         for(var i = 0; i < this.selected.length; i++){
-             this.selected[i].setSelected(false);
-         }
+    unselectAll: function() {
+        for (var i = 0; i < this.selected.length; i++) {
+            this.selected[i].setSelected(false);
+        }
 
-         this.selected = [];
+        this.selected = [];
     },
 
-    selectEntity: function(entity){
+    selectEntity: function(entity) {
 
         // If shift is held we de-select the entity.
         // Notes: - if no units are selected, ignore shift
         //        - if unit isn't already in group, ignore shift
         var selLength = this.selected.length;
 
-        if(G.mShift){
-           if(selLength > 0){
-            for(var i = 0; i < selLength; i++){
-             if(this.selected[i].eID === entity.eID){
-                // found entity in selected, get rid of it
-                this.removeSelectedEntity(entity);
-                this.getEventDispatcher().dispatchEvent({type: "ENTITY.Remove", data: entity});
-                return;
-             }
+        if (G.mShift) {
+            if (selLength > 0) {
+                for (var i = 0; i < selLength; i++) {
+                    if (this.selected[i].eID === entity.eID) {
+                        // found entity in selected, get rid of it
+                        this.removeSelectedEntity(entity);
+                        this.getEventDispatcher().dispatchEvent({type: "ENTITY.Remove", data: entity});
+                        return;
+                    }
+                }
             }
-           }
 
-           // Shift was held, unit wasnt in group,
-           // Set unit selected and add in
-           entity.setSelected(true);
-           this.selected.push(entity);
-
-        }else{
-
-            this.unselectAll();
+            // Shift was held, unit wasnt in group,
+            // Set unit selected and add in
             entity.setSelected(true);
             this.selected.push(entity);
 
+        } else {
+            this.unselectAll();
+            entity.setSelected(true);
+
+            this.selected.push(entity);
         }
 
-        this.getEventDispatcher().dispatchEvent({type: "ENTITY.Add", data: entity});
-
-
-
+        this.getEventDispatcher().dispatchEvent({
+            type: "ENTITY.Add",
+            data: entity
+        });
     },
-    selectRegion: function(boxCoords){
+
+    selectRegion: function(boxCoords) {
 
         var orig = boxCoords[0];
         var end = boxCoords[1];
@@ -103,12 +102,12 @@ G.component.EntityComponent = Class.create(G.component.Component, {
 
         var result = [];
 
-        bLeft = Math.min(orig.y,end.y);
-        bRight = Math.max(orig.y,end.y);
-        bTop = Math.min(orig.x,end.x);
-        bBottom = Math.max(orig.x,end.x);
+        bLeft = Math.min(orig.y, end.y);
+        bRight = Math.max(orig.y, end.y);
+        bTop = Math.min(orig.x, end.x);
+        bBottom = Math.max(orig.x, end.x);
 
-        for(var i = 0; i < this.entities.length; i++){
+        for (var i = 0; i < this.entities.length; i++) {
 
             eBounds = this.entities[i].getBounds();
             ePos = this.entities[i].getMesh().position;
@@ -118,32 +117,14 @@ G.component.EntityComponent = Class.create(G.component.Component, {
             eRight = (ePos.y + eBounds.width);
             eBottom = (ePos.x + eBounds.length);
 
-            /*
-            G.log("1",(eLeft <= bRight));
-            G.log("2",(bLeft <= eRight));
-            G.log("3",(eTop <= bBottom));
-            G.log("4",(bTop <= eBottom));
-            */
-
-            if(eLeft <= bRight &&
-               bLeft <= eRight &&
-               eTop <= bBottom &&
-               bTop <= eBottom){
-                   result.push(i);
+            if (eLeft <= bRight &&  bLeft <= eRight &&
+                eTop <= bBottom &&  bTop <= eBottom) {
+                result.push(i);
             }
-
-            if(result.length === 0){
-
-            }else{
-
-            }
-
-
         }
-
     },
 
-    addEntity: function(entityType, sceneOptions){
+    addEntity: function(entityType, sceneOptions) {
 
         var e = new G.model['Entity' + entityType]();
         var eMesh = e.getObjectMesh();
@@ -151,7 +132,7 @@ G.component.EntityComponent = Class.create(G.component.Component, {
         e.setSceneOptions(sceneOptions);
         this.getScene().add(e.getMesh());
 
-        if(this.entities.length == 0){
+        if (this.entities.length == 0) {
             this.selectEntity(e);
         }
 
@@ -161,35 +142,30 @@ G.component.EntityComponent = Class.create(G.component.Component, {
 
     },
 
-    handleKeyPress: function(event){
+    handleKeyPress: function(event) {
         return;
     },
 
-    handleMouseMove: function(event){
+    handleMouseMove: function(event) {
 
         var coords = G.util.getEventCoords(event);
         var groundInt = G.util.getCoordIntersect(coords.x, coords.y, [this.groundMesh]);
         var p = groundInt[0].point;
 
-        if(this.boxStarted){
-            this.regionSelector.setRegion(p.x,p.y);
+        if (this.boxStarted) {
+            this.regionSelector.setRegion(p.x, p.y);
         }
     },
 
-    handleMouseUp: function(event){
+    handleMouseUp: function(event) {
 
-        if(event.which){
-
-
-
+        if (event.which) {
             var coords = G.util.getEventCoords(event);
 
             var entityInt = G.util.getCoordIntersect(coords.x, coords.y, this.entityMeshes);
             var groundInt = G.util.getCoordIntersect(coords.x, coords.y, [this.groundMesh]);
 
-            var p;
-
-            if(groundInt.length > 0 && this.boxStarted === true){
+            if (groundInt.length > 0 && this.boxStarted === true) {
                 this.boxCoords.push(groundInt[0].point);
                 this.selectRegion(this.boxCoords);
                 this.regionSelector.getMesh().visible = false;
@@ -202,13 +178,13 @@ G.component.EntityComponent = Class.create(G.component.Component, {
 
                 var obj = entityInt[0].object;
 
-                if(obj !== null){
+                if (obj !== null) {
                     // The eID is the 'Entity ID' or the position in the (this.entities) array
                     // TODO: possibly can just update the reference given back from the intersection?
                     var eID = obj.eID;
-                    if(eID !== undefined && this.entities[eID] !== undefined){
+                    if (eID !== undefined && this.entities[eID] !== undefined) {
                         var e = this.entities[eID];
-                        if(event.which == 1){
+                        if (event.which == 1) {
                             this.selectEntity(e);
                             return;
                         }
@@ -235,45 +211,44 @@ G.component.EntityComponent = Class.create(G.component.Component, {
                 p = groundInt[0].point;
 
                 if (event.which === 1 && entityInt.length === 0) {
-                    if(this.boxStarted === false){
+                    if (this.boxStarted === false) {
                         this.boxStarted = true;
                         this.boxCoords = [p];
-                        this.regionSelector.setOrigin(p.x,p.y);
+                        this.regionSelector.setOrigin(p.x, p.y);
                     }
                 }
 
                 if (event.which === 3) {
 
-                    if(entityInt.length > 0){
+                    if (entityInt.length > 0) {
                         G.log("ent point:" + entityInt[0].point);
                     }
 
-                    if (G.mA)
+                    if (G.mA) {
                         G.log("A click");
-                    if (G.mM)
+                    }
+
+                    if (G.mM) {
                         G.log("M click");
-                    for(var i = 0; i < this.selected.length; i++){
+                    }
+
+                    for (var i = 0; i < this.selected.length; i++) {
                         this.selected[i].addCommand('Move', p);
                     }
                 }
             }
         }
-
-
     },
 
     update: function() {
-        for(var i = 0; i < this.entities.length; i++){
-            if(this.entities[i])
-                this.entities[i].update();
-        }
+        _.each(this.entities, function(entity) {
+            entity.update();
+        });
     },
 
-    handleModifiers: function(event){
-      G.mAlt = event.altKey;
-      G.mCtrl = event.ctrlKey;
-      G.mShift = event.shiftKey;
-
+    handleModifiers: function(event) {
+        G.mAlt = event.altKey;
+        G.mCtrl = event.ctrlKey;
+        G.mShift = event.shiftKey;
     }
-
 });

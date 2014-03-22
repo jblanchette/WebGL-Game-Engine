@@ -7,6 +7,10 @@ G.component.Component = Class.create({
         this.subscribeList = [];
     },
 
+    events: {
+
+    },
+
     buildScene: function(scene,promises) {
 
     },
@@ -26,11 +30,12 @@ G.component.Component = Class.create({
     setCamera: function(camera){
         this.camera = camera;
     },
+
     getScene: function(){
          return this.scene;
     },
+
     getCamera: function(){
         return this.camera;
     }
-
 });
