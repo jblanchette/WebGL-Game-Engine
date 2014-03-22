@@ -1,15 +1,8 @@
 G.model.Entity = Class.create({
     initialize: function() {
 
-        // TypeID points to a Const entry for the TypeName
-        this.TypeID = 0;
-        this.TypeName = "Entity";
-        this.TypeBase = "Entity";
-
+        this.type = G.const.Entity.ENTITY;
         this.isSelected = false;
-
-        this.destX = null;
-        this.destY = null;
 
         this.objWidth = 0;
         this.objHeight = 0;
@@ -26,29 +19,13 @@ G.model.Entity = Class.create({
     },
 
     getType: function() {
-        return this.TypeName;
+        return this.type;
     },
 
-    getTypeID: function(){
-        return this.TypeID;
-    },
-
-    getTypeBase: function(){
-        return this.TypeBase;
-    },
-
-    setType: function(newType){
-
-        for(var i = 0; i < G.const.Entity.length; i++){
-            if(G.const.Entity[i] === newType){
-                this.TypeID = i;
-                this.TypeName = newType;
-                return;
-            }
-        }
-
-        G.warning("Type not found in const in [" + this.TypeBase + "]: " + newType);
-
+    setType: function(type){
+        this.type = type;
+        
+        return this;
     },
 
     setSceneOptions: function(sceneOptions){

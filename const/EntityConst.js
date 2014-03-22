@@ -1,8 +1,10 @@
-G.const.Entity = [
-      "Entity",     // 0
-      "Unit",       // 1
-      "Building",   // 2
-      "Thing"       // 3
-    ];
+/**
+ * Entity Constants
+ */
 
-    console.log("loaded entity const");
+G.const.Entity = {
+    ENTITY:     0,
+    UNIT:       1,
+    BUILDING:   2,
+    THING:      3,
+};

@@ -3,13 +3,14 @@ G.command.MoveCommand = Class.create(G.command.Command, {
 
         $super(entity,options);
 
-        var props = {interuptable: true,
-                     targetType: "any",
-                     targetSelector: "pointer"};
+        var props = {
+            interuptable: true,
+            targetType: 'any',
+            targetSelector: 'pointer'
+        };
 
         this.setProperties(props);
         this.finalPosition = this.options;
-
     },
 
     start: function($super){
