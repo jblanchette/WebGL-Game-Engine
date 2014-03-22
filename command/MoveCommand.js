@@ -55,7 +55,7 @@ G.command.MoveCommand = Class.create(G.command.Command, {
 
     finish: function($super){
         $super();
-        Router.getCurrent().getEventDispatcher().dispatchEvent({type: "unitMoveEnd", currentUnit: this.entity});
+        Router.getCurrent().getEventDispatcher().dispatchEvent({type: "ENTITY.MoveEnd", data: this.entity});
     },
 
     update: function(entity) {

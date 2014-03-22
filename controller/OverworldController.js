@@ -18,7 +18,7 @@ G.controller.OverworldController = Class.create(G.controller.Controller, {
         this.EntityComp = new G.component.EntityComponent();
         this.HUDComp = new G.component.HUDComponent();
 
-        //this.addComponent(this.HUDComp,true);
+        this.addComponent(this.HUDComp,true);
         this.addComponent(this.EntityComp, true);
 
 

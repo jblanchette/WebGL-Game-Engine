@@ -3,7 +3,7 @@ G.model.HUD = Class.create({
 
         this.TextEntries =
             {hp: this.makeTextArea(135,225),
-             mp: this.makeTextArea(165,225)};
+             mp: this.makeTextArea(265,225)};
 
 
         this.scrollSpeed = 10;
@@ -11,25 +11,23 @@ G.model.HUD = Class.create({
         this.Mesh = new THREE.Object3D();
 
         this.BGMaterial = new THREE.MeshBasicMaterial({color: 0x00FF00});
-        this.BGGeom = new THREE.PlaneGeometry(100, 900);
+        this.BGGeom = new THREE.PlaneGeometry(2000, 100);
 
         this.BGMesh = new THREE.Mesh(this.BGGeom, this.BGMaterial);
 
-        this.BGMesh.position.x = 157;
+        this.BGMesh.position.x = 0;
         this.BGMesh.position.y = 0;
-        this.BGMesh.position.z = 0;
-        this.BGMesh.rotation.x = THREE.Math.degToRad(270);
+        this.BGMesh.position.z = 1;
 
-        this.PortraitMesh = new THREE.MeshBasicMaterial({color: 0xFFFFFF});
+
+        this.PortraitMesh = new THREE.MeshBasicMaterial({color: 0xFF0000});
         this.PortraitGeom = new THREE.PlaneGeometry(90,90);
 
         this.PortraitMesh = new THREE.Mesh(this.PortraitGeom, this.PortraitMaterial);
 
-        this.PortraitMesh.position.x = 157.5;
-        this.PortraitMesh.position.y = 0.1;
-        this.PortraitMesh.position.z = 315;
-        this.PortraitMesh.rotation.x = THREE.Math.degToRad(270);
-
+        this.PortraitMesh.position.x = -675;
+        this.PortraitMesh.position.y = 3;
+        this.PortraitMesh.position.z = 2;
 
         this.Mesh.add(this.BGMesh);
         this.Mesh.add(this.PortraitMesh);
@@ -55,7 +53,7 @@ G.model.HUD = Class.create({
         }
     },
 
-    makeTextArea: function(x,z,textValue){
+    makeTextArea: function(x,y,textValue){
 
         var _textValue = "-";
         if(arguments.length == 3){
@@ -72,11 +70,9 @@ G.model.HUD = Class.create({
         var TextMaterial = new THREE.MeshPhongMaterial({color: 0xFFFFFF});
         var TextMesh = new THREE.Mesh(TextGeom, TextMaterial);
         TextMesh.position.x = x;
-        TextMesh.position.y = 0.1;
-        TextMesh.position.z = z;
+        TextMesh.position.y = y;
+        TextMesh.position.z = 1;
 
-        TextMesh.rotation.x = THREE.Math.degToRad(270);
-        TextMesh.rotation.z = THREE.Math.degToRad(90);
 
         return TextMesh;
     },

@@ -47,7 +47,7 @@ G.model.EntityUnit = Class.create(G.model.Entity, {
 
         this.SelectionMesh = new THREE.Line(this.SelectionGeom, this.SelectionMaterial);
 
-        this.SelectionMesh.position.set(0,0,0);
+        this.SelectionMesh.position.set(0,0,1);
 
         this.SelectionMesh.visible = false;
 
@@ -57,7 +57,7 @@ G.model.EntityUnit = Class.create(G.model.Entity, {
     },
 
     // selType is a boolean
-    selectUnit: function(selType){
+    setSelected: function(selType){
         this.isSelected = selType;
         this.SelectionMesh.visible = selType;
     },

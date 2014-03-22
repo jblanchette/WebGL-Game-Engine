@@ -9,7 +9,7 @@ G.component.EntityComponent = Class.create(G.component.Component, {
         this.boxCoords = [];
         this.regionSelector = new G.model['RegionSelector'];
 
-        this.currentUnit = null;
+        this.selected = [];
     },
 
     buildScene: function() {
@@ -28,27 +28,70 @@ G.component.EntityComponent = Class.create(G.component.Component, {
 
         scene.add(this.regionSelector.getMesh());
 
-        this.groundMaterial = new THREE.MeshNormalMaterial({color: 0xFF0000});
+        this.groundMaterial = new THREE.MeshNormalMaterial({transparent: true, opacity: 1});
         this.groundMesh = new THREE.Mesh(new THREE.CubeGeometry(3500, 3000, 1), this.groundMaterial);
         this.groundMesh.position.x = 0;
         this.groundMesh.position.y = 0;
         this.groundMesh.position.z = 0;
 
-        scene.add(this.groundMesh);
+        //scene.add(this.groundMesh);
         this.addEntity("Unit",{position: [0,0,0]});
-        //this.addEntity("Unit",{position: [50,0,0]});
+        this.addEntity("Unit",{position: [50,0,0]});
 
     },
+
+    removeSelectedEntity: function(entity){
+        for(var i = 0; i < this.selected.length; i++){
+            if(this.selected[i].eID === entity.eID){
+                this.selected.splice(i,1);
+                return;
+            }
+        }
+    },
+
+    unselectAll: function(){
+         for(var i = 0; i < this.selected.length; i++){
+             this.selected[i].setSelected(false);
+         }
+
+         this.selected = [];
+    },
+
     selectEntity: function(entity){
 
-        if(this.currentUnit !== null){
-            this.currentUnit.selectUnit(false);
+        // If shift is held we de-select the entity.
+        // Notes: - if no units are selected, ignore shift
+        //        - if unit isn't already in group, ignore shift
+        var selLength = this.selected.length;
+
+        if(G.mShift){
+           if(selLength > 0){
+            for(var i = 0; i < selLength; i++){
+             if(this.selected[i].eID === entity.eID){
+                // found entity in selected, get rid of it
+                this.removeSelectedEntity(entity);
+                this.getEventDispatcher().dispatchEvent({type: "ENTITY.Remove", data: entity});
+                return;
+             }
+            }
+           }
+
+           // Shift was held, unit wasnt in group,
+           // Set unit selected and add in
+           entity.setSelected(true);
+           this.selected.push(entity);
+
+        }else{
+
+            this.unselectAll();
+            entity.setSelected(true);
+            this.selected.push(entity);
+
         }
 
-        this.currentUnit = entity;
-        this.currentUnit.selectUnit(true);
+        this.getEventDispatcher().dispatchEvent({type: "ENTITY.Add", data: entity});
 
-        this.getEventDispatcher().dispatchEvent({type: "unitSelect", currentUnit: this.currentUnit});
+
 
     },
     selectRegion: function(boxCoords){
@@ -58,45 +101,48 @@ G.component.EntityComponent = Class.create(G.component.Component, {
         var bLeft, bRight, bTop, bBottom;
         var ePos, eBounds, eLeft, eTop, eRight, eBottom;
 
+        var result = [];
 
-        if(orig.z < end.z){
-            bLeft = orig.z;
-            bRight = end.z;
-        }else{
-            bLeft = end.z;
-            bRight = orig.z;
-        }
-
-        if(orig.x < end.x){
-            bTop = orig.x;
-            bBottom = end.x;
-        }else{
-            bTop = end.x;
-            bBottom = orig.x;
-        }
-
-        //G.log("box",bLeft.toFixed(2),bTop.toFixed(2),bRight.toFixed(2),bBottom.toFixed(2));
+        bLeft = Math.min(orig.y,end.y);
+        bRight = Math.max(orig.y,end.y);
+        bTop = Math.min(orig.x,end.x);
+        bBottom = Math.max(orig.x,end.x);
 
         for(var i = 0; i < this.entities.length; i++){
 
             eBounds = this.entities[i].getBounds();
             ePos = this.entities[i].getMesh().position;
 
-            eLeft = ePos.z;
+            eLeft = ePos.y;
             eTop = ePos.x;
-            eRight = (ePos.z + eBounds.width);
+            eRight = (ePos.y + eBounds.width);
             eBottom = (ePos.x + eBounds.length);
 
-            // left / right check
-            G.log("bleft",bLeft,"bRight",bRight,"eLeft",eLeft);
+            /*
+            G.log("1",(eLeft <= bRight));
+            G.log("2",(bLeft <= eRight));
+            G.log("3",(eTop <= bBottom));
+            G.log("4",(bTop <= eBottom));
+            */
 
-            if(bLeft <= eLeft && bLeft <= eRight){
-                    G.log("within left/right", i);
+            if(eLeft <= bRight &&
+               bLeft <= eRight &&
+               eTop <= bBottom &&
+               bTop <= eBottom){
+                   result.push(i);
             }
+
+            if(result.length === 0){
+
+            }else{
+
+            }
+
 
         }
 
     },
+
     addEntity: function(entityType, sceneOptions){
 
         var e = new G.model['Entity' + entityType]();
@@ -115,30 +161,9 @@ G.component.EntityComponent = Class.create(G.component.Component, {
 
     },
 
-    update: function() {
-        for(var i = 0; i < this.entities.length; i++){
-            if(this.entities[i])
-                this.entities[i].update();
-        }
-    },
-
-    handleModifiers: function(event){
-      // Handle Modifiers is used specifially (at the moment) for modifier keys
-      // The "event" that is send has a few flags.
-      // Flags: shiftKey, altKey, ctrlKey
-      // Other keys: A, M
-      G.mAlt = event.altKey;
-      G.mCtrl = event.ctrlKey;
-      G.mShift = event.shiftKey;
-
-    },
-
     handleKeyPress: function(event){
-        //G.log("Key:",event.keyCode);
-        // A = 65, M = 77
-        this.regionSelector.getMesh().position.z -= 1;
+        return;
     },
-
 
     handleMouseMove: function(event){
 
@@ -147,7 +172,7 @@ G.component.EntityComponent = Class.create(G.component.Component, {
         var p = groundInt[0].point;
 
         if(this.boxStarted){
-            this.regionSelector.setRegion(p.x,p.z);
+            this.regionSelector.setRegion(p.x,p.y);
         }
     },
 
@@ -188,13 +213,11 @@ G.component.EntityComponent = Class.create(G.component.Component, {
                             return;
                         }
                     }
-
                 }
-
             }
-
         }
     },
+
     handleMouseDown: function(event) {
         // (1 = left, 2 = middle,3 = right)
 
@@ -215,7 +238,7 @@ G.component.EntityComponent = Class.create(G.component.Component, {
                     if(this.boxStarted === false){
                         this.boxStarted = true;
                         this.boxCoords = [p];
-                        this.regionSelector.setOrigin(p.x,p.z);
+                        this.regionSelector.setOrigin(p.x,p.y);
                     }
                 }
 
@@ -229,11 +252,28 @@ G.component.EntityComponent = Class.create(G.component.Component, {
                         G.log("A click");
                     if (G.mM)
                         G.log("M click");
-                    this.currentUnit.addCommand('Move', p);
+                    for(var i = 0; i < this.selected.length; i++){
+                        this.selected[i].addCommand('Move', p);
+                    }
                 }
             }
         }
 
 
+    },
+
+    update: function() {
+        for(var i = 0; i < this.entities.length; i++){
+            if(this.entities[i])
+                this.entities[i].update();
+        }
+    },
+
+    handleModifiers: function(event){
+      G.mAlt = event.altKey;
+      G.mCtrl = event.ctrlKey;
+      G.mShift = event.shiftKey;
+
     }
+
 });

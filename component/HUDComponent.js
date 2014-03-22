@@ -10,9 +10,10 @@ G.component.HUDComponent = Class.create(G.component.Component, {
         var ed = this.getEventDispatcher();
         var _this = this;
 
-        ed.addEventListener("keydown",     function(e){_this.handleKeyDown(e)});
-        ed.addEventListener("unitSelect",  this.updateSelection.bind(this));
-        ed.addEventListener("unitMoveEnd", this.updateSelection.bind(this));
+        ed.addEventListener("keydown",        function(e){_this.handleKeyDown(e)});
+        ed.addEventListener("ENTITY.Add",     this.updateSelection.bind(this));
+        ed.addEventListener("ENTITY.Remove",  this.updateSelection.bind(this));
+        ed.addEventListener("ENTITY.MoveEnd", this.updateSelection.bind(this));
 
         /*
         // Load Texture
@@ -30,6 +31,7 @@ G.component.HUDComponent = Class.create(G.component.Component, {
             scene.add(domeMesh);
         });*/
 
+        this.HUD.getMesh().position.set(0,-370,0);
 
         scene.add(this.HUD.getMesh());
 
@@ -49,7 +51,7 @@ G.component.HUDComponent = Class.create(G.component.Component, {
     },
 
     updateSelection: function(event){
-        var unit = event.currentUnit;
+        var unit = event.data;
 
         this.HUD.setText("hp","HP: "  + unit.currentHP + "/" + unit.maxHP);
         this.HUD.setText("mp","Pos: " + unit.getPositionString());
