@@ -47,7 +47,9 @@ G.controller.Controller = Class.create({
         component.setCamera(this.camera);
         component.setEventDispatcher(dispatcher);
 
+
         _.each(component.events, function(fn, eventName) {
+            G.log("eventName",eventName,"comp", component);
             dispatcher.addEventListener(eventName, _.bind(component[fn], component));
         });
 

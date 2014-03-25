@@ -14,11 +14,11 @@ G.component.EntityComponent = Class.create(G.component.Component, {
 
     events: {
         'mousemove':    'handleMouseMove',
-        'mousedown':    'handlwMouseMove',
-        'mouseup':      'handleMouseMove',
-        'keypress':     'handleMouseMove',
-        'keydown':      'handleMouseMove',
-        'keyup':        'handleMouseMove'
+        'mousedown':    'handleMouseDown',
+        'mouseup':      'handleMouseUp',
+        'keypress':     'handleKeyPress',
+        'keydown':      'handleModifiers',
+        'keyup':        'handleModifiers'
     },
 
     buildScene: function() {
@@ -121,7 +121,10 @@ G.component.EntityComponent = Class.create(G.component.Component, {
                 eTop <= bBottom &&  bTop <= eBottom) {
                 result.push(i);
             }
+
         }
+
+        G.log("results",result.length);
     },
 
     addEntity: function(entityType, sceneOptions) {

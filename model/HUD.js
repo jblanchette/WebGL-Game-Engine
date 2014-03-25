@@ -39,7 +39,7 @@ G.model.HUD = Class.create({
     },
 
     setText: function(textName, textValue){
-        G.log("setting text",textName,textValue);
+
         if(this.TextEntries[textName] !== undefined){
             var oldText = this.TextEntries[textName];
             var oldPos = oldText.position;
@@ -57,7 +57,6 @@ G.model.HUD = Class.create({
 
         var _textValue = "-";
         if(arguments.length == 3){
-            console.log("set t value",textValue);
             _textValue = textValue;
         }
 
