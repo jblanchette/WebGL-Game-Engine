@@ -3,13 +3,11 @@ G.component.EntityComponent = Class.create(G.component.Component, {
         $super(options);
         this.scrollSpeed = 10;
         this.entities = [];
-        this.entityMeshes = [];
 
         this.boxStarted = false;
         this.boxCoords = [];
-        this.regionSelector = new G.model['RegionSelector'];
 
-        this.selected = [];
+
     },
 
     events: {
@@ -22,236 +20,20 @@ G.component.EntityComponent = Class.create(G.component.Component, {
     },
 
     buildScene: function() {
-
-        var scene = this.getScene();
-        var ed = this.getEventDispatcher();
-
-        scene.add(this.regionSelector.getMesh());
-
-        this.groundMaterial = new THREE.MeshNormalMaterial({transparent: true, opacity: 1});
-        this.groundMesh = new THREE.Mesh(new THREE.CubeGeometry(3500, 3000, 1), this.groundMaterial);
-        this.groundMesh.position.x = 0;
-        this.groundMesh.position.y = 0;
-        this.groundMesh.position.z = 0;
-
-        //scene.add(this.groundMesh);
-        this.addEntity("Unit", {position: [0, 0, 0]});
-        this.addEntity("Unit", {position: [50, 0, 0]});
-    },
-
-    removeSelectedEntity: function(entity) {
-        for (var i = 0; i < this.selected.length; i++) {
-            if (this.selected[i].eID === entity.eID) {
-                this.selected.splice(i, 1);
-                return;
-            }
-        }
-    },
-
-    unselectAll: function() {
-        for (var i = 0; i < this.selected.length; i++) {
-            this.selected[i].setSelected(false);
-        }
-
-        this.selected = [];
-    },
-
-    selectEntity: function(entity) {
-
-        // If shift is held we de-select the entity.
-        // Notes: - if no units are selected, ignore shift
-        //        - if unit isn't already in group, ignore shift
-        var selLength = this.selected.length;
-
-        if (G.mShift) {
-            if (selLength > 0) {
-                for (var i = 0; i < selLength; i++) {
-                    if (this.selected[i].eID === entity.eID) {
-                        // found entity in selected, get rid of it
-                        this.removeSelectedEntity(entity);
-                        this.getEventDispatcher().dispatchEvent({type: "ENTITY.Remove", data: entity});
-                        return;
-                    }
-                }
-            }
-
-            // Shift was held, unit wasnt in group,
-            // Set unit selected and add in
-            entity.setSelected(true);
-            this.selected.push(entity);
-
-        } else {
-            this.unselectAll();
-            entity.setSelected(true);
-
-            this.selected.push(entity);
-        }
-
-        this.getEventDispatcher().dispatchEvent({
-            type: "ENTITY.Add",
-            data: entity
-        });
-    },
-
-    selectRegion: function(boxCoords) {
-
-        var orig = boxCoords[0];
-        var end = boxCoords[1];
-        var bLeft, bRight, bTop, bBottom;
-        var ePos, eBounds, eLeft, eTop, eRight, eBottom;
-
-        var result = [];
-
-        bLeft = Math.min(orig.y, end.y);
-        bRight = Math.max(orig.y, end.y);
-        bTop = Math.min(orig.x, end.x);
-        bBottom = Math.max(orig.x, end.x);
-
-        for (var i = 0; i < this.entities.length; i++) {
-
-            eBounds = this.entities[i].getBounds();
-            ePos = this.entities[i].getMesh().position;
-
-            eLeft = ePos.y;
-            eTop = ePos.x;
-            eRight = (ePos.y + eBounds.width);
-            eBottom = (ePos.x + eBounds.length);
-
-            if (eLeft <= bRight &&  bLeft <= eRight &&
-                eTop <= bBottom &&  bTop <= eBottom) {
-                result.push(i);
-            }
-
-        }
-
-        G.log("results",result.length);
+        // not sure what to do here.  possibly have things already assigned do some preload?
+        // maybe this gets called more than once and is just a
+        //  - generic iteration through everything -> add to scene
     },
 
     addEntity: function(entityType, sceneOptions) {
 
-        var e = new G.model['Entity' + entityType]();
-        var eMesh = e.getObjectMesh();
-
-        e.setSceneOptions(sceneOptions);
-        this.getScene().add(e.getMesh());
-
-        if (this.entities.length == 0) {
-            this.selectEntity(e);
-        }
-
-        eMesh.eID = this.entities.length;
-        this.entities.push(e);
-        this.entityMeshes.push(eMesh);
-
     },
 
-    handleKeyPress: function(event) {
-        return;
-    },
-
-    handleMouseMove: function(event) {
-
-        var coords = G.util.getEventCoords(event);
-        var groundInt = G.util.getCoordIntersect(coords.x, coords.y, [this.groundMesh]);
-        var p = groundInt[0].point;
-
-        if (this.boxStarted) {
-            this.regionSelector.setRegion(p.x, p.y);
-        }
-    },
-
-    handleMouseUp: function(event) {
-
-        if (event.which) {
-            var coords = G.util.getEventCoords(event);
-
-            var entityInt = G.util.getCoordIntersect(coords.x, coords.y, this.entityMeshes);
-            var groundInt = G.util.getCoordIntersect(coords.x, coords.y, [this.groundMesh]);
-
-            if (groundInt.length > 0 && this.boxStarted === true) {
-                this.boxCoords.push(groundInt[0].point);
-                this.selectRegion(this.boxCoords);
-                this.regionSelector.getMesh().visible = false;
-                this.boxStarted = false;
-                this.boxCoords = [];
-                return;
-            }
-
-            if (entityInt.length > 0) {
-
-                var obj = entityInt[0].object;
-
-                if (obj !== null) {
-                    // The eID is the 'Entity ID' or the position in the (this.entities) array
-                    // TODO: possibly can just update the reference given back from the intersection?
-                    var eID = obj.eID;
-                    if (eID !== undefined && this.entities[eID] !== undefined) {
-                        var e = this.entities[eID];
-                        if (event.which == 1) {
-                            this.selectEntity(e);
-                            return;
-                        }
-                    }
-                }
-            }
-        }
-    },
-
-    handleMouseDown: function(event) {
-        // (1 = left, 2 = middle,3 = right)
-
-        if (event.which) {
-
-            var coords = G.util.getEventCoords(event);
-
-            // Check intersections with entities and the ground mesh
-            var entityInt = G.util.getCoordIntersect(coords.x, coords.y, this.entityMeshes);
-            var groundInt = G.util.getCoordIntersect(coords.x, coords.y, [this.groundMesh]);
-
-            var p;
-
-            if (groundInt.length > 0) {
-                p = groundInt[0].point;
-
-                if (event.which === 1 && entityInt.length === 0) {
-                    if (this.boxStarted === false) {
-                        this.boxStarted = true;
-                        this.boxCoords = [p];
-                        this.regionSelector.setOrigin(p.x, p.y);
-                    }
-                }
-
-                if (event.which === 3) {
-
-                    if (entityInt.length > 0) {
-                        G.log("ent point:" + entityInt[0].point);
-                    }
-
-                    if (G.mA) {
-                        G.log("A click");
-                    }
-
-                    if (G.mM) {
-                        G.log("M click");
-                    }
-
-                    for (var i = 0; i < this.selected.length; i++) {
-                        this.selected[i].addCommand('Move', p);
-                    }
-                }
-            }
-        }
-    },
 
     update: function() {
         _.each(this.entities, function(entity) {
             entity.update();
         });
-    },
-
-    handleModifiers: function(event) {
-        G.mAlt = event.altKey;
-        G.mCtrl = event.ctrlKey;
-        G.mShift = event.shiftKey;
     }
+
 });

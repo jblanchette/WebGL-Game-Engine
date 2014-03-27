@@ -1,6 +1,9 @@
 var G = {};
 var Router;
 G.debug = true;
+// New flag to put into testing mode when TRUE
+// Loads "TestController" with a "TestComponent" instead of usual MainMenu
+G.testing = true;
 G.warnings = [];
 G.fps = 50;
 G.state = -1;
@@ -8,6 +11,8 @@ G.state = -1;
 G.command = {};
 G.component = {};
 G.controller = {};
+G.scene = {};
+G.entity = {};
 G.model = {};
 G.util = {};
 G.textures = {};
@@ -51,7 +56,7 @@ G.initialize = function() {
     G.renderer.domElement.addEventListener('mouseup',   dispatcherProxy, false);
     G.renderer.domElement.addEventListener('mousedown', dispatcherProxy, false);
     G.renderer.domElement.addEventListener('mousemove', dispatcherProxy, false);
-    
+
     // The key listeners need to be attached to the document
     document.addEventListener('keypress',  dispatcherProxy, false);
     document.addEventListener('keydown',   dispatcherProxy, false);
@@ -59,8 +64,15 @@ G.initialize = function() {
 
     Router = new G.controller['Router'];
 
-    // Start game main menu
-    Router.load('MainMenu',true);
+    if(G.testing){
+        G.log("TEST MODE STARTING ===========================================");
+        G.debug = true;    // force debug mode on
+        G.warnings = true; // force warnings on
+        Router.load("Testing");
+    }else{
+        // Start game main menu
+        Router.load('MainMenu',true);
+    }
 };
 
 /**

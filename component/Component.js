@@ -37,5 +37,11 @@ G.component.Component = Class.create({
 
     getCamera: function(){
         return this.camera;
+    },
+
+    handleModifiers: function(event) {
+        G.mAlt = event.altKey;
+        G.mCtrl = event.ctrlKey;
+        G.mShift = event.shiftKey;
     }
 });

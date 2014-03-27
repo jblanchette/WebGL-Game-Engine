@@ -15,31 +15,6 @@ G.model.Entity = Class.create({
         this.objectMesh = null; // Every entity has an object mesh inside an Object3D group]
                                 // This is the mesh used in collision
 
-        this.commandQueue = new G.command.CommandQueue(this);
-    },
-
-    getType: function() {
-        return this.type;
-    },
-
-    setType: function(type){
-        this.type = type;
-
-        return this;
-    },
-
-    setSceneOptions: function(sceneOptions){
-        for(prop in sceneOptions){
-            switch(prop){
-                case "position":
-                    this.Mesh.position.fromArray(sceneOptions.position);
-                break;
-            }
-        }
-    },
-
-    addCommand: function(commandAlias, options) {
-        this.commandQueue.addCommand(commandAlias, options);
     },
 
     getMesh: function() {
@@ -125,32 +100,6 @@ G.model.Entity = Class.create({
 
     getMoveSpeed: function() {
         return this.movespeed;
-    },
-
-    turn: function(finalRadians,isClockwise) {
-        var curAngle = this.getRotation().z;
-        var d = Math.abs(curAngle - finalRadians);
-
-        if (this.turnrate > d) {
-            this.Mesh.rotation.z = finalRadians;
-        } else {
-            if (isClockwise) {
-                this.Mesh.rotation.z -= this.turnrate;
-                if(this.Mesh.rotation.z < 0){
-                    this.Mesh.rotation.z = (G.twoPI - Math.abs(this.Mesh.rotation.z));
-                }
-            } else {
-                this.Mesh.rotation.z += this.turnrate;
-                if(this.Mesh.rotation.z > G.twoPI){
-                    this.Mesh.rotation.z -= G.twoPI;
-                }
-            }
-        }
-
-        if( this.Mesh.rotation.z > 2*Math.PI || this.Mesh.rotation.z < -2*Math.PI) {
-            G.log("something went wrong with turn");
-            this.Mesh.rotation.z = finalRadians;
-        }
     },
 
     update: function() {

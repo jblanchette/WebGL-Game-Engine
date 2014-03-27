@@ -21,38 +21,7 @@ G.model.EntityUnit = Class.create(G.model.Entity, {
 
         // Initalize the THREE.js Materials, Geometry, and Mesh
 
-        this.Mesh = new THREE.Object3D();
 
-        this.Material = new THREE.MeshBasicMaterial({vertexColors: THREE.FaceColors, overdraw: 0.5});
-        this.Geom = new THREE.CubeGeometry(this.objWidth, this.objHeight, this.objLength);
-
-        var hex = 0xff0000;
-        this.Geom.faces[ 2 ].color.setHex(hex);
-        this.Geom.faces[ 3 ].color.setHex(hex);
-
-        var hex2 = 0x00ff00;
-        this.Geom.faces[ 0 ].color.setHex(hex2);
-        this.Geom.faces[ 1 ].color.setHex(hex2);
-
-        this.objectMesh = new THREE.Mesh(this.Geom, this.Material);
-        this.objectMesh.position.x = 0;
-        this.objectMesh.position.y = 0;
-        this.objectMesh.position.z = 10;
-
-        this.SelectionMaterial = new THREE.LineBasicMaterial( { color: 0xffff00 } );
-        this.SelectionGeom = new THREE.CircleGeometry( 16, 64 );
-
-        // Remove center vertex
-        this.SelectionGeom.vertices.shift();
-
-        this.SelectionMesh = new THREE.Line(this.SelectionGeom, this.SelectionMaterial);
-
-        this.SelectionMesh.position.set(0,0,1);
-
-        this.SelectionMesh.visible = false;
-
-        this.Mesh.add(this.objectMesh);
-        this.Mesh.add(this.SelectionMesh);
 
     },
 
