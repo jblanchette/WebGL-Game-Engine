@@ -13,10 +13,6 @@ G.controller.Controller = Class.create({
         this.camera = new THREE.Camera();
         this.eventDispatcher = new THREE.EventDispatcher();
 
-        var _this = this;
-
-        this.eventDispatcher.addEventListener('mousedown',_this.handleMouseDown,false);
-
     },
 
     setDestroyable: function(isDestroyable){
