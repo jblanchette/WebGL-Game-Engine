@@ -6,8 +6,6 @@ G.component.EntityComponent = Class.create(G.component.Component, {
 
         this.boxStarted = false;
         this.boxCoords = [];
-
-
     },
 
     events: {
@@ -27,20 +25,16 @@ G.component.EntityComponent = Class.create(G.component.Component, {
 
     addEntity: function(entityType, sceneOptions) {
 
-       var newEntity = new G.entity[entityType];
+       var entity = new G.entity[entityType];
+       var model = entity.getModel();
 
-       newEntity.Model.
-
-       if(this.Model === null)
-            return null;
-
-        var dispatcher = this.Model.getEventDispatcher();
+       var dispatcher = model.getEventDispatcher();
 
        _.each(this.events, function(fn, eventName) {
             dispatcher.addEventListener(eventName, _.bind(this.events[fn], this));
        });
 
-
+       this.entities.push(entity);
     },
 
 

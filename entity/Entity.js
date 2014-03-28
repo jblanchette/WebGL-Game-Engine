@@ -2,14 +2,14 @@ G.entity.Entity = Class.create({
     initialize: function(options) {
 
         this.type = G.const.Entity.ENTITY;
-        this.Model = null;
-        this.commandQueue = new G.command['CommandQueue'](this);
+        this.model = null;
+        this.commandQueue = new G.command.CommandQueue(this);
         this.SceneObject = null;
-        
     },
 
     events: {
-
+        'change:x': 'setX',
+        'change:y': 'setY'
     },
 
     getSceneObject: function(){
@@ -17,7 +17,7 @@ G.entity.Entity = Class.create({
     },
 
     getModel: function(){
-        return this.Model;
+        return this.model;
     },
 
     getType: function() {
@@ -29,14 +29,25 @@ G.entity.Entity = Class.create({
         return this;
     },
 
+    setX: function(x) {
+        //this.mesh.x = x;
+    },
+    setY: function(y) {
+        //this.mesh.y = y;
+    },
+
     addCommand: function(commandAlias, options) {
         this.commandQueue.addCommand(commandAlias, options);
     },
 
+    /**
+     * @TODO: Move this to the model, and then use setRotation
+     * to change the mesh / sceneobject
+     */
     turn: function(finalTurnRadian,isClockwise) {
         return;
         var currentRotationZ  = this.SceneObject.getRotationZ();
-        var currentTurnRate   = this.Model.getTurnRate();
+        var currentTurnRate   = this.model.getTurnRate();
         var distanceRemaining = Math.abs(currentRotationZ - finalTurnRadian);
 
         if (currentTurnRate > distanceRemaining) {
