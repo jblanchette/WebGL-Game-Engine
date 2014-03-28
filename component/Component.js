@@ -39,6 +39,10 @@ G.component.Component = Class.create({
         return this.camera;
     },
 
+    /**
+     * @TODO: I wanna move this stuff to a global service and inject it from the
+     * controller that way it's shared and not repeated in every component
+     */
     handleModifiers: function(event) {
         G.mAlt = event.altKey;
         G.mCtrl = event.ctrlKey;
