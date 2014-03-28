@@ -28,19 +28,18 @@ G.component.WorldComponent = Class.create(G.component.Component, {
 
         G.log(g);
         this.grid = g;
-
     },
 
     makeLine: function(startX,startZ,endX,endZ){
         var geo = new THREE.Geometry();
-         var material = new THREE.LineBasicMaterial({
+        var material = new THREE.LineBasicMaterial({
             color: 0x0000ff
         });
-        geo.vertices.push(new THREE.Vector3(startX-500,0,startZ-500));
-        geo.vertices.push(new THREE.Vector3(endX-500,0,endZ-500));
 
-        return new THREE.Line(geo,material);
+        geo.vertices.push(new THREE.Vector3(startX - 500, 0, startZ - 500));
+        geo.vertices.push(new THREE.Vector3(endX - 500, 0, endZ - 500));
 
+        return new THREE.Line(geo, material);
     },
 
     buildScene: function() {

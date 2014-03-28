@@ -7,8 +7,6 @@ G.controller.MainMenuController = Class.create(G.controller.Controller, {
 
     init: function(promises) {
 
-        var scene = this.getScene();
-
         this.angle = 0;
         this.menu = new G.component.MenuComponent([
             'Play',
@@ -19,25 +17,17 @@ G.controller.MainMenuController = Class.create(G.controller.Controller, {
         ]);
 
         // Load Texture
+        // @TODO: Probably move the loadTexture stuff to the
+        // spacebackground comopnent, don't load it here.
+        var self = this;
         this.loadTexture('./textures/space.jpg', function(texture) {
-            texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-
-            var dome = new THREE.SphereGeometry(1500, 100, 100);
-            var domeMaterial = new THREE.MeshPhongMaterial({
-                color: 0x000000,
-                side: THREE.BackSide,
-                map: texture
-            });
-
-            var domeMesh = new THREE.Mesh(dome, domeMaterial);
-            scene.add(domeMesh);
+            self.addComponent(new G.component.SpaceBackgroundComponent({
+                texture: texture
+            }));
         });
 
         // Add Menu component with update
         this.addComponent(this.menu, true);
-
-        // Setup lights
-        this.scene.add(new THREE.AmbientLight(0xeef0ff));
 
         // Setup camera
         this.camera = new THREE.PerspectiveCamera( 90, 1600 / 900, 1, 3000 );

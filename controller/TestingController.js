@@ -9,12 +9,11 @@ G.controller.TestingController = Class.create(G.controller.Controller, {
 
         G.log("init testing controller");
 
-        this.TestComp = new G.component['TestingComponent']();
-
         // Setup camera
-        this.camera = new THREE.PerspectiveCamera( 90, 1600 / 900, 1, 3000 );
-        this.camera.position.set( 0, 0, 700 );
+        this.camera = new THREE.PerspectiveCamera( 45, 1600 / 900, 1, 3000 );
+        this.camera.position.set( 0, 0, 100 );
 
+        this.TestComp = new G.component['TestingComponent']();
         this.addComponent(this.TestComp,true);
         this.addUpdate(this);
     },

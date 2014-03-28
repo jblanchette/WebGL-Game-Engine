@@ -1,6 +1,6 @@
 G.component.Component = Class.create({
     initialize: function(options) {
-        this.options = options || [];
+        this.options = options || {};
         this.scene  = null;
         this.camera = null;
         this.parentController = null;
@@ -11,7 +11,7 @@ G.component.Component = Class.create({
 
     },
 
-    buildScene: function(scene,promises) {
+    buildScene: function(scene, promises) {
 
     },
 

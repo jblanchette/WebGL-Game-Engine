@@ -29,6 +29,7 @@ G.mCtrl = false;
  * Initialize the Game
  */
 G.initialize = function() {
+
     // Create Projector
     G.projector = new THREE.Projector();
 

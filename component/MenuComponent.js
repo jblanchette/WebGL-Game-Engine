@@ -1,17 +1,18 @@
 G.component.MenuComponent = Class.create(G.component.Component, {
 
-    initialize: function($super,options) {
+    initialize: function($super, options) {
         $super(options);
         this.hitboxes = [];
         this.particles = [];
     },
 
+    events: {
+        'mouseup': 'handleMouseUp'
+    },
+
     buildScene: function() {
         var material, textGeom, textMesh, hitboxMaterial, hitboxMesh;
         var scene = this.getScene();
-        var ed = this.getEventDispatcher();
-        var _this = this;
-        ed.addEventListener("mouseup",function(e){_this.handleMouseUp(e)});
 
         for (var i = 0; i < this.options.length; i++) {
             textGeom = new THREE.TextGeometry(this.options[i], {
@@ -38,7 +39,6 @@ G.component.MenuComponent = Class.create(G.component.Component, {
             this.hitboxes.push(hitboxMesh);
             scene.add(hitboxMesh);
             scene.add(textMesh);
-
         }
 
         var pMaterial, pMesh, pGeom;
@@ -59,7 +59,6 @@ G.component.MenuComponent = Class.create(G.component.Component, {
             this.particles.push(pMesh);
             scene.add(pMesh);
         }
-
     },
 
     update: function() {
@@ -86,11 +85,8 @@ G.component.MenuComponent = Class.create(G.component.Component, {
                 p.yVel *= -1;
             }
 
-
             p.position.x += p.xVel;
             p.position.y += p.yVel;
-
-
         }
     },
 
@@ -104,7 +100,7 @@ G.component.MenuComponent = Class.create(G.component.Component, {
 
     handleMouseUp: function(event) {
 
-        if(event.which && event.which != 1){
+        if(event.which && event.which !== 1){
             return;
         }
 

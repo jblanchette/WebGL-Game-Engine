@@ -37,7 +37,6 @@ G.command.MoveCommand = Class.create(G.command.Command, {
 
         // this is how far each update the entity will go in the x,z direction
         // calculated once here and stored for future use.
-
         var vFinal = this.finalPosition.clone().sub(entityPos).normalize();
         this.xStep = entityMS * vFinal.x;
         this.yStep = entityMS * vFinal.y;
@@ -66,7 +65,6 @@ G.command.MoveCommand = Class.create(G.command.Command, {
         } else {
             //done turning, start the move
             this.stepMove(entity);
-
         }
     },
 
@@ -87,6 +85,7 @@ G.command.MoveCommand = Class.create(G.command.Command, {
             entity.setY(this.finalPosition.y);
 
             this.finish();
+            
             return;
 
         } else {

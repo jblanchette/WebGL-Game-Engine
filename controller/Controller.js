@@ -1,10 +1,7 @@
 G.controller.Controller = Class.create({
 
     initialize: function(isDestroyable) {
-
-        this.destroyable =
-            (arguments.length === 0) ? false : isDestroyable;
-
+        this.destroyable = isDestroyable || false;
         this.updateable = [];
         this.destroyable = false;
         this.components = [];
@@ -12,7 +9,6 @@ G.controller.Controller = Class.create({
         this.scene = new THREE.Scene();
         this.camera = new THREE.Camera();
         this.eventDispatcher = new THREE.EventDispatcher();
-
     },
 
     setDestroyable: function(isDestroyable){
@@ -43,9 +39,7 @@ G.controller.Controller = Class.create({
         component.setCamera(this.camera);
         component.setEventDispatcher(dispatcher);
 
-
         _.each(component.events, function(fn, eventName) {
-            G.log("eventName",eventName,"comp", component);
             dispatcher.addEventListener(eventName, _.bind(component[fn], component));
         });
 
@@ -59,7 +53,6 @@ G.controller.Controller = Class.create({
     loadTexture: function(url, callback) {
         this.addPromise(function(resolve, reject) {
             THREE.ImageUtils.loadTexture(url, undefined, function(texture) {
-
                 callback(texture);
                 resolve(texture);
             }, function(error) {
@@ -106,21 +99,5 @@ G.controller.Controller = Class.create({
 
     getEventDispatcher: function() {
         return this.eventDispatcher;
-    },
-
-    handleMouseUp: function(e){
-        G.log("controller got mouse up");
-    },
-    handleMouseDown: function(e){
-
-    },
-    handleMouseMove: function(e){
-
-    },
-    handleKeyDown: function(e){
-
-    },
-    handleMouseUp: function(e){
-
     },
 });

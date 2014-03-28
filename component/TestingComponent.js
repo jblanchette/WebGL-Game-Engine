@@ -20,9 +20,9 @@ G.component.TestingComponent = Class.create(G.component.Component, {
 
         G.log("TestingComp buildScene");
 
-        var entity = new G.entity['Player']();
+        this.entity = new G.entity['Hero']({x: 0,y: 0, z: 0});
 
-        G.log("TestComp entity", entity);
+        scene.add(this.entity.getSceneObject());
 
     },
 
@@ -44,7 +44,7 @@ G.component.TestingComponent = Class.create(G.component.Component, {
 
 
     update: function() {
-
+        this.entity.update();
     }
 
 });

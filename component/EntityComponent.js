@@ -27,7 +27,22 @@ G.component.EntityComponent = Class.create(G.component.Component, {
 
     addEntity: function(entityType, sceneOptions) {
 
+       var newEntity = new G.entity[entityType];
+
+       newEntity.Model.
+
+       if(this.Model === null)
+            return null;
+
+        var dispatcher = this.Model.getEventDispatcher();
+
+       _.each(this.events, function(fn, eventName) {
+            dispatcher.addEventListener(eventName, _.bind(this.events[fn], this));
+       });
+
+
     },
+
 
 
     update: function() {

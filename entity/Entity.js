@@ -1,8 +1,15 @@
 G.entity.Entity = Class.create({
-    initialize: function() {
+    initialize: function(options) {
+
         this.type = G.const.Entity.ENTITY;
-        this.SceneObject = null;
         this.Model = null;
+        this.commandQueue = new G.command['CommandQueue'](this);
+        this.SceneObject = null;
+        
+    },
+
+    events: {
+
     },
 
     getSceneObject: function(){
@@ -22,31 +29,12 @@ G.entity.Entity = Class.create({
         return this;
     },
 
-    // setSceneOptions: Arguments (Object sceneOptions
-    //                              [opt position (x,y,z),
-    //                               opt rotation (x,y,z),
-    //                               opt scale (x,y,z)])
-    setSceneOptions: function(sceneOptions){
-        for(prop in sceneOptions){
-            switch(prop){
-                case "position":
-                    this.SceneObject.setPosition(sceneOptions.position);
-                break;
-                case "rotation":
-                    this.SceneObject.setRotation(sceneOptions.rotation);
-                break;
-                case "scale":
-                    this.SceneObject.setScale(sceneOptions.scale);
-                break;
-            }
-        }
-    },
-
     addCommand: function(commandAlias, options) {
         this.commandQueue.addCommand(commandAlias, options);
     },
 
     turn: function(finalTurnRadian,isClockwise) {
+        return;
         var currentRotationZ  = this.SceneObject.getRotationZ();
         var currentTurnRate   = this.Model.getTurnRate();
         var distanceRemaining = Math.abs(currentRotationZ - finalTurnRadian);
