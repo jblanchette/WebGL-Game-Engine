@@ -21,13 +21,25 @@ G.model.Model = Class.create({
         }
     },
 
-    setAttribute: function(attributeName,attributeValue){
-        if(attributeName !== ""){
+    setAttribute: function(attributeName, attributeValue){
+        if(attributeName === ''){
+            return;
+        }
+
+        var oldValue = this.getAttribute(attributeName);
+
+        if (oldValue !== attributeValue) {
             this.attributes[attributeName] = attributeValue;
+
+            this.getEventDispatcher.dispatchEvent({
+                type: 'change:' + attributeName,
+                value: attributeValue,
+                oldValue: oldValue
+            });
         }
     },
 
-    getEventDistpatcher: function(){
+    getEventDispatcher: function(){
         return this.eventDispatcher;
     }
 });
