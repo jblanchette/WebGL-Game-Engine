@@ -24,7 +24,7 @@ G.entity.Hero = Class.create(G.entity.Entity, {
     buildScene: function(){
 
         var boundingBox = this.Model.getAttribute("boundingBox");
-        G.log("bb",boundingBox.width);
+        G.log("bb",boundingBox);
         this.playerMaterial = new THREE.MeshBasicMaterial({vertexColors: THREE.FaceColors, overdraw: 0.5});
         this.playerGeom = new THREE.CubeGeometry(boundingBox.width, boundingBox.height, boundingBox.length);
 

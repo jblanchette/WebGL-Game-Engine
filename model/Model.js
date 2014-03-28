@@ -7,7 +7,7 @@ G.model.Model = Class.create({
         var defaultAttributes = _.defaults(options || {}, {
             hp: 100,
             mp: 100,
-            boundingBox: {length: 20, width: 20, height: 20}
+            boundingBox: {length: 1, width: 1, height: 1}
         });
 
         this.attributes = defaultAttributes;

@@ -1,26 +1,10 @@
 G.model.Hero = Class.create(G.model.Model, {
     initialize: function($super,options) {
+        var defaultAttributes = _.defaults(options || {}, {
+            boundingBox: {length: 20, width: 20, height: 20}
+        });
 
-        $super(options);
+        $super(defaultAttributes);
 
-        this.eventDispatcher = new THREE.EventDispatcher();
-
-
-    },
-
-    getAttribute: function(attributeName){
-        if(this.attributes[attributeName] !== undefined){
-            return this.attributes[attributeName];
-        }
-    },
-
-    setAttribute: function(attributeName,attributeValue){
-        if(attributeName !== ""){
-            this.attributes[attributeName] = attributeValue;
-        }
-    },
-
-    getEventDistpatcher: function(){
-        return this.eventDispatcher;
     }
 });
