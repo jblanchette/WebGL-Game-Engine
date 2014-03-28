@@ -17,6 +17,10 @@ G.model.Model = Class.create({
         G.log("Model attribs",this.attributes);
     },
 
+    // Shortcuts
+    set: function(){ this.setAttribute.prototype.call(arguments); },
+    get: function(){ this.getAttribute.prototype.call(arguments); },
+
     getAttribute: function(attributeName){
         if(this.attributes[attributeName] !== undefined){
             return this.attributes[attributeName];
