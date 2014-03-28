@@ -1,19 +1,11 @@
 G.model.Hero = Class.create(G.model.Model, {
     initialize: function($super,options) {
 
-        $super();
+        $super(options);
 
         this.eventDispatcher = new THREE.EventDispatcher();
 
-        var defaultAttributes = _.defaults(options || {}, {
-            hp: 100,
-            mp: 100,
-            boundingBox: {length: 20, width: 20, height: 20}
-        });
 
-        this.attributes = defaultAttributes;
-
-        G.log("Model attribs",this.attributes);
     },
 
     getAttribute: function(attributeName){
