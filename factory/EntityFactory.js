@@ -17,7 +17,7 @@ G.factory.EntityFactory = Class.create({
         var model      = new settings.model();
         var scenegraph = new settings.scenegraph();
 
-        console.log("eyy");
+        console.log("eyy 2");
 
         return new G.entity.Entity(type, model, scenegraph);
     }
