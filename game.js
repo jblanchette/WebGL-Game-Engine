@@ -1,6 +1,8 @@
 var G = {};
 var Router;
 G.debug = true;
+// Flag which decides if warnings log to console or not.
+G.showWarnings = true;
 // New flag to put into testing mode when TRUE
 // Loads "TestController" with a "TestComponent" instead of usual MainMenu
 G.testing = true;
@@ -13,6 +15,8 @@ G.component = {};
 G.controller = {};
 G.scene = {};
 G.entity = {};
+G.settings = {};
+G.factory = {};
 G.model = {};
 G.util = {};
 G.textures = {};
@@ -68,7 +72,7 @@ G.initialize = function() {
     if(G.testing){
         G.log("TEST MODE STARTING ===========================================");
         G.debug = true;    // force debug mode on
-        G.warnings = true; // force warnings on
+        G.showWarnings = true; // force warnings on
         Router.load("Testing");
     }else{
         // Start game main menu
@@ -109,14 +113,13 @@ G.draw = function() {
 };
 
 G.warning = function(){
-    if(G.debug){
-        G.warnings.push([arguments]);
-        console.log("WARNING:",arguments);
-    }
-}
+      G.warnings.push([arguments]);
+      if(G.showWarnings)
+        console.log("WARNING:",arguments,G.warnings);
+};
 
 G.log = function() {
     if (G.debug) {
         console.log(arguments);
     }
-}
+};
