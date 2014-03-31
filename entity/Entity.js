@@ -31,6 +31,12 @@ G.entity.Entity = Class.create({
 
     },
 
+    events: {
+        'set': 'setAttribute',
+        'get': 'getAttribute'
+    },
+
+
     /**
      * This method is a helper method to set the initial model
      * information pertaining to the world scene.
@@ -41,18 +47,23 @@ G.entity.Entity = Class.create({
      *  - rotation:       {x,y,z}
      *  - scale:          {x,y,z}
      *  - visibility:     {true,false}
-     *  - modelAttribute: Array [{atrributeName,atrributeValue}]
+     *  - attributes:     Array [{atrributeName,atrributeValue}]
      *
      * The initial four options are the most common so are labled directly.
-     * modelAttribute can also contain these attribute names.
+     * "attributes" can also contain these attribute names.
      *
      * @param {Object} Scene information module.
      */
+
     setSceneOptions: function(sceneOptions){
+
+        var model = this.getModel();
+
         for(prop in sceneOptions){
             switch(prop){
                 case "position":
-
+                    model.setAttribute("x",sceneOptions.position.x);
+                    model.setAttribute("y",sceneOptions.position.y);
                 break;
                 case "rotation":
                 break;
@@ -61,17 +72,19 @@ G.entity.Entity = Class.create({
                 case "visibility":
                 break;
                 case "modelAttribute":
+
+                    var attributes = sceneOptions.attributes;
+                    for(attributeName in attributes){
+                        G.log("setting attr",attributeName);
+                        G.log(attributes[attributeName]);
+                        model.setAttribute(attributeName,
+                                           attributes[attributeName]);
+                    }
+
                 break;
             }
         }
     },
-
-    events: {
-        'change:x': 'setX',
-        'change:y': 'setY'
-    },
-
-
 
     getSceneGraph: function(){
         return this.scenegraph;
@@ -85,47 +98,8 @@ G.entity.Entity = Class.create({
         return this.type;
     },
 
-    setType: function(type){
-        this.type = type;
-        return this;
-    },
-
-    setX: function(x) {
-        //this.mesh.x = x;
-    },
-    setY: function(y) {
-        //this.mesh.y = y;
-    },
-
     addCommand: function(commandAlias, options) {
         this.commandQueue.addCommand(commandAlias, options);
-    },
-
-    /**
-     * @TODO: Move this to the model, and then use setRotation
-     * to change the mesh / sceneobject
-     */
-    turn: function(finalTurnRadian,isClockwise) {
-        return;
-        var currentRotationZ  = this.SceneObject.getRotationZ();
-        var currentTurnRate   = this.model.getTurnRate();
-        var distanceRemaining = Math.abs(currentRotationZ - finalTurnRadian);
-
-        if (currentTurnRate > distanceRemaining) {
-            this.SceneObject.setRotationZ(finalTurnRadian);
-        } else {
-            if (isClockwise) {
-                this.SceneObject.applyRotationZ(-currentTurnRate);
-                if(currentRotationZ < 0){
-                    this.SceneObject.setRotationZ(G.twoPI - Math.abs(this.Mesh.rotation.z));
-                }
-            } else {
-                this.SceneObject.applyRotationZ(this.turnrate);
-                if(currentRotationZ > G.twoPI){
-                    this.SceneObject.applyRotationZ(-G.twoPI);
-                }
-            }
-        }
     },
 
     // Entity class needs to update its command each time.

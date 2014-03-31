@@ -1,6 +1,7 @@
 G.factory.EntityFactory = Class.create({
 
     create: function(type){
+
         var settings = G.settings.Entity[type];
         if(settings === undefined){
             if(G.warnings)
@@ -16,10 +17,13 @@ G.factory.EntityFactory = Class.create({
 
         var model      = new settings.model();
         var scenegraph = new settings.scenegraph();
+        var entity = new G.entity.Entity(type, model, scenegraph);
 
-        console.log("eyy 2");
-
-        return new G.entity.Entity(type, model, scenegraph);
+        var dispatcher = model.getEventDispatcher();
+        _.each(entity.events, function(fn, eventName) {
+            G.log("event fn",fn, "event name", eventName);
+            dispatcher.addEventListener(eventName, _.bind(model.events[fn], model));
+        });
     }
 
 });

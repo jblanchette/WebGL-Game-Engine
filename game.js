@@ -5,10 +5,11 @@ G.debug = true;
 G.showWarnings = true;
 // New flag to put into testing mode when TRUE
 // Loads "TestController" with a "TestComponent" instead of usual MainMenu
-G.testing = true;
+G.testing = false;
 G.warnings = [];
 G.fps = 50;
 G.state = -1;
+G.initialController = "Overworld";
 
 G.command = {};
 G.component = {};
@@ -77,7 +78,7 @@ G.initialize = function() {
         Router.load("Testing");
     }else{
         // Start game main menu
-        Router.load('MainMenu',true);
+        Router.load(G.initialController,true);
     }
 };
 

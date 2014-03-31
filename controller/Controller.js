@@ -32,13 +32,14 @@ G.controller.Controller = Class.create({
     },
 
     addComponent: function(component, update) {
-
+        G.log("adding component",component);
         var dispatcher = this.getEventDispatcher();
 
         component.setScene(this.scene);
         component.setCamera(this.camera);
         component.setEventDispatcher(dispatcher);
 
+        G.log("binding component events",component.events);
         _.each(component.events, function(fn, eventName) {
             dispatcher.addEventListener(eventName, _.bind(component[fn], component));
         });
