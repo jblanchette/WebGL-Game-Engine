@@ -1,4 +1,4 @@
-G.entity.Settings = {
+G.settings.Entity = {
     IceHero:
         {scenegraph: G.scenegraph.threejs.IceHero,
          model:      G.model.Hero},

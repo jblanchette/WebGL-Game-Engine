@@ -17,6 +17,7 @@ G.scene = {};
 G.entity = {};
 G.settings = {};
 G.factory = {};
+G.scenegraph = {threejs: {}};
 G.model = {};
 G.util = {};
 G.textures = {};

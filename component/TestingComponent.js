@@ -1,7 +1,8 @@
 G.component.TestingComponent = Class.create(G.component.Component, {
     initialize: function($super, options) {
         $super(options);
-
+        this.entities = [];
+        this.EntityFactory = new G.factory.EntityFactory();
     },
 
     events: {
@@ -14,16 +15,18 @@ G.component.TestingComponent = Class.create(G.component.Component, {
     },
 
     buildScene: function() {
+        this.addEntity("IceHero");
+    },
 
+    addEntity: function(type){
+        var entity = this.EntityFactory.create(type);
         var scene = this.getScene();
-        var ed = this.getEventDispatcher();
 
-        G.log("TestingComp buildScene");
+        if(entity === null)
+            return;
 
-        this.entity = new G.entity['Hero']({x: 0,y: 0, z: 0});
-
-        scene.add(this.entity.getSceneObject());
-
+        scene.add(entity.getSceneGraph());
+        this.entities.push(entity);
     },
 
     handleMouseMove: function(e){
@@ -44,7 +47,9 @@ G.component.TestingComponent = Class.create(G.component.Component, {
 
 
     update: function() {
-        this.entity.update();
+        _.each(this.entities, function(entity) {
+            entity.update();
+        });
     }
 
 });
