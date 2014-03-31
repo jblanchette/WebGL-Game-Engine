@@ -31,10 +31,47 @@ G.entity.Entity = Class.create({
 
     },
 
+    /**
+     * This method is a helper method to set the initial model
+     * information pertaining to the world scene.
+     *
+     * sceneOptions can optionally contain 1 or more of the following:
+     *
+     *  - position:       {x,y,z}
+     *  - rotation:       {x,y,z}
+     *  - scale:          {x,y,z}
+     *  - visibility:     {true,false}
+     *  - modelAttribute: Array [{atrributeName,atrributeValue}]
+     *
+     * The initial four options are the most common so are labled directly.
+     * modelAttribute can also contain these attribute names.
+     *
+     * @param {Object} Scene information module.
+     */
+    setSceneOptions: function(sceneOptions){
+        for(prop in sceneOptions){
+            switch(prop){
+                case "position":
+
+                break;
+                case "rotation":
+                break;
+                case "scale":
+                break;
+                case "visibility":
+                break;
+                case "modelAttribute":
+                break;
+            }
+        }
+    },
+
     events: {
         'change:x': 'setX',
         'change:y': 'setY'
     },
+
+
 
     getSceneGraph: function(){
         return this.scenegraph;

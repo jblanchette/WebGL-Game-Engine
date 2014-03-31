@@ -9,6 +9,7 @@ G.model.Model = Class.create({
             mp: 100,
             x: 0,
             y: 0,
+            z: 0,
             boundingBox: {length: 1, width: 1, height: 1}
         });
 

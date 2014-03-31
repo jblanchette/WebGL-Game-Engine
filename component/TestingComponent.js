@@ -15,15 +15,19 @@ G.component.TestingComponent = Class.create(G.component.Component, {
     },
 
     buildScene: function() {
-        this.addEntity("IceHero");
+
     },
 
-    addEntity: function(type){
-        var entity = this.EntityFactory.create(type);
+    addEntity: function(type,sceneOptions){
+
+        var entity = this.EntityFactory.create(type,scene);
         var scene = this.getScene();
 
         if(entity === null)
             return;
+
+        if(sceneOptions !== undefined)
+            entity.setSceneOptions(sceneOptions);
 
         scene.add(entity.getSceneGraph());
         this.entities.push(entity);

@@ -1,45 +1,47 @@
 G.component.EntityComponent = Class.create(G.component.Component, {
-    initialize: function($super, options) {
+    initialize : function($super, options) {
         $super(options);
-        this.scrollSpeed = 10;
+
         this.entities = [];
+        this.EntityFactory = new G.factory.EntityFactory();
 
-        this.boxStarted = false;
-        this.boxCoords = [];
     },
 
-    events: {
-        'mousemove':    'handleMouseMove',
-        'mousedown':    'handleMouseDown',
-        'mouseup':      'handleMouseUp',
-        'keypress':     'handleKeyPress',
-        'keydown':      'handleModifiers',
-        'keyup':        'handleModifiers'
+    events : {
+        'mousemove' : 'handleMouseMove',
+        'mousedown' : 'handleMouseDown',
+        'mouseup' : 'handleMouseUp',
+        'keypress' : 'handleKeyPress',
+        'keydown' : 'handleModifiers',
+        'keyup' : 'handleModifiers'
     },
 
-    buildScene: function() {
-        // not sure what to do here.  possibly have things already assigned do some preload?
-        // maybe this gets called more than once and is just a
-        //  - generic iteration through everything -> add to scene
+    buildScene : function() {
+        this.addEntity("IceHero", {position : {x : 100, y : 0}});
     },
 
-    addEntity: function(entityType, sceneOptions) {
+    addEntity : function(entityType, sceneOptions) {
 
-       var entity = new G.entity[entityType];
-       var model = entity.getModel();
 
-       var dispatcher = model.getEventDispatcher();
+        var entity = this.EntityFactory.create(type, scene);
+        var dispatcher = entity.getModel().getEventDispatcher();
+        var scene = this.getScene();
 
-       _.each(this.events, function(fn, eventName) {
+        if (entity === null)
+            return;
+
+        _.each(this.events, function(fn, eventName) {
             dispatcher.addEventListener(eventName, _.bind(this.events[fn], this));
-       });
+        });
 
-       this.entities.push(entity);
+        if (sceneOptions !== undefined)
+            entity.setSceneOptions(sceneOptions);
+
+        scene.add(entity.getSceneGraph());
+        this.entities.push(entity);
     },
 
-
-
-    update: function() {
+    update : function() {
         _.each(this.entities, function(entity) {
             entity.update();
         });
