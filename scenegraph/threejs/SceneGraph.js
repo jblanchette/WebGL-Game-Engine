@@ -14,13 +14,7 @@ G.scenegraph.threejs.SceneGraph = Class.create({
      * @returns {SceneGraph}
      */
     buildScene: function(model){
-        this.container = this.setup(model);
-
-        this.setX(model.getAttribute("x"));
-        this.setY(model.getAttribute("y"));
-        this.setZ(model.getAttribute("z"));
-
-        return this.container;
+        return (this.container = this.setup(model));
     },
 
     /**
@@ -41,6 +35,7 @@ G.scenegraph.threejs.SceneGraph = Class.create({
     },
 
     setX: function(x) {
+        G.log("setX",x);
         this.container.position.x = x;
     },
 

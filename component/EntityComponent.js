@@ -22,14 +22,16 @@ G.component.EntityComponent = Class.create(G.component.Component, {
 
         var entity = this.EntityFactory.create(type,options);
         var model = entity.getModel();
-        var scenegraph = entity.getSceneGraph();
+        var sceneGraph = entity.getSceneGraph();
         var scene = this.getScene();
 
         var dispatcher = model.getEventDispatcher();
 
-        _.each(scenegraph.events, function(fn, eventName) {
-            dispatcher.addEventListener(eventName, _.bind(scenegraph[fn], scenegraph));
+        _.each(sceneGraph.events, function(fn, eventName) {
+            dispatcher.addEventListener(eventName, _.bind(sceneGraph[fn], sceneGraph));
         });
+
+        model.syncAll();
 
         G.log("EntityPos",entity.model.getAttribute("x"));
 

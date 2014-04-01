@@ -24,6 +24,20 @@ G.model.Model = Class.create({
         G.log("Model attribs", this.attributes);
     },
 
+    /**
+     * syncAll will fire the 'change' event for all attributes on the model.
+     */
+    syncAll: function(){
+
+        var dispatcher = this.getEventDispatcher();
+
+        _.each(this.attributes,
+            function(value, attr){
+                G.log("fire sync event",value,attr);
+                dispatcher.dispatchEvent('change:' + attr, value);
+            });
+    },
+
     // Shortcuts
     set : function() {
         this.setAttribute.prototype.call(arguments);
@@ -33,6 +47,10 @@ G.model.Model = Class.create({
         this.getAttribute.prototype.call(arguments);
     },
 
+    /**
+     * getAttribute will return the attribute of specified name.
+     *
+     */
     getAttribute : function(attributeName) {
         if (this.attributes[attributeName] !== undefined) {
             return this.attributes[attributeName];
