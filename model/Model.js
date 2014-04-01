@@ -10,6 +10,12 @@ G.model.Model = Class.create({
             x : 0,
             y : 0,
             z : 0,
+            xRotation: 0,
+            yRotation: 0,
+            zRotation: 0,
+            xScale: 0,
+            yScale: 0,
+            zScale: 0,
             boundingBox : {length : 1, width : 1, height : 1}
         });
 
