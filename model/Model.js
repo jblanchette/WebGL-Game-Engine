@@ -1,5 +1,5 @@
 G.model.Model = Class.create({
-    initialize : function(options) {
+    initialize: function(options) {
 
         this.eventDispatcher = new THREE.EventDispatcher();
         this.attributes = [];
@@ -28,36 +28,32 @@ G.model.Model = Class.create({
      * syncAll will fire the 'change' event for all attributes on the model.
      */
     syncAll: function(){
-
-        var dispatcher = this.getEventDispatcher();
-
-        _.each(this.attributes,
-            function(value, attr){
-                G.log("fire sync event",value,attr);
-                dispatcher.dispatchEvent('change:' + attr, value);
-            });
+        var self = this;
+        _.each(this.attributes, function(value, attribute){
+            self.triggerChange(attribute, value, null);
+        });
     },
 
     // Shortcuts
-    set : function() {
-        this.setAttribute.prototype.call(arguments);
+    set: function() {
+        this.setAttribute.prototype.apply(this, arguments);
     },
 
-    get : function() {
-        this.getAttribute.prototype.call(arguments);
+    get: function() {
+        this.getAttribute.prototype.apply(this, arguments);
     },
 
     /**
      * getAttribute will return the attribute of specified name.
      *
      */
-    getAttribute : function(attributeName) {
+    getAttribute: function(attributeName) {
         if (this.attributes[attributeName] !== undefined) {
             return this.attributes[attributeName];
         }
     },
 
-    setAttribute : function(attributeName, attributeValue) {
+    setAttribute: function(attributeName, attributeValue) {
         if (attributeName === '') {
             return;
         }
@@ -67,18 +63,23 @@ G.model.Model = Class.create({
         if (oldValue !== attributeValue) {
             this.attributes[attributeName] = attributeValue;
 
-            this.getEventDispatcher.dispatchEvent({
-                type : 'change:' + attributeName,
-                value : attributeValue,
-                oldValue : oldValue
-            });
+            // Trigger change event
+            this.triggerChange(attributeName, attributeValue, oldValue);
         }
+    },
+
+    triggerChange: function(attribute, value, oldValue) {
+        this.getEventDispatcher.dispatchEvent({
+            type : 'change:' + attribute,
+            value : value,
+            oldValue : oldValue
+        });
     },
 
     /**
      * @TODO: fix this
      */
-    turn : function(finalTurnRadian, isClockwise) {
+    turn: function(finalTurnRadian, isClockwise) {
         return;
         var currentRotationZ = this.SceneObject.getRotationZ();
         var currentTurnRate = this.model.getTurnRate();
@@ -101,8 +102,7 @@ G.model.Model = Class.create({
         }
     },
 
-    getEventDispatcher : function() {
+    getEventDispatcher: function() {
         return this.eventDispatcher;
     }
-
 });
