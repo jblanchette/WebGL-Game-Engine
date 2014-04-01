@@ -1,5 +1,5 @@
-G.scenegraph.threejs.IceHero = Class.create({
-    buildScene: function(model){
+G.scenegraph.threejs.IceHero = Class.create(G.scenegraph.threejs.SceneGraph,{
+    setup: function(model){
 
         this.container = new THREE.Object3D();
 

@@ -1,7 +1,5 @@
-G.scenegraph.threejs.EarthHero = Class.create({
-    buildScene: function(model){
-
-        this.container = new THREE.Object3D();
+G.scenegraph.threejs.EarthHero = Class.create(G.scenegraph.threejs.SceneGraph,{
+    setup: function(model){
 
         var boundingBox = model.getAttribute("boundingBox");
         G.log("bb",boundingBox);

@@ -15,18 +15,20 @@ G.component.EntityComponent = Class.create(G.component.Component, {
     },
 
     buildScene : function() {
-        this.addEntity("IceHero", {x : 100, y : 0});
+        this.addEntity("IceHero", {x : 500, y : 0});
     },
 
     addEntity : function(type,options) {
 
         var entity = this.EntityFactory.create(type,options);
         var model = entity.getModel();
+        var scenegraph = entity.getSceneGraph();
         var scene = this.getScene();
 
         var dispatcher = model.getEventDispatcher();
-        _.each(entity.events, function(fn, eventName) {
-            dispatcher.addEventListener(eventName, _.bind(entity[fn], entity));
+
+        _.each(scenegraph.events, function(fn, eventName) {
+            dispatcher.addEventListener(eventName, _.bind(scenegraph[fn], scenegraph));
         });
 
         G.log("EntityPos",entity.model.getAttribute("x"));
