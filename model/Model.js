@@ -69,7 +69,7 @@ G.model.Model = Class.create({
     },
 
     triggerChange: function(attribute, value, oldValue) {
-        this.getEventDispatcher.dispatchEvent({
+        this.getEventDispatcher().dispatchEvent({
             type : 'change:' + attribute,
             value : value,
             oldValue : oldValue
