@@ -1,5 +1,5 @@
 G.scenegraph.threejs.FireHero = Class.create(G.scenegraph.threejs.SceneGraph,{
-    setup: function(model){
+    buildScene: function(scene,model){
 
         this.container = new THREE.Object3D();
 
@@ -36,6 +36,7 @@ G.scenegraph.threejs.FireHero = Class.create(G.scenegraph.threejs.SceneGraph,{
         this.container.add(this.playerMesh);
         this.container.add(this.SelectionMesh);
 
-        return this.container;
+        scene.add(this.container);
+
     }
 });

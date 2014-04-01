@@ -10,15 +10,13 @@ G.factory.EntityFactory = Class.create({
             throw {type: 'Invalid Argument', message: 'Could not find settings for ' + type};
         }
 
-        if(settings.model === undefined || settings.scenegraph === undefined){
+        if(settings.model === undefined || settings.sceneGraph === undefined){
             throw {type: 'Invalid Argument', message: 'Settings has undefined model / scenegraph'};
         }
 
         var model      = new settings.model(options);
-        var scenegraph = new settings.scenegraph();
-        scenegraph.buildScene(model);
-   
-        var entity = new G.entity.Entity(type, model, scenegraph);
+        var sceneGraph = new settings.sceneGraph();
+        var entity = new G.entity.Entity(type, model, sceneGraph);
 
         return entity;
     }

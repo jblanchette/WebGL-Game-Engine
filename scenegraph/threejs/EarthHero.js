@@ -1,5 +1,5 @@
 G.scenegraph.threejs.EarthHero = Class.create(G.scenegraph.threejs.SceneGraph,{
-    setup: function(model){
+    buildScene: function(scene,model){
 
         var boundingBox = model.getAttribute("boundingBox");
         G.log("bb",boundingBox);
@@ -34,6 +34,7 @@ G.scenegraph.threejs.EarthHero = Class.create(G.scenegraph.threejs.SceneGraph,{
         this.container.add(this.playerMesh);
         this.container.add(this.SelectionMesh);
 
-        return this.container;
+        scene.add(this.container);
+
     }
 });

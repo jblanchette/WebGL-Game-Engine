@@ -1,6 +1,6 @@
 G.settings.Entity = {
     IceHero: {
-        scenegraph: G.scenegraph.threejs.IceHero,
+        sceneGraph: G.scenegraph.threejs.IceHero,
         model:      G.model.Hero,
         modelAttributes: {
             hp: 200,
@@ -9,7 +9,7 @@ G.settings.Entity = {
     },
 
     FireHero: {
-        scenegraph: G.scenegraph.threejs.FireHero,
+        sceneGraph: G.scenegraph.threejs.FireHero,
         model:      G.model.Hero,
         modelAttributes: {
             hp: 200,
@@ -18,7 +18,7 @@ G.settings.Entity = {
     },
 
     EarthHero: {
-        scenegraph: G.scenegraph.threejs.EarthHero,
+        sceneGraph: G.scenegraph.threejs.EarthHero,
         model:      G.model.Hero,
         modelAttributes: {
             hp: 200,

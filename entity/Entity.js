@@ -1,15 +1,15 @@
 G.entity.Entity = Class.create({
-    initialize: function(type, model, scenegraph) {
+    initialize: function(type, model, sceneGraph) {
 
         this.type = type;
         this.model = model;
-        this.scenegraph = scenegraph.buildScene(this.model);
+        this.sceneGraph = sceneGraph;
         this.commandQueue = new G.command.CommandQueue(this);
 
     },
 
     getSceneGraph: function(){
-        return this.scenegraph;
+        return this.sceneGraph;
     },
 
     getModel: function(){
