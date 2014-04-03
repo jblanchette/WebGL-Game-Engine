@@ -15,11 +15,15 @@ G.controller.OverworldController = Class.create(G.controller.Controller, {
         this.camera.position.set(0, 0, 1000);
         this.camera.lookAt(new THREE.Vector3(0,0,0));
 
+
         this.EntityComp = new G.component.EntityComponent();
+        this.OverworldComp = new G.component.OverworldComponent();
+
         //this.HUDComp = new G.component.HUDComponent();
 
         //this.addComponent(this.HUDComp,true);
         this.addComponent(this.EntityComp, true);
+        this.addComponent(this.OverworldComp,true);
 
 
         this.addUpdate(this);

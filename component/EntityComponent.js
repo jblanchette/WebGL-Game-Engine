@@ -1,27 +1,33 @@
 G.component.EntityComponent = Class.create(G.component.Component, {
     initialize : function($super, options) {
         $super(options);
-        G.log("starting entity comp");
         this.entities = [];
         this.EntityFactory = new G.factory.EntityFactory();
 
     },
 
     events: {
-        'mousemove': 'handleMouseMove',
-        'mousedown': 'handleMouseDown',
-        'mouseup':   'handleMouseUp',
-        'keypress':  'handleKeyPress'
+        'mousemove':     'handleMouseMove',
+        'mousedown':     'handleMouseDown',
+        'mouseup':       'handleMouseUp',
+        'keypress':      'handleKeyPress',
+        'ENTITY.Add':    'handleEntityEvent',
+        'ENTITY.Remove': 'handleEntityEvent'
     },
 
     buildScene : function() {
         this.addEntity("IceHero", {x : 100, y : 0, z: 10});
     },
 
+    handleEntityEvent: function(event){
+        G.log("Entity Event",event.type,event);
+        G.log("Event data",event.entityType,event.options);
+        this.addEntity(event.entityType,event.options);
+    },
+
     addEntity : function(type,options) {
-        G.log("addingEntity");
+
         var entity = this.EntityFactory.create(type,options);
-        G.log("created ok");
         var model = entity.getModel();
         var sceneGraph = entity.getSceneGraph();
         var scene = this.getScene();
