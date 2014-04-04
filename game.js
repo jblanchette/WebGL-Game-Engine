@@ -9,7 +9,7 @@ G.testing = false;
 G.warnings = [];
 G.fps = 50;
 G.state = -1;
-G.initialController = "Overworld";
+G.initialController = "Loading";
 
 G.command = {};
 G.component = {};

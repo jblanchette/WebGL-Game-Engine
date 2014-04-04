@@ -13,10 +13,12 @@ G.controller.LoadingController = Class.create(G.controller.Controller, {
         this.camera.position.set(0, 0, 1000);
         this.camera.lookAt(new THREE.Vector3(0,0,0));
 
-        G.log("Starting Load");
+        G.log("Starting Load Controller");
 
         this.loader = new G.loader.ThreeLoader();
-
+        G.log("Calling load");
+        this.loader.load("data/entityscene/GroundScene.scn");
+        G.log("Loader load finished");
         this.addUpdate(this);
     },
 
