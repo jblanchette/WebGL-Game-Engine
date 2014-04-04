@@ -1,5 +1,9 @@
-G.component.EntityComponent = Class.create({
-    initialize : function($super) {
+G.loader.Loader = Class.create({
+    initialize : function() {
+
+    },
+
+    load: function( url ){
 
     },
 
@@ -12,6 +16,10 @@ G.component.EntityComponent = Class.create({
     },
 
     finish: function(){
-        
+
+    },
+
+    error: function(){
+
     }
 });

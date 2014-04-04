@@ -14,6 +14,7 @@ G.initialController = "Overworld";
 G.command = {};
 G.component = {};
 G.controller = {};
+G.loader = {};
 G.scene = {};
 G.entity = {};
 G.settings = {};
