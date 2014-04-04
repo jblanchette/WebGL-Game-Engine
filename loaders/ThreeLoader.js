@@ -1,8 +1,8 @@
 G.loader.ThreeSceneLoader = Class.create(G.loader.Loader,{
     initialize : function() {
-        THREE.DefaultLoadingMangager.onProgress = this.progress.bind(this);
-        THREE.DefaultLoadingManager.onLoad = this.finish.bind(this);
-        THREE.DefaultLoadingManager.onError = this.error.bind(this);
+        THREE.DefaultLoadingManager.onProgress = this.progress.bind(this);
+        THREE.DefaultLoadingManager.onLoad     = this.finish.bind(this);
+        THREE.DefaultLoadingManager.onError    = this.error.bind(this);
     },
 
     start: function(){
