@@ -16,16 +16,14 @@
 	"materials": [
 		{
 			"uuid": "4B36EC12-2ECC-4131-9CAB-CAEA7FC3B131",
-			"type": "MeshPhongMaterial",
+			"type": "MeshBasicMaterial",
 			"color": 16777215,
-			"ambient": 16777215,
-			"emissive": 0,
-			"specular": 1118481,
-			"shininess": 30,
+			"opacity": 0,
+			"transparent": true,
 			"wireframe": false
 		}],
 	"object": {
-		"uuid": "8558C848-347C-4528-AC56-A5B4679EF647",
+		"uuid": "8DFDF2F9-DD63-4691-A8D0-141AB37BFC24",
 		"type": "Scene",
 		"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
 		"children": [
@@ -35,7 +33,7 @@
 				"type": "Mesh",
 				"geometry": "A355C024-3734-42A3-8777-91FFFE5F72F4",
 				"material": "4B36EC12-2ECC-4131-9CAB-CAEA7FC3B131",
-				"matrix": [1,0,0,0,0,-0.00020367320394143462,1,0,0,-1,-0.00020367320394143462,0,0,0,0,1]
+				"matrix": [1,0,0,0,0,-0.000203756193513982,1,0,0,-1,-0.000203756193513982,0,0,0,0,1]
 			}]
 	}
 }
