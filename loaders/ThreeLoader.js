@@ -1,37 +1,35 @@
 G.loader.ThreeLoader = Class.create(G.loader.Loader,{
-    initialize : function() {
+    initialize: function(finishCallback) {
         G.log("init threeloader");
+        this.finishCallback = finishCallback;
+        this.manager =
+            new THREE.LoadingManager(
+                this.finishCallback,this.progress,this.error);
 
-        /*THREE.DefaultLoadingManager.onProgress = this.progress.bind(this);
-        THREE.DefaultLoadingManager.onLoad     = this.finish.bind(this);
-        THREE.DefaultLoadingManager.onError    = this.error.bind(this);*/
-
-        this.loader = new THREE.ObjectLoader(  );
+        this.loader = new THREE.ObjectLoader( this.manager );
         this.url = "";
     },
-
+    
     start: function(){
 
     },
 
     load: function(url){
-        G.log("starting load with",this.url);
         this.url = url;
         G.log("Loading",url);
-        this.loader.load(url,this.finish);
+        this.loader.load(url,this.itemEnd);
     },
 
     error: function(){
         G.log("Error",arguments);
     },
 
+    itemEnd: function(result){
+        G.log("Loader itemEnd",arguments);
+    },
+
     progress: function(item, loaded, total){
         G.log("Loader progress");
         G.log(item,loaded,total);
-    },
-
-    finish: function(result){
-        G.log("Loader END");
-        G.log("Load result",result);
     }
 });

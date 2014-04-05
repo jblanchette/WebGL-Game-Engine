@@ -15,14 +15,6 @@ G.controller.LoadingController = Class.create(G.controller.Controller, {
 
         G.log("Starting Load Controller");
 
-        this.loader = new G.loader.ThreeLoader();
-
-        try {
-            this.loader.load("data/entityscene/GroundScene.js");
-        } catch(error){
-            G.log("Load error",error);
-        }
-
         this.addUpdate(this);
     },
 

@@ -1,6 +1,6 @@
 G.loader.Loader = Class.create({
-    initialize : function() {
-
+    initialize: function(finishCallback) {
+        this.finishCallback = finishCallback;
     },
 
     load: function( url ){
@@ -8,6 +8,10 @@ G.loader.Loader = Class.create({
     },
 
     start: function(){
+
+    },
+
+    itemEnd: function(){
 
     },
 

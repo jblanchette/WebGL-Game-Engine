@@ -2,6 +2,7 @@ G.controller.Router = Class.create({
 
     initialize: function() {
         this.loading = false;
+        this.loader = new G.loader.ThreeLoader(this.loadComplete);
         this.controllers = new Array();
         this.current = null;
     },
@@ -14,6 +15,15 @@ G.controller.Router = Class.create({
 
     getCurrent: function(){
         return this.current;
+    },
+
+    /**
+     * loadComplete is passed to the loader as a callback for
+     * when the load() function has finished all of its work
+     */
+    loadComplete: function(){
+        G.log('Controller finished loading');
+        this.loading = false;
     },
 
     load: function(controllerName, swap) {
@@ -30,17 +40,19 @@ G.controller.Router = Class.create({
     get: function(name) {
         if (!this.controllers[name]) {
             var controller = this.controllers[name] = new G.controller[name + 'Controller'];
+            var _this = this;
 
             // Init Controller
             controller.init();
+
+            this.loader.load("data/entityscene/GroundScene.js");
 
             // Setup the components
             controller.getComponents().each(function(component){
                 component.buildScene(controller.getScene(), controller.getPromises());
             });
 
-            var _this = this;
-
+            /*
             RSVP.all(controller.getPromises()).then(function(objects) {
 
                 G.log('Controller finished loading');
@@ -50,7 +62,7 @@ G.controller.Router = Class.create({
 
                 console.log('Could not initiate controller: ', error);
 
-            });
+            });*/
         }
 
         return this.controllers[name];
