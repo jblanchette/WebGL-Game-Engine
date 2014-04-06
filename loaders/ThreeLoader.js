@@ -2,11 +2,10 @@ G.loader.ThreeLoader = Class.create(G.loader.Loader,{
     initialize: function($super,finishCallback) {
         $super();
 
-        this.cache = {};
         this.finishCallback = finishCallback;
         this.manager =
             new THREE.LoadingManager(
-                this.finishCallback,this.progress,this.error);
+                this.finishCallback,this.progress.bind(this),this.error.bind(this));
 
         this.loader = new THREE.ObjectLoader( this.manager );
         this.currentFileUrl = "";
@@ -17,9 +16,21 @@ G.loader.ThreeLoader = Class.create(G.loader.Loader,{
     },
 
     load: function(url){
+        var _this = this;
         this.currentFileUrl = url;
-        G.log("Loader.load",url);
-        this.loader.load(url,this.itemEnd);
+
+        if(this.cache.hasEntry(url)){
+            G.log("Loader.CacheHit",url);
+            return;
+        }
+        G.log("Loder.CacheMiss",url);
+
+        this.loader.load(url,function(result){
+            G.log("Loader.CacheUPDATE",url,result);
+            _this.cache.update(_this.currentFileUrl,result);
+        });
+
+        this.cache.add(url,null);
     },
 
     error: function(){
@@ -34,8 +45,9 @@ G.loader.ThreeLoader = Class.create(G.loader.Loader,{
         G.log("Loader.itemEnd",result);
     },
 
-    progress: function(item, loaded, total){
-        G.log("Loader progress");
-        G.log(item,loaded,total);
+    progress: function(url, loaded, total){
+        G.log("Loader progress", url, loaded, total);
+
+        // probably update our custom UI loadder counter bar here.
     }
 });

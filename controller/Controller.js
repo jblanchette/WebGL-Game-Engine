@@ -11,6 +11,10 @@ G.controller.Controller = Class.create({
         this.eventDispatcher = new THREE.EventDispatcher();
     },
 
+    resources: [
+        "data/objects/GroundObject.js"
+    ],
+
     setDestroyable: function(isDestroyable){
         this.destroyable = isDestroyable;
     },
@@ -27,19 +31,37 @@ G.controller.Controller = Class.create({
         this.updateable.push(updateable);
     },
 
+    /**
+     * getResources - Returns a list of the resources needed to be loaded
+     *                from the Router loader instance.
+     * @returns {Array} List of resource url's
+     */
+    getResources: function() {
+        var result = this.resources;
+
+        // The Array.prototype.concat() function will join two
+        // array's and it will also take out duplicate entries from the list.
+        _.each(this.components, function(component) {
+            result.concat(component.resources);
+        });
+
+        G.log("getResources",result);
+        return result;
+    },
+
     getComponents: function() {
         return this.components;
     },
 
     addComponent: function(component, update) {
-        G.log("adding component",component);
+        //G.log("adding component",component);
         var dispatcher = this.getEventDispatcher();
 
         component.setScene(this.scene);
         component.setCamera(this.camera);
         component.setEventDispatcher(dispatcher);
 
-        G.log("binding component events",component.events);
+        //G.log("binding component events",component.events);
         _.each(component.events, function(fn, eventName) {
             dispatcher.addEventListener(eventName, _.bind(component[fn], component));
         });

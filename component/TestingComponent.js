@@ -42,7 +42,7 @@ G.component.TestingComponent = Class.create(G.component.Component, {
     },
 
     handleMouseDown: function(e){
-
+        G.log("mouse down");
     },
 
     handleKeyPress: function(e){

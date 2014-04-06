@@ -15,14 +15,18 @@ G.component.EntityComponent = Class.create(G.component.Component, {
         'ENTITY.Remove': 'handleEntityEvent'
     },
 
+    resources: [
+        "data/objects/GroundObject.js"
+    ],
+
     buildScene : function() {
-        this.addEntity("IceHero", {x : 100, y : 0, z: 10});
+
     },
 
     handleEntityEvent: function(event){
         G.log("Entity Event",event.type,event);
         G.log("Event data",event.entityType,event.options);
-        this.addEntity(event.entityType,event.options);
+        //this.addEntity(event.entityType,event.options);
     },
 
     addEntity : function(type,options) {
@@ -62,7 +66,8 @@ G.component.EntityComponent = Class.create(G.component.Component, {
     },
 
     handleMouseDown: function(e){
-
+        G.log("mouse down");
+        Router.load("Overworld",true);
     },
 
     handleKeyPress: function(e){

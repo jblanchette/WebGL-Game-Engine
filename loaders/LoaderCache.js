@@ -10,14 +10,33 @@ G.loader.LoaderCache = Class.create({
      * @returns {Boolean}
      */
     hasEntry: function(url){
-        return (this.entries[url] !== undefined);
+        if(url !== "" && this.entries[url] !== undefined){
+            return true;
+        }else{
+            G.log("Cache.hasEntry FALSE",url,this.entries[url]);
+            return false;
+        }
+    },
+
+    get: function(url){
+        if(this.hasEntry(url)){
+            return this.entries[url];
+        }else{
+            return false;
+        }
     },
 
     add: function(url,entry){
-        if(url === "" && this.hasEntry(url)){
+        G.log("Cache.ADD",url);
+        if(this.hasEntry(url)){
+            G.log("Cache.ADD retu")
             return;
         }
 
+        this.entries[url] = entry;
+    },
+
+    update: function(url,entry){
         this.entries[url] = entry;
     },
 

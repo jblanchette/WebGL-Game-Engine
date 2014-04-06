@@ -2,7 +2,10 @@ G.controller.Router = Class.create({
 
     initialize: function() {
         this.loading = false;
-        this.loader = new G.loader.ThreeLoader(this.loadComplete);
+        this.loader = new G.loader.ThreeLoader(this.loadComplete.bind(this));
+        this.resourceList = [];
+        this.resoruceCount = 0;
+        this.resourceTotal = 0;
         this.controllers = new Array();
         this.current = null;
     },
@@ -22,8 +25,14 @@ G.controller.Router = Class.create({
      * when the load() function has finished all of its work
      */
     loadComplete: function(){
-        G.log('Controller finished loading');
-        this.loading = false;
+        G.log('Router.loadComplete');
+        this.resourceCount++;
+
+        if(this.resourceCount >= this.resourceTotal){
+            G.log("Router Finished Loading");
+            G.log("====================================================");
+            this.loading = false;
+        }
     },
 
     load: function(controllerName, swap) {
@@ -45,7 +54,16 @@ G.controller.Router = Class.create({
             // Init Controller
             controller.init();
 
-            this.loader.load("data/entityscene/GroundScene.js");
+            this.resourceCount = 0;
+            this.resourceList = controller.getResources();
+            this.resourceTotal = this.resourceList.length;
+
+
+            _.each(this.resourceList,function(url){
+                G.log("Router.load",url);
+                _this.loader.load(url);
+            });
+
 
             // Setup the components
             controller.getComponents().each(function(component){

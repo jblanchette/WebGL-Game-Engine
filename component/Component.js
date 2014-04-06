@@ -11,6 +11,10 @@ G.component.Component = Class.create({
 
     },
 
+    resources: [
+
+    ],
+    
     buildScene: function(scene, promises) {
 
     },

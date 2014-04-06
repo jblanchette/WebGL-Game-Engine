@@ -5,7 +5,7 @@
  */
 G.controller.TestingController = Class.create(G.controller.Controller, {
 
-    init: function(promises) {
+    init: function() {
 
         G.log("init testing controller");
 
@@ -13,7 +13,7 @@ G.controller.TestingController = Class.create(G.controller.Controller, {
         this.camera = new THREE.PerspectiveCamera( 45, 1600 / 900, 1, 3000 );
         this.camera.position.set( 0, 0, 100 );
 
-        this.TestComp = new G.component['TestingComponent']();
+        this.TestComp = new G.component['EntityComponent']();
         this.addComponent(this.TestComp,true);
         this.addUpdate(this);
     },

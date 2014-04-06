@@ -5,7 +5,7 @@ G.debug = true;
 G.showWarnings = true;
 // New flag to put into testing mode when TRUE
 // Loads "TestController" with a "TestComponent" instead of usual MainMenu
-G.testing = false;
+G.testing = true;
 G.warnings = [];
 G.fps = 50;
 G.state = -1;

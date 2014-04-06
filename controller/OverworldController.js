@@ -4,7 +4,7 @@
  *
  */
 G.controller.OverworldController = Class.create(G.controller.Controller, {
-    init: function(promises) {
+    init: function() {
 
         var scene = this.getScene();
         // Setup lights
