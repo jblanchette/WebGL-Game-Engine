@@ -16,7 +16,7 @@ G.component.EntityComponent = Class.create(G.component.Component, {
     },
 
     resources: [
-        "data/objects/GroundObject.js"
+        ["GroundObject","data/objects/GroundObject.js"]
     ],
 
     buildScene : function() {

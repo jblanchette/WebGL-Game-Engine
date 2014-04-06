@@ -9,11 +9,16 @@ G.controller.Controller = Class.create({
         this.scene = new THREE.Scene();
         this.camera = new THREE.Camera();
         this.eventDispatcher = new THREE.EventDispatcher();
+        this.resourceSet = null;
     },
 
     resources: [
-        "data/objects/GroundObject.js"
+
     ],
+
+    getResource: function(url){
+
+    },
 
     setDestroyable: function(isDestroyable){
         this.destroyable = isDestroyable;
@@ -42,7 +47,21 @@ G.controller.Controller = Class.create({
         // The Array.prototype.concat() function will join two
         // array's and it will also take out duplicate entries from the list.
         _.each(this.components, function(component) {
-            result.concat(component.resources);
+            // pluck out the 1 index in each resource sub-array
+            // the Array contains [ resourceName, resourceURL]
+            // so we simply take out the 1 position in the Array.
+
+            var resources = omponent.resources;
+            var names = _.pluck(resources,0);
+            var urls  = _.pluck(recources,1);
+            
+            if(result.length == 0){
+                result = urls;
+            }else{
+                // concat didn't play nice with an empty starting array
+                result.concat(urls);
+            }
+            G.log("after concat",result);
         });
 
         G.log("getResources",result);
