@@ -21,6 +21,7 @@ G.loader.ThreeLoader = Class.create(G.loader.Loader,{
 
         if(this.cache.hasEntry(url)){
             G.log("Loader.CacheHit",url);
+            this.finishCallback();
             return;
         }
         G.log("Loder.CacheMiss",url);
