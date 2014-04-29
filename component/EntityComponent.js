@@ -15,12 +15,12 @@ G.component.EntityComponent = Class.create(G.component.Component, {
         'ENTITY.Remove': 'handleEntityEvent'
     },
 
-    resources: [
-        ["GroundObject","data/objects/GroundObject.js"]
-    ],
+    resources: {
+        GroundObject: "data/objects/GroundObject.js"
+    },
 
     buildScene : function() {
-
+        G.log("EntityComp.buildScene");
     },
 
     handleEntityEvent: function(event){

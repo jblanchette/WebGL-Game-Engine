@@ -23,6 +23,9 @@ G.scenegraph = {threejs: {}};
 G.model = {};
 G.util = {};
 G.textures = {};
+
+
+
 G.loading = false;
 
 G.twoPI = Math.PI*2;
@@ -46,8 +49,8 @@ G.initialize = function() {
     document.getElementById('game').appendChild(G.renderer.domElement);
 
     // Create event dispatcher alias
-    G.eventDispatcher = new THREE.EventDispatcher();
-
+    G.eventDispatcher  = new THREE.EventDispatcher();
+    G.globalDispatcher = new THREE.EventDispatcher();
         // Stops the context menu from firing on right click
     G.renderer.domElement.addEventListener("contextmenu", function(e){ e.preventDefault(); }, false);
 

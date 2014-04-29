@@ -3,19 +3,51 @@ G.component.Component = Class.create({
         this.options = options || {};
         this.scene  = null;
         this.camera = null;
-        this.parentController = null;
-        this.subscribeList = [];
+
+        this.loading = false;
+        this.resourceCount = _.size(this.resources);
+        this._loaded = {};
+
+        var _this = this;
+        G.globalDispatcher.addEventListener("LOADER.Finish",function(e){
+            _this.setResource(e);
+        });
     },
 
     events: {
 
     },
 
-    resources: [
+    resources: {
 
-    ],
-    
-    buildScene: function(scene, promises) {
+    },
+
+    setResource : function(event) {
+
+        // don't listen to load events if we aren't flagged as loading.
+        if (this.loading) {
+            var resultUrl = event.url;
+            var _this = this;
+            var hit = false;
+            _.each(this.resources, function(url, name) {
+                if (url === resultUrl) {
+                    G.log("Setting Resource", name, url);
+                    _this._loaded[name] = event.result;
+                    hit = true;
+                }
+            });
+
+            if(hit){
+                G.log("Got hit, checking size",_.size(this._loaded),this.resourceCount);
+                if (_.size(this._loaded) >= this.resourceCount) {
+                        G.log("Component finished loading");
+                        this.loading = false;
+                }
+            }
+        }
+    },
+
+    buildScene: function(scene) {
 
     },
 

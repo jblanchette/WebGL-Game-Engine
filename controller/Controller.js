@@ -5,19 +5,53 @@ G.controller.Controller = Class.create({
         this.updateable = [];
         this.destroyable = false;
         this.components = [];
-        this.promises = [];
         this.scene = new THREE.Scene();
         this.camera = new THREE.Camera();
+
+        this.loading = false;
+        this.resourceCount = _.size(this.resources);
+        this._loaded = {};
+
         this.eventDispatcher = new THREE.EventDispatcher();
-        this.resourceSet = null;
+
+        var _this = this;
+        G.globalDispatcher.addEventListener("LOADER.Finish",function(e){
+            _this.setResource(e);
+        });
+
     },
 
-    resources: [
+    resources: {
 
-    ],
+    },
 
     getResource: function(url){
 
+    },
+
+    setResource : function(event) {
+
+        // don't listen to load events if we aren't flagged as loading.
+        if (this.loading) {
+            var resultUrl = event.url;
+            var _this = this;
+            var hit = false;
+            _.each(this.resources, function(url, name) {
+                if (url === resultUrl) {
+                    G.log("Setting Resource", name, url);
+                    _this._loaded[name] = event.result;
+                    hit = true;
+                }
+            });
+
+            if(hit){
+                G.log("Got hit, checking size",_.size(this._loaded),this.resourceCount);
+                if (_.size(_this._loaded) >= this.resourceCount) {
+                        G.log("Controller finished loading");
+                        this.loading = false;
+                }
+            }
+        }
     },
 
     setDestroyable: function(isDestroyable){
@@ -36,36 +70,37 @@ G.controller.Controller = Class.create({
         this.updateable.push(updateable);
     },
 
-    /**
-     * getResources - Returns a list of the resources needed to be loaded
-     *                from the Router loader instance.
-     * @returns {Array} List of resource url's
-     */
-    getResources: function() {
-        var result = this.resources;
+    loadResources: function(loader) {
 
-        // The Array.prototype.concat() function will join two
-        // array's and it will also take out duplicate entries from the list.
+        var resultList = _.uniq(_.values(this.resources).sort(),true);
+        var uniqueComponentList;
+
+        this.loading = true;
+
         _.each(this.components, function(component) {
-            // pluck out the 1 index in each resource sub-array
-            // the Array contains [ resourceName, resourceURL]
-            // so we simply take out the 1 position in the Array.
 
-            var resources = omponent.resources;
-            var names = _.pluck(resources,0);
-            var urls  = _.pluck(recources,1);
-            
-            if(result.length == 0){
-                result = urls;
+            component.loading = true;
+
+            // Get the unique list of URL values from the component resources.
+            // Underscore provides an optimized algorithm for sorted lists.
+            uniqueComponentList =
+                _.uniq(_.values(component.resources).sort(),true);
+
+            // Concat() doesn't play nice with an empty array, it seems.
+            if(resultList.length === 0){
+                resultList = uniqueComponentList;
             }else{
-                // concat didn't play nice with an empty starting array
-                result.concat(urls);
+                // Array.concat will also take out duplicate entries
+                resultList.concat(uniqueComponentList);
             }
-            G.log("after concat",result);
+
         });
 
-        G.log("getResources",result);
-        return result;
+        G.log("Loading List:",resultList);
+        _.each(resultList, function(url){
+            loader.load(url);
+        });
+
     },
 
     getComponents: function() {
@@ -101,22 +136,6 @@ G.controller.Controller = Class.create({
                 reject(error);
             })
         });
-    },
-
-    addPromise: function(callback) {
-        this.promises.push(new RSVP.Promise(callback));
-
-        return this;
-    },
-
-    setPromises: function(promises) {
-        this.promises = promises;
-
-        return this;
-    },
-
-    getPromises: function() {
-        return this.promises;
     },
 
     getScene: function() {

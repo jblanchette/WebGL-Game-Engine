@@ -1,10 +1,22 @@
 G.loader.Loader = Class.create({
-    initialize: function(finishCallback) {
+    initialize: function() {
         this.cache = new G.loader.LoaderCache();
-        this.finishCallback = finishCallback;
+        this.eventDispatcher = new THREE.EventDispatcher();
+    },
+
+    getEventDispatcher: function() {
+        return this.eventDispatcher;
+    },
+
+    setEventDispatcher: function(dispatcher) {
+        this.eventDispatcher = dispatcher;
     },
 
     load: function( url ){
+
+    },
+
+    hasBeenLoaded: function( url ){
 
     },
 
