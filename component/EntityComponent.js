@@ -67,7 +67,7 @@ G.component.EntityComponent = Class.create(G.component.Component, {
 
     handleMouseDown: function(e){
         G.log("mouse down");
-        Router.load("Overworld",true);
+        G.log("Resource Test:",this.getResource("GroundObject"));
     },
 
     handleKeyPress: function(e){

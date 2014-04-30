@@ -30,8 +30,26 @@ G.controller.Controller = Class.create({
         this.cache = cache;
     },
 
-    getResource: function(url){
+    getResource: function(name){
+        if(this.cache === null){
+            G.error("No cache set for controller, getting: " + name,this);
+            return null;
+        }
+        if(this.resources[name] === undefined){
+            G.error("No resource in controller with name: " + name,this);
+        }
 
+        return this.cache.get(this.resources[name]);
+
+    },
+
+    getResourceByURL: function(url){
+        if(this.cache === null){
+            G.error("No cache set for controller, getting: " + name,this);
+            return null;
+        }
+
+        return this.cache.get(url);
     },
 
     setDestroyable: function(isDestroyable){
@@ -94,7 +112,8 @@ G.controller.Controller = Class.create({
         component.setScene(this.scene);
         component.setCamera(this.camera);
         component.setEventDispatcher(dispatcher);
-
+        component.setLoaderCache(this.cache);
+        
         //G.log("binding component events",component.events);
         _.each(component.events, function(fn, eventName) {
             dispatcher.addEventListener(eventName, _.bind(component[fn], component));

@@ -22,11 +22,6 @@ G.controller.Router = Class.create({
     loadComplete: function(){
         G.log('Router.loadComplete');
         this.loading = false;
-        // Init Controller
-        if(this.current !== null){
-            G.log("Router setLoaderCache",this.current);
-            this.current.setLoaderCache(this.loader.getCache());
-        }
     },
 
     load: function(controllerName, swap) {
@@ -42,7 +37,7 @@ G.controller.Router = Class.create({
             return;
         }
 
-
+        controller.setLoaderCache(this.loader.getCache());
         controller.init();
 
         // TODO: For now, we will go into a blocking 'preload' if swap is true.

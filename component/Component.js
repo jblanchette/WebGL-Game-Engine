@@ -22,29 +22,31 @@ G.component.Component = Class.create({
 
     },
 
-    setResource : function(event) {
+    setLoaderCache: function(cache){
+        G.log("Component set loader cache",cache);
+        this.cache = cache;
+    },
 
-        // don't listen to load events if we aren't flagged as loading.
-        if (this.loading) {
-            var resultUrl = event.url;
-            var _this = this;
-            var hit = false;
-            _.each(this.resources, function(url, name) {
-                if (url === resultUrl) {
-                    G.log("Setting Resource", name, url);
-                    _this._loaded[name] = event.result;
-                    hit = true;
-                }
-            });
-
-            if(hit){
-                G.log("Got hit, checking size",_.size(this._loaded),this.resourceCount);
-                if (_.size(this._loaded) >= this.resourceCount) {
-                        G.log("Component finished loading");
-                        this.loading = false;
-                }
-            }
+    getResource: function(name){
+        if(this.cache === null){
+            G.error("No cache set for component, getting: " + name,this);
+            return null;
         }
+        if(this.resources[name] === undefined){
+            G.error("No resource in component with name: " + name,this);
+        }
+
+        return this.cache.get(this.resources[name]);
+
+    },
+
+    getResourceByURL: function(url){
+        if(this.cache === null){
+            G.error("No cache set for component, getting: " + name,this);
+            return null;
+        }
+
+        return this.cache.get(url);
     },
 
     buildScene: function(scene) {
