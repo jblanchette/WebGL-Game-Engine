@@ -7,6 +7,7 @@ G.controller.Controller = Class.create({
         this.components = [];
         this.scene = new THREE.Scene();
         this.camera = new THREE.Camera();
+        this.cache = null;
 
         this.loading = false;
         this.resourceCount = _.size(this.resources);
@@ -25,33 +26,12 @@ G.controller.Controller = Class.create({
 
     },
 
-    getResource: function(url){
-
+    setLoaderCache: function(cache){
+        this.cache = cache;
     },
 
-    setResource : function(event) {
+    getResource: function(url){
 
-        // don't listen to load events if we aren't flagged as loading.
-        if (this.loading) {
-            var resultUrl = event.url;
-            var _this = this;
-            var hit = false;
-            _.each(this.resources, function(url, name) {
-                if (url === resultUrl) {
-                    G.log("Setting Resource", name, url);
-                    _this._loaded[name] = event.result;
-                    hit = true;
-                }
-            });
-
-            if(hit){
-                G.log("Got hit, checking size",_.size(this._loaded),this.resourceCount);
-                if (_.size(_this._loaded) >= this.resourceCount) {
-                        G.log("Controller finished loading");
-                        this.loading = false;
-                }
-            }
-        }
     },
 
     setDestroyable: function(isDestroyable){

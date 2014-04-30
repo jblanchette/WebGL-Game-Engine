@@ -12,6 +12,10 @@ G.loader.Loader = Class.create({
         this.eventDispatcher = dispatcher;
     },
 
+    getCache: function(){
+        return this.cache;
+    },
+
     load: function( url ){
 
     },

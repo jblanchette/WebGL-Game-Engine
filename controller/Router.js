@@ -1,8 +1,9 @@
 G.controller.Router = Class.create({
 
     initialize: function() {
-        this.loading = false;
-        this.loader = new G.loader.ThreeLoader();
+        var _this = this;
+        this.loading = true;
+        this.loader = new G.loader.ThreeLoader(_this.loadComplete.bind(this));
         this.resourceList = [];
         this.controllers = new Array();
         this.current = null;
@@ -21,6 +22,11 @@ G.controller.Router = Class.create({
     loadComplete: function(){
         G.log('Router.loadComplete');
         this.loading = false;
+        // Init Controller
+        if(this.current !== null){
+            G.log("Router setLoaderCache",this.current);
+            this.current.setLoaderCache(this.loader.getCache());
+        }
     },
 
     load: function(controllerName, swap) {
@@ -31,23 +37,36 @@ G.controller.Router = Class.create({
 
         // Init Controller
         var controller = this.get(controllerName);
-        this.current = controller;
+        if(controller === null){
+            G.error("Controller " + controllerName + " not found.");
+            return;
+        }
+
+
+        controller.init();
+
+        // TODO: For now, we will go into a blocking 'preload' if swap is true.
+        if(swap){
+            G.log("Swap true");
+            // Load Resources
+            G.log("Controller.loadResources",name + "Controller");
+            this.loading = true;
+            this.current = controller;
+            controller.loadResources(this.loader);
+            // the controller.init() call happens when the load triggers the
+            // loadComplete() callback to the router.
+        }
+
+
+
     },
 
     get: function(name) {
         if (!this.controllers[name]) {
             var controller = this.controllers[name] = new G.controller[name + 'Controller'];
-
-            // Init Controller
-            controller.init();
-
-            // Load Resources
-            G.log("Controller.loadResources",name + "Controller");
-            this.loading = true;
-
-            controller.loadResources(this.loader);
+            return this.controllers[name];
         }
 
-        return this.controllers[name];
+        return null;
     }
 });

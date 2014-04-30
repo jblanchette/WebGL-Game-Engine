@@ -1,9 +1,11 @@
 G.loader.ThreeLoader = Class.create(G.loader.Loader,{
-    initialize: function($super) {
+    initialize: function($super,finishCallback) {
         $super();
+
+        this.finishCallback = finishCallback;
         this.manager =
             new THREE.LoadingManager(
-                this.finish.bind(this),this.progress.bind(this),this.error.bind(this));
+                this.finishCallback,this.progress.bind(this),this.error.bind(this));
 
         this.loader = new THREE.ObjectLoader( this.manager );
 
@@ -32,15 +34,8 @@ G.loader.ThreeLoader = Class.create(G.loader.Loader,{
         // The null value is a placeholder until the resource is loaded.
         if(this.cache.add(url,null)){
             this.loader.load(url, function(result){
+                G.log("Load finished for " + url + ", updating cache.");
                 _this.cache.update(url,result);
-
-                G.log("FIRE LOAD EVENT");
-                // Dispatch Finish event
-                G.globalDispatcher.dispatchEvent({
-                    type: "LOADER.Finish",
-                    url: url,
-                    result: result
-                });
             });
         }
 

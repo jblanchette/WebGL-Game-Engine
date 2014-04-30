@@ -79,7 +79,7 @@ G.initialize = function() {
         G.log("TEST MODE STARTING ===========================================");
         G.debug = true;    // force debug mode on
         G.showWarnings = true; // force warnings on
-        Router.load("Testing");
+        Router.load("Testing",true);
     }else{
         // Start game main menu
         Router.load(G.initialController,true);
@@ -99,9 +99,11 @@ G.getCurrentModule = function(){
 G.update = function() {
 
     // @TODO: Call some loading screen instead?
+
     if (Router.loading) {
         return;
     }
+    
     // Call anything that needs to be updated
     this.getCurrentModule().getUpdateable().each(function(obj){
         obj.update();
@@ -117,6 +119,11 @@ G.draw = function() {
         G.renderer.render(curModule.getScene(), curModule.getCamera());
     }
 };
+
+G.error = function(){
+    // TODO: make this better
+    console.log("ERROR:",arguments);
+}
 
 G.warning = function(){
       G.warnings.push([arguments]);
