@@ -3,7 +3,7 @@ G.scenegraph.threejs.SceneGraph = Class.create({
         this.container = null;
     },
 
-    buildScene: function(scene,model){
+    buildScene: function(scene,model,resourceBank){
 
     },
 

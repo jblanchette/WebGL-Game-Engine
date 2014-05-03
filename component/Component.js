@@ -51,10 +51,10 @@ G.component.Component = Class.create({
         this.resourceBank = bank;
     },
 
-    getResourceBank: function(bank){
+    getResourceBank: function(){
         return this.resourceBank;
     },
-    
+
     setScene: function(scene) {
         this.scene = scene;
     },

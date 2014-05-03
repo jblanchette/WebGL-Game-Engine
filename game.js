@@ -49,6 +49,9 @@ G.initialize = function() {
     G.renderer.setSize(1600, 900);
     document.getElementById('game').appendChild(G.renderer.domElement);
 
+    // global access rb
+    G.resourceBank = new G.resources.ResourceBank();
+
     // Create event dispatcher alias
     G.eventDispatcher  = new THREE.EventDispatcher();
     G.globalDispatcher = new THREE.EventDispatcher();
