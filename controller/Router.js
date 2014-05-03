@@ -3,8 +3,10 @@ G.controller.Router = Class.create({
     initialize: function() {
         var _this = this;
         this.loading = true;
-        this.loader = new G.loader.ThreeLoader(_this.loadComplete.bind(this));
-        this.resourceList = [];
+        this.loader =
+            new G.loader.ThreeLoader(_this.itemComplete.bind(this),
+                                     _this.loadComplete.bind(this));
+        this.resourceBank = new G.resources.ResourceBank();
         this.controllers = new Array();
         this.current = null;
     },
@@ -17,6 +19,12 @@ G.controller.Router = Class.create({
 
     getCurrent: function(){
         return this.current;
+    },
+
+    itemComplete: function(url,result){
+        G.log("Router.itemComplete " + url);
+        this.resourceBank.add(url,result);
+        G.log("Resource Count: " + this.resourceBank.count());
     },
 
     loadComplete: function(){
@@ -37,7 +45,6 @@ G.controller.Router = Class.create({
             return;
         }
 
-        controller.setLoaderCache(this.loader.getCache());
         controller.init();
 
         // TODO: For now, we will go into a blocking 'preload' if swap is true.
@@ -47,13 +54,10 @@ G.controller.Router = Class.create({
             G.log("Controller.loadResources",name + "Controller");
             this.loading = true;
             this.current = controller;
-            controller.loadResources(this.loader);
+            controller.loadResources(this.loader,this.resourceBank);
             // the controller.init() call happens when the load triggers the
             // loadComplete() callback to the router.
         }
-
-
-
     },
 
     get: function(name) {

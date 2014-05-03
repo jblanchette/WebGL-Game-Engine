@@ -1,11 +1,12 @@
 G.loader.ThreeLoader = Class.create(G.loader.Loader,{
-    initialize: function($super,finishCallback) {
+    initialize: function($super,itemCallback,finishCallback) {
         $super();
 
+        this.itemCallback = itemCallback;
         this.finishCallback = finishCallback;
         this.manager =
             new THREE.LoadingManager(
-                this.finishCallback,this.progress.bind(this),this.error.bind(this));
+                this.finishCallback,this.itemCallback,this.error.bind(this));
 
         this.loader = new THREE.ObjectLoader( this.manager );
 

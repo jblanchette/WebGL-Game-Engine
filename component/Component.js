@@ -5,7 +5,7 @@ G.component.Component = Class.create({
         this.camera = null;
 
         this.loading = false;
-        this.resourceCount = _.size(this.resources);
+        this.resourceBank = null;
         this._loaded = {};
 
         var _this = this;
@@ -22,31 +22,17 @@ G.component.Component = Class.create({
 
     },
 
-    setLoaderCache: function(cache){
-        G.log("Component set loader cache",cache);
-        this.cache = cache;
+    getResource : function(name) {
+        var localName = this.resources[name];
+        if (localName === undefined) {
+            G.error("No resource in component with name: " + name, this);
+        }
+
+        return this.ResourceBank.get(localName);
     },
 
-    getResource: function(name){
-        if(this.cache === null){
-            G.error("No cache set for component, getting: " + name,this);
-            return null;
-        }
-        if(this.resources[name] === undefined){
-            G.error("No resource in component with name: " + name,this);
-        }
-
-        return this.cache.get(this.resources[name]);
-
-    },
-
-    getResourceByURL: function(url){
-        if(this.cache === null){
-            G.error("No cache set for component, getting: " + name,this);
-            return null;
-        }
-
-        return this.cache.get(url);
+    getResourceByURL : function(url) {
+        return this.resourceBank.get(url);
     },
 
     buildScene: function(scene) {
@@ -61,6 +47,14 @@ G.component.Component = Class.create({
         this.eventDispatcher = dispatcher;
     },
 
+    setResourceBank: function(bank){
+        this.resourceBank = bank;
+    },
+
+    getResourceBank: function(bank){
+        return this.resourceBank;
+    },
+    
     setScene: function(scene) {
         this.scene = scene;
     },

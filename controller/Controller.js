@@ -7,10 +7,9 @@ G.controller.Controller = Class.create({
         this.components = [];
         this.scene = new THREE.Scene();
         this.camera = new THREE.Camera();
-        this.cache = null;
+        this.resourceBank = null;
 
         this.loading = false;
-        this.resourceCount = _.size(this.resources);
         this._loaded = {};
 
         this.eventDispatcher = new THREE.EventDispatcher();
@@ -26,30 +25,17 @@ G.controller.Controller = Class.create({
 
     },
 
-    setLoaderCache: function(cache){
-        this.cache = cache;
-    },
-
     getResource: function(name){
-        if(this.cache === null){
-            G.error("No cache set for controller, getting: " + name,this);
-            return null;
-        }
-        if(this.resources[name] === undefined){
+        var localName = this.resources[name];
+        if(localName === undefined){
             G.error("No resource in controller with name: " + name,this);
         }
 
-        return this.cache.get(this.resources[name]);
-
+        return this.ResourceBank.get(localName);
     },
 
     getResourceByURL: function(url){
-        if(this.cache === null){
-            G.error("No cache set for controller, getting: " + name,this);
-            return null;
-        }
-
-        return this.cache.get(url);
+        return this.resourceBank.get(url);
     },
 
     setDestroyable: function(isDestroyable){
@@ -68,12 +54,14 @@ G.controller.Controller = Class.create({
         this.updateable.push(updateable);
     },
 
-    loadResources: function(loader) {
+    loadResources: function(loader,resources) {
 
         var resultList = _.uniq(_.values(this.resources).sort(),true);
         var uniqueComponentList;
+        var _this = this;
 
         this.loading = true;
+        this.resources = resources;
 
         _.each(this.components, function(component) {
 
@@ -111,9 +99,9 @@ G.controller.Controller = Class.create({
 
         component.setScene(this.scene);
         component.setCamera(this.camera);
+        component.setResourceBank(this.resourceBank);
         component.setEventDispatcher(dispatcher);
-        component.setLoaderCache(this.cache);
-        
+
         //G.log("binding component events",component.events);
         _.each(component.events, function(fn, eventName) {
             dispatcher.addEventListener(eventName, _.bind(component[fn], component));

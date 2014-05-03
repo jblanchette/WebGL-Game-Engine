@@ -4,8 +4,6 @@ G.factory.EntityFactory = Class.create({
 
         var settings = G.settings.Entity[type];
 
-
-
         if(settings === undefined){
             throw {type: 'Invalid Argument', message: 'Could not find settings for ' + type};
         }
