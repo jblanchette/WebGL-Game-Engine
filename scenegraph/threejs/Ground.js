@@ -1,10 +1,19 @@
 G.scenegraph.threejs.Ground = Class.create(G.scenegraph.threejs.SceneGraph,{
-    buildScene: function(scene,model,resourceBank){
+    initialize: function($super){
+        $super();
 
-        var groundResource = G.resourceBank.get("GroundObject");
-        this.container.add(this.SelectionMesh);
+    },
+
+    buildScene: function(scene, model){
+
+        this.container = new THREE.Object3D();
+
+        var object = G.resourceBank.get("GroundObject");
+        this.container.add(object);
 
         scene.add(this.container);
+
+
 
     }
 });

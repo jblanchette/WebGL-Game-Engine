@@ -3,15 +3,6 @@ G.component.Component = Class.create({
         this.options = options || {};
         this.scene  = null;
         this.camera = null;
-
-        this.loading = false;
-        this.resourceBank = null;
-        this._loaded = {};
-
-        var _this = this;
-        G.globalDispatcher.addEventListener("LOADER.Finish",function(e){
-            _this.setResource(e);
-        });
     },
 
     events: {
@@ -20,19 +11,6 @@ G.component.Component = Class.create({
 
     resources: {
 
-    },
-
-    getResource : function(name) {
-        var localName = this.resources[name];
-        if (localName === undefined) {
-            G.error("No resource in component with name: " + name, this);
-        }
-
-        return this.ResourceBank.get(localName);
-    },
-
-    getResourceByURL : function(url) {
-        return this.resourceBank.get(url);
     },
 
     buildScene: function(scene) {
@@ -45,14 +23,6 @@ G.component.Component = Class.create({
 
     setEventDispatcher: function(dispatcher) {
         this.eventDispatcher = dispatcher;
-    },
-
-    setResourceBank: function(bank){
-        this.resourceBank = bank;
-    },
-
-    getResourceBank: function(){
-        return this.resourceBank;
     },
 
     setScene: function(scene) {

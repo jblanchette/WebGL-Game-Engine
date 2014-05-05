@@ -35,13 +35,11 @@ G.component.EntityComponent = Class.create(G.component.Component, {
         var model = entity.getModel();
         var sceneGraph = entity.getSceneGraph();
         var scene = this.getScene();
-        var resourceBank = this.getResourceBank();
-
         var dispatcher = model.getEventDispatcher();
 
         // Add the sceneGraph to the sceen, bind the events to it, then sync.
 
-        sceneGraph.buildScene(scene,model,resourceBank);
+        sceneGraph.buildScene(scene,model);
 
         _.each(sceneGraph.events, function(fn, eventName) {
             dispatcher.addEventListener(eventName, _.bind(sceneGraph[fn], sceneGraph));
@@ -68,7 +66,8 @@ G.component.EntityComponent = Class.create(G.component.Component, {
 
     handleMouseDown: function(e){
         G.log("mouse down");
-        G.log("Resource Test:",this.getResource("GroundObject"));
+        this.addEntity("Ground");
+        G.log("added");
     },
 
     handleKeyPress: function(e){

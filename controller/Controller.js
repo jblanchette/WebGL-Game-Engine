@@ -7,35 +7,14 @@ G.controller.Controller = Class.create({
         this.components = [];
         this.scene = new THREE.Scene();
         this.camera = new THREE.Camera();
-        this.resourceBank = null;
-
-        this.loading = false;
-        this._loaded = {};
-
         this.eventDispatcher = new THREE.EventDispatcher();
 
-        var _this = this;
-        G.globalDispatcher.addEventListener("LOADER.Finish",function(e){
-            _this.setResource(e);
-        });
+        G.log("**** RAN CONTROLLER INITIALIZE");
 
     },
 
     resources: {
 
-    },
-
-    getResource: function(name){
-        var localName = this.resources[name];
-        if(localName === undefined){
-            G.error("No resource in controller with name: " + name,this);
-        }
-
-        return this.ResourceBank.get(localName);
-    },
-
-    getResourceByURL: function(url){
-        return this.resourceBank.get(url);
     },
 
     setDestroyable: function(isDestroyable){
@@ -57,27 +36,25 @@ G.controller.Controller = Class.create({
     loadResources: function(loader) {
         // Start with the Controllers resources
         var result = _.pairs(this.resources);
-        // Flag the controller as loading
-        this.loading = true;
 
+        // union the pairs from each fcomponent to the result list
         _.each(this.components, function(component) {
-            component.loading = true;
             result = _.union(result,_.pairs(component.resources));
         });
 
-        G.log("****************************");
-        G.log("Result before",result);
-
+        // get the unique list of pairs by comparing against the
+        // localname (the first item in the pair) using the
+        // underscore unique method's iterator argument
         result = _.uniq(result,false,function(o){
             return o[0];
         });
 
-        G.log("Result after",result);
-        G.log("****************************");
-        return;
-
-        _.each(resultList, function(url){
-            loader.load(url);
+        G.log("Resource Load pairs:",result);
+        // Pass each pair [ LocalName,URL ] to the loader
+        // The name gets added to the resource bank, url is
+        // used by the cache
+        _.each(result, function(pair){
+            loader.load(pair[0],pair[1]);
         });
 
     },
@@ -92,7 +69,6 @@ G.controller.Controller = Class.create({
 
         component.setScene(this.scene);
         component.setCamera(this.camera);
-        component.setResourceBank(this.resourceBank);
         component.setEventDispatcher(dispatcher);
 
         //G.log("binding component events",component.events);

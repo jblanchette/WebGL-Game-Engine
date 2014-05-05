@@ -1,19 +1,6 @@
 G.loader.Loader = Class.create({
     initialize: function() {
-        this.cache = new G.loader.LoaderCache();
-        this.eventDispatcher = new THREE.EventDispatcher();
-    },
-
-    getEventDispatcher: function() {
-        return this.eventDispatcher;
-    },
-
-    setEventDispatcher: function(dispatcher) {
-        this.eventDispatcher = dispatcher;
-    },
-
-    getCache: function(){
-        return this.cache;
+        
     },
 
     load: function( url ){

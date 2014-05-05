@@ -8,8 +8,12 @@ G.factory.EntityFactory = Class.create({
             throw {type: 'Invalid Argument', message: 'Could not find settings for ' + type};
         }
 
-        if(settings.model === undefined || settings.sceneGraph === undefined){
-            throw {type: 'Invalid Argument', message: 'Settings has undefined model / scenegraph'};
+        if(settings.model === undefined){
+            throw {type: 'Invalid Argument', message: 'Settings has undefined model'};
+        }
+
+        if( settings.sceneGraph === undefined){
+            throw {type: 'Invalid Argument', message: 'Settings has undefined sceneGraph'};
         }
 
         var model      = new settings.model(options);

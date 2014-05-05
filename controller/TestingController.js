@@ -16,10 +16,7 @@ G.controller.TestingController = Class.create(G.controller.Controller, {
         this.TestComp = new G.component['EntityComponent']();
         this.addComponent(this.TestComp,true);
         this.addUpdate(this);
-    },
 
-    resources: {
-        GroundObject2: "data/objects/GroundObject.js"
     },
 
     update: function() {

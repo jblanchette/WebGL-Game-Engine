@@ -49,7 +49,8 @@ G.initialize = function() {
     G.renderer.setSize(1600, 900);
     document.getElementById('game').appendChild(G.renderer.domElement);
 
-    // global access rb
+    // Create ResourceBank, LoaderCache
+    G.loaderCache = new G.loader.LoaderCache();
     G.resourceBank = new G.resources.ResourceBank();
 
     // Create event dispatcher alias
@@ -121,6 +122,8 @@ G.draw = function() {
     var curModule = this.getCurrentModule();
     if(curModule !== null){
         G.renderer.render(curModule.getScene(), curModule.getCamera());
+    }else{
+        G.log("not rendering");
     }
 };
 

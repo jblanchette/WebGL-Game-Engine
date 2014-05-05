@@ -6,34 +6,28 @@
 	},
 	"geometries": [
 		{
-			"uuid": "A355C024-3734-42A3-8777-91FFFE5F72F4",
+			"uuid": "8C2FF8D9-559D-4A77-9417-B092135C3EF2",
 			"type": "PlaneGeometry",
-			"width": 1250,
-			"height": 1250,
+			"width": 20,
+			"height": 20,
 			"widthSegments": 1,
 			"heightSegments": 1
 		}],
 	"materials": [
 		{
-			"uuid": "4B36EC12-2ECC-4131-9CAB-CAEA7FC3B131",
+			"uuid": "E8EDF20A-C3D0-4355-889F-24AF532284FB",
 			"type": "MeshBasicMaterial",
 			"color": 16777215,
-			"opacity": 0,
-			"transparent": true,
+			"opacity": 1,
+			"transparent": false,
 			"wireframe": false
 		}],
 	"object": {
-		"uuid": "8DFDF2F9-DD63-4691-A8D0-141AB37BFC24",
-		"type": "Scene",
-		"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
-		"children": [
-			{
-				"uuid": "0762B180-8A83-4FBD-ACC8-3D3B328CF583",
-				"name": "Plane 1",
-				"type": "Mesh",
-				"geometry": "A355C024-3734-42A3-8777-91FFFE5F72F4",
-				"material": "4B36EC12-2ECC-4131-9CAB-CAEA7FC3B131",
-				"matrix": [1,0,0,0,0,-0.000203756193513982,1,0,0,-1,-0.000203756193513982,0,0,0,0,1]
-			}]
+		"uuid": "9A80AC62-B35B-40D5-B0DD-44E816B0259E",
+		"name": "GroundPlane",
+		"type": "Mesh",
+		"geometry": "8C2FF8D9-559D-4A77-9417-B092135C3EF2",
+		"material": "E8EDF20A-C3D0-4355-889F-24AF532284FB",
+		"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 	}
 }
