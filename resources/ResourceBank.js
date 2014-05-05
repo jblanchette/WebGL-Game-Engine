@@ -3,6 +3,10 @@ G.resources.ResourceBank = Class.create({
         this.list = {};
     },
 
+    create: function(name,url){
+
+    }
+
     add: function(url,data){
         if(this.hasEntry(url)){
             G.warning("Adding resource with the same URL");

@@ -21,13 +21,17 @@ G.loader.ThreeLoader = Class.create(G.loader.Loader,{
     },
 
     /**
-     * The load method will check the cache for an entry of the given URL.
-     * When no entry is found the THREE.ObjectLoader then calls the load
-     * method with an anonymous 'onLoad' function to update the cache entry.
+     * Loads a specificed url.  If the resource exists in the cache, it is
+     * used instead of loading the url again.
      *
+     * When a resourced is fetched from a URL,
+     * the cache is updated with the result.
+     *
+     * 
+     * @param {String} name The local name of the resource for get() calls
      * @param {String} url The url of the resource to load.
      */
-    load: function(url){
+    load: function(name, url){
 
         var _this = this;
         // The LoaderCache add method will call hasEntry on the given

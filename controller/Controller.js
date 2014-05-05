@@ -54,35 +54,28 @@ G.controller.Controller = Class.create({
         this.updateable.push(updateable);
     },
 
-    loadResources: function(loader,resources) {
-
-        var resultList = _.uniq(_.values(this.resources).sort(),true);
-        var uniqueComponentList;
-        var _this = this;
-
+    loadResources: function(loader) {
+        // Start with the Controllers resources
+        var result = _.pairs(this.resources);
+        // Flag the controller as loading
         this.loading = true;
-        this.resources = resources;
 
         _.each(this.components, function(component) {
-
             component.loading = true;
-
-            // Get the unique list of URL values from the component resources.
-            // Underscore provides an optimized algorithm for sorted lists.
-            uniqueComponentList =
-                _.uniq(_.values(component.resources).sort(),true);
-
-            // Concat() doesn't play nice with an empty array, it seems.
-            if(resultList.length === 0){
-                resultList = uniqueComponentList;
-            }else{
-                // Array.concat will also take out duplicate entries
-                resultList.concat(uniqueComponentList);
-            }
-
+            result = _.union(result,_.pairs(component.resources));
         });
 
-        G.log("Loading List:",resultList);
+        G.log("****************************");
+        G.log("Result before",result);
+
+        result = _.uniq(result,false,function(o){
+            return o[0];
+        });
+
+        G.log("Result after",result);
+        G.log("****************************");
+        return;
+
         _.each(resultList, function(url){
             loader.load(url);
         });

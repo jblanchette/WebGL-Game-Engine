@@ -50,13 +50,10 @@ G.controller.Router = Class.create({
         // TODO: For now, we will go into a blocking 'preload' if swap is true.
         if(swap){
             G.log("Swap true");
-            // Load Resources
             G.log("Controller.loadResources",name + "Controller");
             this.loading = true;
             this.current = controller;
             controller.loadResources(this.loader,this.resourceBank);
-            // the controller.init() call happens when the load triggers the
-            // loadComplete() callback to the router.
         }
     },
 

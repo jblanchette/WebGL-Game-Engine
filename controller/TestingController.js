@@ -18,6 +18,10 @@ G.controller.TestingController = Class.create(G.controller.Controller, {
         this.addUpdate(this);
     },
 
+    resources: {
+        GroundObject2: "data/objects/GroundObject.js"
+    },
+
     update: function() {
 
     }
