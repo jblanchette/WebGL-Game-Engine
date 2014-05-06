@@ -7,10 +7,6 @@ G.component.EntityComponent = Class.create(G.component.Component, {
     },
 
     events: {
-        'mousemove':     'handleMouseMove',
-        'mousedown':     'handleMouseDown',
-        'mouseup':       'handleMouseUp',
-        'keypress':      'handleKeyPress',
         'ENTITY.Add':    'handleEntityEvent',
         'ENTITY.Remove': 'handleEntityEvent'
     },
@@ -24,9 +20,15 @@ G.component.EntityComponent = Class.create(G.component.Component, {
     },
 
     handleEntityEvent: function(event){
-        G.log("Entity Event",event.type,event);
-        G.log("Event data",event.entityType,event.options);
-        //this.addEntity(event.entityType,event.options);
+        G.log("Entity Event",event.type);
+        switch(event.type){
+            case "ENTITY.Add":
+                this.addEntity(event.entityType,event.options);
+            break;
+            case "ENTITY.Remove":
+                // @TODO: Remove an entity
+            break;
+        }
     },
 
     addEntity : function(type,options) {
@@ -55,23 +57,5 @@ G.component.EntityComponent = Class.create(G.component.Component, {
             entity.update();
         });
     },
-
-    handleMouseMove: function(e){
-
-    },
-
-    handleMouseUp: function(e){
-
-    },
-
-    handleMouseDown: function(e){
-        G.log("mouse down");
-        this.addEntity("Ground");
-        G.log("added");
-    },
-
-    handleKeyPress: function(e){
-
-    }
 
 });

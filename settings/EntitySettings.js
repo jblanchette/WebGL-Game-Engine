@@ -4,6 +4,7 @@ G.settings.Entity = {
         model:      G.model.Ground,
         modelAttributes: {}
     },
+    
     IceHero: {
         sceneGraph: G.scenegraph.threejs.IceHero,
         model:      G.model.Hero,
