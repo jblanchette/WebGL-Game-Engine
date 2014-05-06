@@ -1,11 +1,22 @@
 G.entity.Entity = Class.create({
-    initialize: function(type, model, sceneGraph) {
+    initialize: function(type, model, sceneGraph, options) {
 
         this.type = type;
         this.model = model;
         this.sceneGraph = sceneGraph;
         this.commandQueue = new G.command.CommandQueue(this);
+        this.options = options || {};
 
+        this.id = _.has(this.options,"id") ? this.options.id : "";
+        G.log("New Entity with ID", this.id);
+    },
+
+    setID: function(id){
+        this.id = id;
+    },
+
+    getID: function(){
+        return this.id;
     },
 
     getSceneGraph: function(){

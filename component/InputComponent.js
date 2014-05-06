@@ -12,10 +12,6 @@ G.component.InputComponent = Class.create(G.component.Component, {
 
     handleMouseDown: function(e){
         G.log("Mouse Down",e);
-         this.getEventDispatcher().dispatchEvent({
-            type : 'ENTITY.Add',
-            entityType: 'Ground'
-        });
     },
 
     handleMouseUp: function(e){
@@ -23,10 +19,6 @@ G.component.InputComponent = Class.create(G.component.Component, {
     },
 
     handleMouseMove: function(e){
-
-    },
-
-    resources: {
 
     },
 

@@ -1,4 +1,9 @@
 G.scenegraph.threejs.FireHero = Class.create(G.scenegraph.threejs.SceneGraph,{
+    initialize: function($super,options){
+        $super(options);
+    },
+
+
     buildScene: function(scene,model,resourceBank){
 
         this.container = new THREE.Object3D();

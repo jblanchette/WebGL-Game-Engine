@@ -1,5 +1,6 @@
 G.scenegraph.threejs.SceneGraph = Class.create({
-    initialize: function(){
+    initialize: function(options){
+        this.options = options || {};
         this.container = null;
     },
 

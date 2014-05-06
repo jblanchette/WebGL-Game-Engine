@@ -30,6 +30,7 @@ G.controller.Router = Class.create({
     loadComplete: function(){
         G.log('Router.loadComplete');
         this.loading = false;
+        this.current.buildScene();
     },
 
     load: function(controllerName, swap) {

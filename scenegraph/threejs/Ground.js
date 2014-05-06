@@ -1,7 +1,6 @@
 G.scenegraph.threejs.Ground = Class.create(G.scenegraph.threejs.SceneGraph,{
-    initialize: function($super){
-        $super();
-
+    initialize: function($super,options){
+        $super(options);
     },
 
     buildScene: function(scene, model){

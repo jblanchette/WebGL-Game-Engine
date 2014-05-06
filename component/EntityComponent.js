@@ -21,9 +21,15 @@ G.component.EntityComponent = Class.create(G.component.Component, {
 
     handleEntityEvent: function(event){
         G.log("Entity Event",event.type);
+        G.log("Event Result Callback:", event.callback);
+        var result;
         switch(event.type){
             case "ENTITY.Add":
-                this.addEntity(event.entityType,event.options);
+                result = this.addEntity(event.entityType,event.options);
+                if(_.isFunction(event.callback)){
+                    G.log("Got a callback");
+                    event.callback(result);
+                }
             break;
             case "ENTITY.Remove":
                 // @TODO: Remove an entity
@@ -31,6 +37,14 @@ G.component.EntityComponent = Class.create(G.component.Component, {
         }
     },
 
+    /**
+     *
+     * @param {String} type The Entity Type
+     * @param {Object} options Options for the Model, SceneGraph, and Entity
+     *
+     * @returns {G.entity.Entity} The new Entity that was added
+     *
+     */
     addEntity : function(type,options) {
 
         var entity = this.EntityFactory.create(type,options);
@@ -50,6 +64,8 @@ G.component.EntityComponent = Class.create(G.component.Component, {
         model.syncAll();
 
         this.entities.push(entity);
+
+        return entity;
     },
 
     update : function() {

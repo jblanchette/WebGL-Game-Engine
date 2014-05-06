@@ -1,4 +1,8 @@
 G.scenegraph.threejs.EarthHero = Class.create(G.scenegraph.threejs.SceneGraph,{
+    initialize: function($super,options){
+        $super(options);
+    },
+
     buildScene: function(scene,model,resourceBank){
 
         var boundingBox = model.getAttribute("boundingBox");

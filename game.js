@@ -56,8 +56,28 @@ G.initialize = function() {
     // Create event dispatcher alias
     G.eventDispatcher  = new THREE.EventDispatcher();
     G.globalDispatcher = new THREE.EventDispatcher();
-        // Stops the context menu from firing on right click
+    // Stops the context menu from firing on right click
     G.renderer.domElement.addEventListener("contextmenu", function(e){ e.preventDefault(); }, false);
+
+    G.loadingCamera = new THREE.PerspectiveCamera( 45, 1600 / 900, 1, 3000 );
+    G.loadingCamera.position.set( 0, 0, 100 );
+    G.loadingScene = new THREE.Scene();
+    var dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
+	dirLight.position.set( 0, 0, 1 ).normalize();
+	G.loadingScene.add( dirLight );
+
+    var geometry = new THREE.TextGeometry("LOADING...", {
+        font : 'helvetiker',
+        size : 14,
+        height : 15
+    });
+
+    var material = new THREE.MeshPhongMaterial({color : 0xFFFFFF});
+    var mesh = new THREE.Mesh(geometry, material);
+    mesh.position.set(-40,-5,0);
+
+    G.loadingScene.add(mesh);
+
 
     var dispatcherProxy = function(e) {
 
@@ -121,9 +141,11 @@ G.update = function() {
 G.draw = function() {
     var curModule = this.getCurrentModule();
     if(curModule !== null){
-        G.renderer.render(curModule.getScene(), curModule.getCamera());
-    }else{
-        G.log("not rendering");
+        if(Router.loading){
+            G.renderer.render(G.loadingScene, G.loadingCamera);
+        }else{
+            G.renderer.render(curModule.getScene(), curModule.getCamera());
+        }
     }
 };
 
