@@ -8,6 +8,12 @@ G.component.OverworldComponent = Class.create(G.component.Component, {
         'mouseup': 'handleMouseUp'
     },
 
+    preload: {
+        "entity": {
+            "Ground": "GroundObject"
+        }
+    },
+
     buildScene : function() {
 
     },

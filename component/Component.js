@@ -9,8 +9,10 @@ G.component.Component = Class.create({
 
     },
 
-    resources: {
+    preload: {
+        resources: {
 
+        }
     },
 
     buildScene: function() {

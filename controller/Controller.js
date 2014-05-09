@@ -13,9 +13,12 @@ G.controller.Controller = Class.create({
 
     },
 
-    resources: {
+    preload: {
+        resources: {
 
+        }
     },
+
 
     setDestroyable: function(isDestroyable){
         this.destroyable = isDestroyable;
@@ -33,29 +36,32 @@ G.controller.Controller = Class.create({
         this.updateable.push(updateable);
     },
 
-    loadResources: function(loader) {
+    runPreload: function(loader) {
         // Start with the Controllers resources
-        var result = _.pairs(this.resources);
-
+        G.log("preload", this.preload, this.preload.resources);
+        var result = _.pairs(this.preload.resources);
         // union the pairs from each fcomponent to the result list
         _.each(this.components, function(component) {
-            result = _.union(result,_.pairs(component.resources));
+            result = _.union(result, _.pairs(component.preload.resources));
         });
 
-        // get the unique list of pairs by comparing against the
-        // localname (the first item in the pair) using the
-        // underscore unique method's iterator argument
-        result = _.uniq(result,false,function(o){
-            return o[0];
-        });
+        if (result.length > 0) {
+            // get the unique list of pairs by comparing against the
+            // localname (the first item in the pair) using the
+            // underscore unique method's iterator argument
+            result = _.uniq(result, false, function(o) {
+                return o[0];
+            });
 
-        G.log("Resource Load pairs:",result);
-        // Pass each pair [ LocalName,URL ] to the loader
-        // The name gets added to the resource bank, url is
-        // used by the cache
-        _.each(result, function(pair){
-            loader.load(pair[0],pair[1]);
-        });
+            G.log("Resource Load pairs:", result);
+            // Pass each pair [ LocalName,URL ] to the loader
+            // The name gets added to the resource bank, url is
+            // used by the cache
+            _.each(result, function(pair) {
+                loader.load(pair[0], pair[1]);
+            });
+        }
+
 
     },
 

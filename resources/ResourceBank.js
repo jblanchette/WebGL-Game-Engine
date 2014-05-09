@@ -14,13 +14,16 @@ G.resources.ResourceBank = Class.create({
 
     initialize: function() {
         this.list = {};
+        this.entryCounter = 0;
     },
 
     add: function(name,data){
+        G.log("******* RB add",name);
         if(this.hasEntry(name)){
             G.error("Adding resource with the same local name.");
             return;
         }
+        this.entryCounter++;
         this.list[name] = data;
     },
 
@@ -38,6 +41,6 @@ G.resources.ResourceBank = Class.create({
     },
 
     count: function(){
-        return _.size(this.list);
+        return this.entryCounter;
     }
 });
