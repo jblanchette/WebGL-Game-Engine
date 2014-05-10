@@ -16,8 +16,11 @@ G.controller.TestingController = Class.create(G.controller.Controller, {
         this.EntityComponent = new G.component.EntityComponent();
         this.InputComponent  = new G.component.InputComponent();
 
-        this.addComponent(this.EntityComponent,true);
-        this.addComponent(this.InputComponent ,true);
+        this.UnitComponent = new G.component.UnitComponent();
+
+        this.addComponent(this.EntityComponent ,true);
+        this.addComponent(this.InputComponent  ,true);
+        this.addComponent(this.UnitComponent   ,true);
 
         this.addUpdate(this);
 
